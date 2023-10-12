@@ -5,8 +5,10 @@ The App is decoupled to two parts backend (api) and frontend (web).
 - **Api**: Contain business logic rendered as set of endpoints using [RESTFul API](https://restfulapi.net/) design principles. The programmning language is Python and we leverage the [Django RESTframework](https://www.django-rest-framework.org/). 
 - **Web**: Cool and intractive user interface designed with [React Bootstrap](https://react-bootstrap.netlify.app/)
 
-![Architecture of
-Course Evaluation App](./docs/img/class_diagram.jpg)
+<!--![Architecture of
+Course Evaluation App](./docs/img/class_diagram.jpg) -->
+<p align="center"><img src="https://github.com/chrisj117/CS-472-GROUP-2-PROJECT/blob/main/docs/img/class_diagram.jpg" width="520" height="570"></p>
+
 ## Features
 - Post reviews
 - Read reviews, update and delete own reviews
@@ -18,8 +20,8 @@ Course Evaluation App](./docs/img/class_diagram.jpg)
    
    **Backend API**
 
-   - Setup the api by cloning the repository using `git clone` and `cd` to `/api` diectory.
-   - It a good practice to configure python virtual environment. Use the commands below to setup python python virtual environment on `Linux/MacOS` or `Windows`
+   - Setup the API by cloning the repository using `git clone` and `cd` to `/api` diectory.
+   - It is a good practice to configure python virtual environment. Use the commands below to setup python virtual environment on `Linux/MacOS` or `Windows OS`
    ```
    # For Linux/MacOS
 
@@ -43,7 +45,7 @@ Course Evaluation App](./docs/img/class_diagram.jpg)
    - Go to your browser url and type `localhost:5000`. You should be able to see the landing page of the application
    - That's it 😇, Happy course evaluation or coding!!
 2. **Running locally with "Docker for Desktop"**
-   - Download and install `Docker fo Desktop` using the [link](). Once you are all set, run the commonds below;
+   - Download and install `Docker fo Desktop` using the [link](). Once you are all set, run the commands below;
    ```
    git clone <project>
    cd /project
