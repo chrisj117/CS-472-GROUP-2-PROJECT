@@ -56,7 +56,7 @@ Course Evaluation App](./docs/img/class_diagram.jpg) -->
    - That's all 😎!! The backend api and frontend will be running on port `8000` and `5173` respectively. To interact with the app, go to your browser url and type `localhost:5173`. You should be able to see the landing page of the application
 
 ## Contributing
-We invite you to help us build this platform. Please look up the [contributing guide]() for details.
+We invite you to help us build this platform. Please look up the [contributing guide](CONTRIBUTING.md) for details.
 
 ## Issues
-Before reporting a problem, please check out the [issue guide]().
+Before reporting a problem, please check out the [issue guide](CONTRIBUTING.md).
