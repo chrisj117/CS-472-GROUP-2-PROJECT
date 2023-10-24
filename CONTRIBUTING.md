@@ -6,7 +6,7 @@ In this guide you will get an overview of the contribution workflow from opening
 
 ## New contributor guide
 
-To get an overview of this project, to read the `README``:
+To get an overview of this project, to read the `README`:
 
 - [README](README.md)
 Here are some resources to help you get started with open source contributions:
