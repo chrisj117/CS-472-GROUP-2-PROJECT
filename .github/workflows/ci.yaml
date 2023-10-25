@@ -16,7 +16,7 @@ jobs:
       - name: checkout code
         uses: actions/checkout@v3.5.3
         with:
-          fetch-depth: 1
+          fetch-depth: 2
         #### check api and web directory ######
       - name: check modified directory
         id: check_files
