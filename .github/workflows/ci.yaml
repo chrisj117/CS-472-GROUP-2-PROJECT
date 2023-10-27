@@ -78,10 +78,9 @@ jobs:
           cd api/
           coverage run manage.py test && coverage report --fail-under=80 && coverage xml
 
-      - name: Report coverage report to codecov
-        uses: codecov/codecov-action@v1
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v3
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
         with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          files: ./api/coverage.xml
-          directory: ./api/coverage/reports/
-          fail_ci_if_error: true
+          directory: api/coverage.xml
