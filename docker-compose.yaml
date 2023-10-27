@@ -1,0 +1,32 @@
+version: '3'
+
+services:
+  api:
+    build: ./api
+    container_name: course_evaluation_api
+    volumes:
+      - ./api:/app
+    restart: always
+    ports:
+        - "8000:8000"
+    networks:
+        - course_evaluation
+  web:
+    build: ./web
+    container_name: course_evaluation_web
+    volumes:
+      - ./web:/app
+      - node_modules:/app/node_modules
+    restart: always  
+    environment:
+      - NODE_ENV=development
+    ports:
+        - "5173:5173"
+    networks:
+        - course_evaluation
+    tty: true
+networks: 
+  course_evaluation:
+volumes:
+  node_modules:
+
