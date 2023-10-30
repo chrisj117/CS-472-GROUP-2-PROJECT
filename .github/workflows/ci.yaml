@@ -83,4 +83,4 @@ jobs:
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
         with:
-          directory: api/coverage.xml
+          directory: ./api
