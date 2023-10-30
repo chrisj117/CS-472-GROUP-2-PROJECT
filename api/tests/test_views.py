@@ -17,3 +17,4 @@ class TestSchoolAIPView(APITestCase):
 
         response = self.client.post(reverse('schools'), test_data)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+    
