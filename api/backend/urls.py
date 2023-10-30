@@ -17,6 +17,6 @@ handler500
 
 urlpatterns += [
     path('admin/', admin.site.urls),
-    path(f'{base_url}/school/', school_views.SchoolAPIView.as_view()),
-    path(f'{base_url}/school/<str:short_name>/', school_views.SchoolAPIView.as_view()),
+    path(f'{base_url}/school/', school_views.SchoolAPIView.as_view(), name='schools'),
+    path(f'{base_url}/school/<str:short_name>/', school_views.SchoolAPIView.as_view(), name='school'),
 ]
