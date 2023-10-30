@@ -16,4 +16,4 @@ class School(TrackingModel):
     country = models.CharField(max_length=25, verbose_name="Country")
 
     def __str__(self) -> str:
-        return f'{self.long_name}'
+        return f'{self.short_name}'
