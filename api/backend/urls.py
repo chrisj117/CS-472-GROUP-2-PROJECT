@@ -3,9 +3,6 @@ from django.contrib import admin
 from rest_framework import routers
 from school import views as school_views
 from django.conf.urls import handler400, handler403, handler404, handler500
-from utils.views import error_404, error_500
-
-
 
 
 router = routers.DefaultRouter()
