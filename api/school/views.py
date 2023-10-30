@@ -27,20 +27,24 @@ class SchoolAPIView(views.APIView):
         return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
     def get(self, request, short_name=None):
-        if short_name:
-            school_object = School.objects.get(short_name=short_name)
-            serializer = SchoolSerializer(school_object)
-        else:
-            query_set = School.objects.all()
-            serializer = SchoolSerializer(query_set, many=True)
-        response={
-                    "message": "Schools listed successfully",
-                    "data": serializer.data
-                }
-        return Response(data=response, status=status.HTTP_200_OK)
+        try:
+            if short_name:
+                school_object = School.objects.get(short_name=short_name)
+                serializer = SchoolSerializer(school_object)
+            else:
+                query_set = School.objects.all()
+                serializer = SchoolSerializer(query_set, many=True)
+            response={
+                        "message": "Schools listed successfully",
+                        "data": serializer.data
+                    }
+            return Response(data=response, status=status.HTTP_200_OK)
+        except School.DoesNotExist:
+            return Response({"message": "school not found!", "data":[]}, status=status.HTTP_404_NOT_FOUND)
+
     
-    def put(self, request, short_name, format=None):
-        if short_name !="" and short_name is not None:
+    def put(self, request, short_name=None, format=None):
+        try:
             school_object = School.objects.get(short_name=short_name)
             data = request.data
             serializer = self.serializer_class(data=data, instance=school_object)
@@ -53,17 +57,15 @@ class SchoolAPIView(views.APIView):
                 return Response(data=response, status=status.HTTP_200_OK)
             
             return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        else:
-            return JsonResponse({"message": "Please provide short name of the school"})
+        except School.DoesNotExist:
+            return Response({"message": "school not found!", "data":[]}, status=status.HTTP_404_NOT_FOUND)
     
-    def delete(self, request, short_name, format=None):
-        school_object = School.objects.get(short_name=short_name)
-        if school_object:
+    def delete(self, request, short_name=None, format=None):
+        try:
+            school_object = School.objects.get(short_name=short_name)
             school_object.delete()
             return Response({"message": "school deleted successfully", "data":[]}, status=status.HTTP_204_NO_CONTENT)
-        else:
-            return Response({"message": "school not found!", "data":[]}, status=status.HTTP_204_NO_CONTENT)
-        
-    
+        except School.DoesNotExist:
+             return Response({"message": "school not found!", "data":[]}, status=status.HTTP_404_NOT_FOUND)
     
     
