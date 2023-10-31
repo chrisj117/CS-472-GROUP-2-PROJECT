@@ -1,0 +1,86 @@
+name: ci-pipeline
+
+on:
+  push:
+  pull_request:
+    types: [opened, reopened]
+
+jobs:
+  check:
+    name: check for changes directories
+    outputs:
+      run_web: ${{ steps.check_files.outputs.run_web }} # 
+      run_api: ${{ steps.check_files.outputs.run_api }} # 
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v3.5.3
+        with:
+          fetch-depth: 2
+        #### check api and web directory ######
+      - name: check modified directory
+        id: check_files
+        run: |
+          echo "=============== list modified files ==============="
+          git diff --name-only HEAD^ HEAD
+
+          echo "========== check paths of modified files =========="
+          git diff --name-only HEAD^ HEAD > files.txt
+
+          echo "run_api=false" >>$GITHUB_OUTPUT
+          echo "run_web=false" >>$GITHUB_OUTPUT  
+          
+          while IFS= read -r file
+          do
+            echo $file
+            
+            if [[ $file == web/* ]]; then
+              echo "run_web=true" >>$GITHUB_OUTPUT
+            fi
+            
+            if [[ $file == api/* ]]; then
+              echo "run_api=true" >>$GITHUB_OUTPUT
+            fi
+          done < files.txt
+
+ ### web ci pipeline ###
+  web:
+    name: web-ci-pipeline
+    needs: check
+    if: needs.check.outputs.run_web == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+ ### api ci pipeline ###
+  api:
+    name: api-ci-pipeline
+    needs: check
+    if: needs.check.outputs.run_api == 'true'
+    runs-on: ubuntu-latest
+    container: python:3.9-slim
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Install dependencies
+        run: |
+          cd api/
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      - name: Lint with Flake8
+        run: |
+          cd api/
+          flake8 . --count --select=E9,F63,F7,F82,E302 --show-source --statistics
+          flake8 . --count --max-complexity=10 --max-line-length=127 --statistics
+      - name: Run unit tests with coverage
+        run: |
+          cd api/
+          coverage run manage.py test && coverage report --fail-under=80 && coverage xml
+
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v3
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+        with:
+          directory: api/coverage.xml
