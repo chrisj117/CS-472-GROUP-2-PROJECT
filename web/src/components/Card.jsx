@@ -1,6 +1,4 @@
-const Card = ({Title, Body}) => {
-  return (
-    <div>{placeholder}</div>
-  )
-}
-export default Card
+const Card = () => {
+  return <div>Card</div>;
+};
+export default Card;
