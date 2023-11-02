@@ -17,7 +17,8 @@ export default defineConfig({
   },
   test: {
     coverage: {
-      reporter: ['text'],
+      reporter: ['text', 'cobertura'],
+      reportsDirectory: './coverage',
     },
   },
 });
