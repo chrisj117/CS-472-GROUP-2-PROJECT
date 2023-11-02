@@ -9,8 +9,8 @@ jobs:
   check:
     name: check for changes directories
     outputs:
-      run_web: ${{ steps.check_files.outputs.run_web }} # 
-      run_api: ${{ steps.check_files.outputs.run_api }} # 
+      run_web: ${{ steps.check_files.outputs.run_web }} #
+      run_api: ${{ steps.check_files.outputs.run_api }} #
     runs-on: ubuntu-latest
     steps:
       - name: checkout code
@@ -29,7 +29,7 @@ jobs:
 
           echo "run_api=false" >>$GITHUB_OUTPUT
           echo "run_web=false" >>$GITHUB_OUTPUT  
-          
+
           while IFS= read -r file
           do
             echo $file
@@ -43,17 +43,47 @@ jobs:
             fi
           done < files.txt
 
- ### web ci pipeline ###
+  ### web ci pipeline ###
   web:
     name: web-ci-pipeline
     needs: check
     if: needs.check.outputs.run_web == 'true'
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x]
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+      - name: Install node
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Install dependencies
+        run: |
+          cd web/
+          npm install
+      # - name: Build application
+      #   run: |
+      #     cd web/
+      #     npm run build
+      - name: Lint with ESLint
+        run: |
+          cd web/
+          npm run lint
+      - name: Run unit tests with coverage
+        run: |
+          cd web/
+          npm run test
 
- ### api ci pipeline ###
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v3
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+        with:
+          directory: web/cobertura-coverage.xml
+
+  ### api ci pipeline ###
   api:
     name: api-ci-pipeline
     needs: check
