@@ -4,3 +4,5 @@ coverage
 flake8
 gunicorn
 django-cors-headers
+django-extensions
+django-filter
