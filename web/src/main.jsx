@@ -10,6 +10,7 @@ import About from './pages/About.jsx';
 import RequestSchool from './pages/RequestSchool';
 import Course from './pages/Course';
 import Review from './pages/Review';
+import Home from './pages/Home';
 
 const router = createBrowserRouter([
   {
@@ -17,6 +18,7 @@ const router = createBrowserRouter([
     element: <Root />,
     errorElement: <NotFound />,
     children: [
+      { index: true, element: <Home /> },
       { path: 'about', element: <About /> },
       { path: 'request-school', element: <RequestSchool /> },
       {
