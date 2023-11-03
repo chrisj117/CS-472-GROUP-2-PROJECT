@@ -59,7 +59,7 @@ const Home = () => {
           </div>
         </button>
         <button className="w-full border-b-2 border-gray-300 pb-6 text-left group mt-6 focus:outline-none">
-          <div className="text-lg font-sans text-center">Q: Why don't I see my school?</div>
+          <div className="text-lg font-sans text-center">Q: Why don&apos;t I see my school?</div>
           <div className="mt-3 hidden text-gray-700 group-focus:flex">
             <p>You can send a request to add your school here! Your request may take 2 or more weeks to be processed.</p>
           </div>
