@@ -81,7 +81,7 @@ jobs:
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
         with:
-          directory: web/cobertura-coverage.xml
+          directory: web/coverage/cobertura-coverage.xml
 
   ### api ci pipeline ###
   api:
