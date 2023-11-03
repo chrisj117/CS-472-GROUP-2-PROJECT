@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-%^+cgle=tg=3o-29%%=fd)8p#+aaxs(2&zrc9#d$x+o4*19ufu
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*","localhost","127.0.0.1","[::1]"] 
 
 
 # Application definition
@@ -37,7 +37,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_extensions', #Great packaged to access abstract models
+    'django_filters', #Used with DRF
     'rest_framework', # Django REST Framwork
+    'school',
 ]
 
 MIDDLEWARE = [
