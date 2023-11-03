@@ -32,7 +32,7 @@ const Searchbar = ({ searchingSchools, searchingCourses }) => {
         `Error: You cannot search for schools and courses at the same time!`
       );
     }
-  }, []);
+  }, [searchingSchools, searchingCourses]);
 
   const loadOptions = (searchValue, callback) => {
     setTimeout(() => {
@@ -54,6 +54,7 @@ const Searchbar = ({ searchingSchools, searchingCourses }) => {
   return (
     <AsyncSelect
       loadOptions={loadOptions}
+      cacheOptions
       defaultOptions
       onChange={handleChange}
     />
