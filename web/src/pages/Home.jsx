@@ -3,7 +3,6 @@ import Searchbar from '../components/Searchbar';
 const Home = () => {
   return (
     <div className="flex flex-col h-screen justify-between">
-      <Searchbar />
       {/* Top of page: Logo, "About" link, and Request a "School" link */}
       <nav className="font-sans flex text-center sm:flex-row sm:text-left sm:justify-between py-4 px-6 bg-white shadow sm:items-baseline w-full">
         <div className="mb-2 sm:mb-0">
@@ -41,13 +40,14 @@ const Home = () => {
       </div>
       {/* Search bar */}
       <div className="flex-1 mx-60">
-        <div className="relative items-center w-full h-12 rounded-lg focus-within:shadow-lg bg-none overflow-hidden">
-          <input
+        <div className="relative items-center w-full h-12 rounded-lg focus-within:shadow-lg bg-none">
+          <Searchbar searchingSchools={true} searchingCourses={false} />
+          {/* <input
             className="peer px-3 h-full w-full outline-none text-sm text-gray-900 bg-gray-300"
             type="text"
             id="search"
             placeholder="Enter school"
-          />
+          /> */}
         </div>
       </div>
 
