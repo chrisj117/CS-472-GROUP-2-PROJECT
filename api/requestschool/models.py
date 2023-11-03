@@ -3,7 +3,11 @@ from django.db import models
 
 
 class RequestSchool(TrackingModel):
-    school_name = models.CharField(max_length=50)
+    class Meta:
+        verbose_name_plural = "RequestSchools"
+
+    school_name = models.CharField(max_length=50,
+                                   unique=True)
     website = models.URLField()
 
     def __str__(self) -> str:
