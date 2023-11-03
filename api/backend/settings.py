@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django_filters', #Used with DRF
     'rest_framework', # Django REST Framwork
     'school',
+    'requestschool',
 ]
 
 MIDDLEWARE = [
