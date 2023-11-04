@@ -68,16 +68,23 @@ class ReviewAPIView(views.APIView):
                 status=status.HTTP_404_NOT_FOUND,
             )
 
-    def delete(self, review_id=None):
-        try:
-            review_object = Review.objects.get(id=review_id)
-            review_object.delete()
+    def delete(self, request, *args, **kwargs):
+        review_id = kwargs.get('review_id', None)
+        if review_id is not None:
+            try:
+                review_object = Review.objects.get(id=review_id)
+                review_object.delete()
+                return Response(
+                    {"message": "Review deleted successfully", "data": []},
+                    status=status.HTTP_204_NO_CONTENT,
+                )
+            except Review.DoesNotExist:
+                return Response(
+                    {"message": "Review not found!", "data": []},
+                    status=status.HTTP_404_NOT_FOUND,
+                )
+        else:
             return Response(
-                {"message": "Review deleted successfully", "data": []},
-                status=status.HTTP_204_NO_CONTENT,
-            )
-        except Review.DoesNotExist:
-            return Response(
-                {"message": "Review not found!", "data": []},
-                status=status.HTTP_404_NOT_FOUND,
+                {"message": "Invalid review ID", "data": []},
+                status=status.HTTP_400_BAD_REQUEST,
             )
