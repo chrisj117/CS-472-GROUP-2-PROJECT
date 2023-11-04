@@ -14,7 +14,7 @@ const Review = () => {
           <div className="relative inline-flex self-center">
             {/* svg dropdown arrow */}
             <svg className="bg-white absolute top-0 right-0 m-2 pointer-events-none p-2 rounded" width="34px" height="34px" viewBox="0 0 20 20">
-              <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
+              <path fillRule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clipRule="evenodd" />
             </svg>
 
             {/* Professor list */}
