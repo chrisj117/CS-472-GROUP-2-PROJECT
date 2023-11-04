@@ -21,7 +21,7 @@ const Review = () => {
             searchPlaceholder="Search for course"
           />
         </div>
-        <div className="flex justify-between items-center">
+        <div className="flex justify-between items-center mb-8">
           {/* Review button */}
           {/* NOTE: for now, this link is appearance only and will likely be refactored */}
           <div className="flex gap-3 items-center">
@@ -61,8 +61,62 @@ const Review = () => {
           </div>
         </div>
 
-        <div>
-          <RatingBar rating={1} />
+        <h3 className="font-bold text-xl max-w-screen-xl w-full mx-auto mb-4">
+          Ratings Summary
+        </h3>
+        <div className="flex justify-between w-full max-w-screen-xl mx-auto">
+          <div className="flex flex-col gap-5">
+            <RatingBar
+              question="Lorem ipsum dolor sit amet, consectetur adipisicing elit?"
+              rating={2}
+            />
+            <RatingBar
+              question="Lorem ipsum dolor sit amet, consectetur adipisicing elit?"
+              rating={3}
+            />
+            <RatingBar
+              question="Lorem ipsum dolor sit amet, consectetur adipisicing elit?"
+              rating={2}
+            />
+            <RatingBar
+              question="Lorem ipsum dolor sit amet, consectetur adipisicing elit?"
+              rating={1}
+            />
+            <RatingBar
+              question="Lorem ipsum dolor sit amet, consectetur adipisicing elit?"
+              rating={5}
+            />
+            <RatingBar
+              question="Lorem ipsum dolor sit amet, consectetur adipisicing elit?"
+              rating={4}
+            />
+          </div>
+          <div className="flex flex-col gap-5">
+            <RatingBar
+              question="Lorem ipsum dolor sit amet, consectetur adipisicing elit?"
+              rating={5}
+            />
+            <RatingBar
+              question="Lorem ipsum dolor sit amet, consectetur adipisicing elit?"
+              rating={4}
+            />
+            <RatingBar
+              question="Lorem ipsum dolor sit amet, consectetur adipisicing elit?"
+              rating={2}
+            />
+            <RatingBar
+              question="Lorem ipsum dolor sit amet, consectetur adipisicing elit?"
+              rating={3}
+            />
+            <RatingBar
+              question="Lorem ipsum dolor sit amet, consectetur adipisicing elit?"
+              rating={3}
+            />
+            <RatingBar
+              question="Lorem ipsum dolor sit amet, consectetur adipisicing elit?"
+              rating={5}
+            />
+          </div>
         </div>
 
         {/* Additional comment box + post button */}

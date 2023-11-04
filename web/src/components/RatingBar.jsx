@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import { useEffect, useState } from 'react';
 
-const RatingBar = ({ rating }) => {
+const RatingBar = ({ question, rating }) => {
   const [segmentColor1, setSegmentColor1] = useState('bg-gray-200');
   const [segmentColor2, setSegmentColor2] = useState('bg-gray-200');
   const [segmentColor3, setSegmentColor3] = useState('bg-gray-200');
@@ -33,22 +33,25 @@ const RatingBar = ({ rating }) => {
   }, [rating]);
 
   return (
-    <div className="flex gap-[2px]">
-      <div
-        className={`w-8 h-3 text-white font-bold text-lg flex items-center justify-center rounded-l-md ${segmentColor1}`}
-      ></div>
-      <div
-        className={`w-8 h-3 text-white font-bold text-lg flex items-center justify-center ${segmentColor2}`}
-      ></div>
-      <div
-        className={`w-8 h-3 text-white font-bold text-lg flex items-center justify-center ${segmentColor3}`}
-      ></div>
-      <div
-        className={`w-8 h-3 text-white font-bold text-lg flex items-center justify-center ${segmentColor4}`}
-      ></div>
-      <div
-        className={`w-8 h-3 text-white font-bold text-lg flex items-center justify-center rounded-r-md ${segmentColor5}`}
-      ></div>
+    <div>
+      <p className="text-lg mb-[2px]">{question}</p>
+      <div className="flex gap-1">
+        <div
+          className={`w-16 h-3 text-white font-bold text-lg flex items-center justify-center rounded-l-md ${segmentColor1}`}
+        ></div>
+        <div
+          className={`w-16 h-3 text-white font-bold text-lg flex items-center justify-center ${segmentColor2}`}
+        ></div>
+        <div
+          className={`w-16 h-3 text-white font-bold text-lg flex items-center justify-center ${segmentColor3}`}
+        ></div>
+        <div
+          className={`w-16 h-3 text-white font-bold text-lg flex items-center justify-center ${segmentColor4}`}
+        ></div>
+        <div
+          className={`w-16 h-3 text-white font-bold text-lg flex items-center justify-center rounded-r-md ${segmentColor5}`}
+        ></div>
+      </div>
     </div>
   );
 };
