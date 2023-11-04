@@ -9,8 +9,8 @@ const Searchbar = ({ searchingSchools, searchingCourses }) => {
   useEffect(() => {
     const fetchSchools = async () => {
       try {
-        const response = await api.get('/school');
-        if (response && response.data) setSchools(response.data);
+        const response = await api.get('/school/');
+        if (response && response.data) return response.data.data;
       } catch (err) {
         if (err.response) {
           // Not in the 200 response range
@@ -35,6 +35,8 @@ const Searchbar = ({ searchingSchools, searchingCourses }) => {
   }, [searchingCourses, searchingSchools]);
 
   const loadOptions = (searchValue, callback) => {
+    if (schools.length == 0) return;
+
     setTimeout(() => {
       const filteredOptions = schools.filter(
         (option) =>
