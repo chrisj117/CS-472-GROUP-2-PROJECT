@@ -10,7 +10,7 @@ const Searchbar = ({ searchingSchools, searchingCourses }) => {
     const fetchSchools = async () => {
       try {
         const response = await api.get('/school/');
-        if (response && response.data) return response.data.data;
+        if (response && response.data) setSchools(response.data.data);
       } catch (err) {
         if (err.response) {
           // Not in the 200 response range
