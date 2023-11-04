@@ -10,7 +10,7 @@ const School = () => {
       <h2 className="font-bold text-3xl">
         {schoolName} ({schoolNameShort})
       </h2>
-      <div className="flex gap-4 items-center justify-left mb-16">
+      <div className="flex gap-4 items-center justify-left mb-8">
         <h3 className="text-xl">Find your course:</h3>
         <Searchbar
           searchingSchools={false}
@@ -21,8 +21,16 @@ const School = () => {
       </div>
 
       <div className="">
-        <h3 className="font-bold text-2xl">Popular Courses:</h3>
-        <CourseCard />
+        <h3 className="font-bold text-2xl mb-4 px-32">Popular Courses:</h3>
+        <div className="px-32 flex flex-col gap-2">
+          <CourseCard />
+          <CourseCard />
+          <CourseCard />
+          <CourseCard />
+          <CourseCard />
+          <CourseCard />
+          <CourseCard />
+        </div>
       </div>
     </section>
   );
