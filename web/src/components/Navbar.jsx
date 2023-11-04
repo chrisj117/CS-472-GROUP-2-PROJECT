@@ -16,12 +16,16 @@ const Navbar = () => {
           Light Mode
         </button>
         <div className="flex space-x-4">
-          <a href="/about" className="text-black hover:underline">About</a>
-          <a href="/request-school" className="text-black hover:underline mr-2">Request a School</a>
+          <a href="/about" className="text-black hover:underline">
+            About
+          </a>
+          <a href="/request-school" className="text-black hover:underline mr-2">
+            Request a School
+          </a>
         </div>
       </div>
     </header>
   );
 };
 
-export default Navbar
+export default Navbar;
