@@ -54,7 +54,7 @@ class Review(TrackingModel):
         verbose_name_plural = "Reviews"
 
     def __str__(self):
-        return f'Review for {self.school.short_name} on {self.created_at.strftime("%Y-%m-%d %H:%M")}'
+        return f'Review for {self.school.short_name}'
 
 
 # TODO Rating Criteria Model
