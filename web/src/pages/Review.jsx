@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import Searchbar from '../components/Searchbar';
 import RatingBar from '../components/RatingBar';
+import ReviewCard from '../components/ReviewCard';
 
 const Review = () => {
   const [schoolName, setSchoolName] = useState(
@@ -64,7 +65,7 @@ const Review = () => {
         <h3 className="font-bold text-xl max-w-screen-xl w-full mx-auto mb-4">
           Ratings Summary
         </h3>
-        <div className="flex justify-between w-full max-w-screen-xl mx-auto">
+        <div className="flex justify-between w-full max-w-screen-xl mx-auto mb-16">
           <div className="flex flex-col gap-5">
             <RatingBar
               question="Lorem ipsum dolor sit amet, consectetur adipisicing elit?"
@@ -118,6 +119,17 @@ const Review = () => {
             />
           </div>
         </div>
+
+        <h3 className="font-bold text-xl max-w-screen-xl w-full mx-auto mb-4">
+          Written Reviews (20)
+        </h3>
+        {/* <div className="max-w-screen-xl mx-auto w-full">
+          <ReviewCard />
+        </div> */}
+
+        <h3 className="font-bold text-xl max-w-screen-xl w-full mx-auto mb-4">
+          Leave a Review
+        </h3>
 
         {/* Additional comment box + post button */}
         {/* NOTE: for now, this lives on Review.jsx, but this will be moved to the "writing review page" */}
