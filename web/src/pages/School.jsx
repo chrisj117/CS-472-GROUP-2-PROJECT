@@ -1,3 +1,4 @@
+import CourseCard from '../components/CourseCard';
 import Searchbar from '../components/Searchbar';
 
 const School = () => {
@@ -5,13 +6,25 @@ const School = () => {
   const schoolNameShort = 'UNLV';
 
   return (
-    <>
-      <h2>
+    <section className="max-w-screen-2xl mx-auto flex flex-col gap-8 mt-8">
+      <h2 className="font-bold text-3xl">
         {schoolName} ({schoolNameShort})
       </h2>
-      <Searchbar />
-      <div></div>
-    </>
+      <div className="flex gap-4 items-center justify-left mb-16">
+        <h3 className="text-xl">Find your course:</h3>
+        <Searchbar
+          searchingSchools={false}
+          searchingCourses={true}
+          searchPlaceholder="Search for a course"
+          className="flex-1"
+        />
+      </div>
+
+      <div className="">
+        <h3 className="font-bold text-2xl">Popular Courses:</h3>
+        <CourseCard />
+      </div>
+    </section>
   );
 };
 export default School;
