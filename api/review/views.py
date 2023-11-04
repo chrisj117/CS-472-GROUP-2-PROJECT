@@ -1,6 +1,7 @@
 from rest_framework import status, views
 from rest_framework.response import Response
 from review.models import Review
+from school.models import School
 from review.serializers import ReviewSerializer
 
 
@@ -24,22 +25,26 @@ class ReviewAPIView(views.APIView):
 
         return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    def get(self, school_id=None):
+    def get(self, request, review_id=None, short_name=None):
         try:
-            if school_id:
-                reviews = Review.objects.filter(school__id=school_id)
-                serializer = ReviewSerializer(reviews, many=True)
+            if review_id:
+                review = Review.objects.get(id=review_id)
+                serializer = self.serializer_class(review)
+            elif short_name:
+                school = School.objects.get(short_name=short_name)
+                reviews = Review.objects.filter(school=school)
+                serializer = self.serializer_class(reviews, many=True)
             else:
-                query_set = Review.objects.all()
-                serializer = ReviewSerializer(query_set, many=True)
+                queryset = Review.objects.all()
+                serializer = self.serializer_class(queryset, many=True)
             response = {
                 "message": "Reviews listed successfully",
                 "data": serializer.data,
             }
             return Response(data=response, status=status.HTTP_200_OK)
-        except Review.DoesNotExist:
+        except (Review.DoesNotExist, School.DoesNotExist):
             return Response(
-                {"message": "Review not found!", "data": []},
+                {"message": "No reviews found!", "data": []},
                 status=status.HTTP_404_NOT_FOUND,
             )
 

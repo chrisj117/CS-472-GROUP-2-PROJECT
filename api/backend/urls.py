@@ -27,9 +27,9 @@ urlpatterns += [
     path(f'{base_url}/reviews/',
          review_views.ReviewAPIView.as_view(), name='review_list'),
     # getting, updating, or deleting a specific review
-    path(f'{base_url}/reviews/<int:review_id>/',
+    path(f'{base_url}/reviews/<uuid:review_id>/',
          review_views.ReviewAPIView.as_view(), name='review_detail'),
-    # listing reviews for a specific school
-    path(f'{base_url}/schools/<int:school_id>/reviews/',
+    # listing reviews for a specific school (will be for courses later)
+    path(f'{base_url}/school/<str:short_name>/reviews/',
          review_views.ReviewAPIView.as_view(), name='school_reviews'),
 ]

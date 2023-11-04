@@ -35,7 +35,8 @@ class Review(TrackingModel):
 
     # If a school is deleted, all related reviews will also be deleted. Reviews can be nullable and optional
     # each review is associated with one school, and each school can have many reviews
-    school = models.ForeignKey(School, on_delete=models.CASCADE, related_name='reviews', null=True, blank=True)
+    school = models.ForeignKey(
+        School, on_delete=models.CASCADE, related_name='reviews', null=True, blank=True)
     # TODO: Course Model Foreign Key
     # TODO: Professor Model Foreign Key
     # limiting reviews to 500 characters
@@ -53,7 +54,7 @@ class Review(TrackingModel):
         verbose_name_plural = "Reviews"
 
     def __str__(self):
-        return f'Review by {self.created_by} for {self.school.short_name}'
+        return f'Review for {self.school.short_name} on {self.created_at.strftime("%Y-%m-%d %H:%M")}'
 
 
 # TODO Rating Criteria Model
