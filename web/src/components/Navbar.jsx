@@ -14,16 +14,23 @@ const Navbar = () => {
       </div>
       {/* Top Right Corner */}
       <div className="flex space-x-2 items-center mr-8">
-        <Link className="bg-black text-white p-2 rounded hover:bg-gray-800">
+        <button className="bg-black text-white p-2 rounded hover:bg-gray-800">
           Light Mode
-        </Link>
+        </button>
         <div className="flex space-x-4">
-          <Link to="/about" className="text-black hover:underline">About</Link>
-          <Link to="/request-school" className="text-black hover:underline mr-2">Request a School</Link>
+          <Link to="/about" className="text-black hover:underline">
+            About
+          </Link>
+          <Link
+            to="/request-school"
+            className="text-black hover:underline mr-2"
+          >
+            Request a School
+          </Link>
         </div>
       </div>
     </header>
   );
 };
 
-export default Navbar
+export default Navbar;
