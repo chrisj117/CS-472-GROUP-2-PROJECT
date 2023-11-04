@@ -1,3 +1,4 @@
+import Searchbar from '../components/Searchbar';
 import QA from "../components/QA";
 
 const Home = () => {
@@ -11,18 +12,21 @@ const Home = () => {
       </div>
       {/* Search bar */}
       <div className="flex-1 mx-60">
+        <div className="relative items-center w-full h-12 rounded-lg focus-within:shadow-lg bg-none">
+          <Searchbar searchingSchools={true} searchingCourses={false} />
+          {/* <input
         <div className="relative items-center w-full h-12 rounded-lg focus-within:shadow-lg bg-none overflow-hidden">
           <input
             className="peer px-3 h-full w-full outline-none text-sm text-gray-900 bg-gray-300"
             type="text"
             id="search"
             placeholder="Enter school"
-          />
+          /> */}
         </div>
       </div>
 
       {/* Bottom of page: FAQ section */}
-      <div className="h-auto px-20 py-12 justify-center">
+      <div className="h-auto px-20 py-12 justify-center transition-all">
         <h1 className="text-center py-4 text-2xl no-underline text-grey-darkest hover:text-blue-dark">
           Frequently Asked Questions
         </h1>
