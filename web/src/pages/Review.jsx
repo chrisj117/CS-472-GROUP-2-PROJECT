@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import Searchbar from '../components/Searchbar';
+import RatingBar from '../components/RatingBar';
 
 const Review = () => {
   const [schoolName, setSchoolName] = useState(
@@ -11,7 +12,7 @@ const Review = () => {
     <div className="max-w-screen-2xl mx-auto">
       <div className="flex flex-col h-screen py-4">
         {/* Top of screen (below nav bar) */}
-        <div className="flex flex-col gap-2 mb-8">
+        <div className="flex flex-col gap-4 mb-12">
           <h2 className="font-bold text-3xl">
             {schoolName} ({schoolNameShort})
           </h2>
@@ -20,18 +21,20 @@ const Review = () => {
             searchPlaceholder="Search for course"
           />
         </div>
-        <div className="flex justify-between items-center px-4">
+        <div className="flex justify-between items-center">
           {/* Review button */}
           {/* NOTE: for now, this link is appearance only and will likely be refactored */}
-          <div className="flex flex-col gap-1">
-            <h2 className="">CS 302 | Data Structures and Algorithms</h2>
+          <div className="flex gap-3 items-center">
+            <a
+              href="#"
+              className="rounded-lg bg-blue-500 hover:bg-blue-600 px-6 py-2 text-md font-medium text-white transition focus:outline-none focus:ring"
+            >
+              Review
+            </a>
+            <h2 className="font-bold text-2xl">
+              CS 302 | Data Structures and Algorithms
+            </h2>
           </div>
-          <a
-            href="#"
-            className="rounded-lg bg-blue-500 hover:bg-blue-600 px-5 py-3 text-md font-medium text-white transition focus:outline-none focus:ring"
-          >
-            Review
-          </a>
 
           {/* Professor dropdown */}
           <div className="relative inline-flex self-center">
@@ -56,6 +59,10 @@ const Review = () => {
               <option>Dr. LoremIpsum</option>
             </select>
           </div>
+        </div>
+
+        <div>
+          <RatingBar rating={1} />
         </div>
 
         {/* Additional comment box + post button */}
