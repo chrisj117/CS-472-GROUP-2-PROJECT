@@ -1,3 +1,5 @@
+import QA from "../components/QA";
+
 const Home = () => {
   return (
     <div className="flex flex-col h-screen justify-between">
@@ -24,44 +26,25 @@ const Home = () => {
         <h1 className="text-center py-4 text-2xl no-underline text-grey-darkest hover:text-blue-dark">
           Frequently Asked Questions
         </h1>
-        {/* Start of Question/Answer component */}
-        <button className="w-full border-b-2 border-gray-300 pb-6 text-left group focus:outline-none">
-          <div className="text-lg font-sans text-center">
-            Q: Why are evaluations important?
-          </div>
-          <div className="mt-3 hidden text-gray-700 group-focus:flex">
-            <p>
-              Evaluations provide a detailed review of a course that covers
+        {/* Question/Answer Components */}
+        <QA
+          question="Why are evaluations important?"
+          answer="Evaluations provide a detailed review of a course that covers
               almost every aspect of the class, including workload, professors,
-              textbooks, and more!
-            </p>
-          </div>
-        </button>
-        {/* End of Question/Answer component (repeat this section per Q/A pair needed) */}
-        <button className="w-full border-b-2 border-gray-300 pb-6 text-left group mt-6 focus:outline-none">
-          <div className="text-lg font-sans text-center">
-            Q: How can I contribute?
-          </div>
-          <div className="mt-3 hidden text-gray-700 group-focus:flex">
-            <p>
-              You can leave your own course evaluations on a course page when
-              pressing the Review button, and it will take you to a page where
-              you can fill out a simple questionnaire. Sign ups are not
-              required!
-            </p>
-          </div>
-        </button>
-        <button className="w-full border-b-2 border-gray-300 pb-6 text-left group mt-6 focus:outline-none">
-          <div className="text-lg font-sans text-center">
-            Q: Why don&apos;t I see my school?
-          </div>
-          <div className="mt-3 hidden text-gray-700 group-focus:flex">
-            <p>
-              You can send a request to add your school here! Your request may
-              take 2 or more weeks to be processed.
-            </p>
-          </div>
-        </button>
+              textbooks, and more!"
+        />
+        <QA
+          question="How can I contribute?"
+          answer="You can leave your own course evaluations on a course page when
+        pressing the Review button, and it will take you to a page where
+        you can fill out a simple questionnaire. Sign ups are not
+        required!"
+        />
+        <QA
+          question="Why don't I see my school?"
+          answer="You can send a request to add your school here! Your request may
+        take 2 or more weeks to be processed."
+        />
       </div>
     </div>
   );
