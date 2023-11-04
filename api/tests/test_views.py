@@ -2,6 +2,7 @@ from rest_framework.test import APITestCase
 from django.urls import reverse
 from rest_framework import status
 from school.models import School
+from review.models import Review
 
 
 class TestSchoolAIPView(APITestCase):
@@ -163,6 +164,38 @@ class TestReviewAPIView(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertGreaterEqual(len(response.data), 1)
 
+    def test_get_reviews_by_school_short_name(self):
+        # Creating multiple reviews for the school
+        for i in range(5):
+            Review.objects.create(
+                school=self.school,
+                review_text=f"This is review number {i}",
+                term="Fall",
+                grade_received="A",
+                delivery_method="In Person",
+                helpful_count=i
+            )
+
+        # Checking if the reviews were created successfully
+        self.assertEqual(Review.objects.filter(school=self.school).count(), 5)
+
+        # Testing the existing reviews for a school with the given short_name.
+        response = self.client.get(reverse('school_reviews', kwargs={
+                                   'short_name': self.school.short_name}))
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        self.assertEqual(len(response.data['data']), 5)
+
+        for i, review_data in enumerate(response.data['data']):
+            self.assertIn(
+                f"This is review number {i}", review_data['review_text'])
+
+        # Checking GET request with an ID that doesn't exist to make sure it returns a 404
+        invalid_short_name = 'RS'
+        response = self.client.get(reverse('school_reviews', kwargs={
+                                   'short_name': invalid_short_name}))
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
     def test_should_return_one_review(self):
         test_data = {
             "school": self.school.id,
@@ -220,7 +253,7 @@ class TestReviewAPIView(APITestCase):
             "helpful_count": 20
         }
         response = self.client.put(
-                reverse('review_detail', kwargs={'review_id': review_id}), update_data, format='json')
+            reverse('review_detail', kwargs={'review_id': review_id}), update_data, format='json')
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(
@@ -231,6 +264,21 @@ class TestReviewAPIView(APITestCase):
         response = self.client.put(
             reverse('review_detail', kwargs={'review_id': non_existent_id}), update_data, format='json')
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+        # testing invalid data
+        invalid_update_data = {
+            "school": self.school.id,
+            "review_text": "This is a sample update review",
+            "term": "Invalid Term",
+            "grade_received": "B",
+            "delivery_method": "Online",
+            "helpful_count": 20
+        }
+        response = self.client.put(
+            reverse('review_detail', kwargs={'review_id': review_id}), invalid_update_data, format='json')
+
+        # 400 BAD REQUEST for invalid data
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_should_delete_review(self):
         test_data = {
@@ -258,3 +306,10 @@ class TestReviewAPIView(APITestCase):
         get_response = self.client.get(
             reverse('review_detail', kwargs={'review_id': review_id}))
         self.assertEqual(get_response.status_code, status.HTTP_404_NOT_FOUND)
+
+        # Delete with a non-existent review UUID
+        non_existent_id = '00000000-0000-0000-0000-000000000000'
+        response_non_existent = self.client.delete(
+            reverse('review_detail', kwargs={'review_id': non_existent_id}))
+        self.assertEqual(response_non_existent.status_code,
+                         status.HTTP_404_NOT_FOUND)
