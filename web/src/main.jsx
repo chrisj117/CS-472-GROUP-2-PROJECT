@@ -21,6 +21,12 @@ const router = createBrowserRouter([
       { index: true, element: <Home /> },
       { path: 'about', element: <About /> },
       { path: 'request-school', element: <RequestSchool /> },
+      // TEMPORARY: Review page quick access
+      {
+        path: 'review',
+        element: <Review />,
+      },
+      // TEMPORARY: Review page quick access
       {
         path: 'schools/:schoolId',
         element: <School />,
