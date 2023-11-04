@@ -4,10 +4,10 @@ const CourseCard = () => {
   return (
     <div className="border-2 p-4 rounded-md">
       <h4 className="font-bold text-lg">CS 301</h4>
-      <p>
+      <div>
         Overall rating:
-        <SquareRating />
-      </p>
+        <SquareRating rating={4} />
+      </div>
     </div>
   );
 };
