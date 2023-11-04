@@ -32,7 +32,7 @@ const Searchbar = ({ searchingSchools, searchingCourses }) => {
         `Error: You cannot search for schools and courses at the same time!`
       );
     }
-  }, []);
+  }, [searchingCourses, searchingSchools]);
 
   const loadOptions = (searchValue, callback) => {
     setTimeout(() => {
