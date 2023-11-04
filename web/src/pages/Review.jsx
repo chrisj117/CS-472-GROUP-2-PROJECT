@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import Searchbar from '../components/Searchbar';
 import RatingBar from '../components/RatingBar';
-import ReviewCard from '../components/ReviewCard';
+// import ReviewCard from '../components/ReviewCard';
 
 const Review = () => {
-  const [schoolName, setSchoolName] = useState(
-    'University of Nevada, Las Vegas'
-  );
-  const [schoolNameShort, setSchoolNameShort] = useState('UNLV');
+  // const [schoolName, setSchoolName] = useState(
+  //   'University of Nevada, Las Vegas'
+  // );
+  // const [schoolNameShort, setSchoolNameShort] = useState('UNLV');
 
   return (
     <div className="max-w-screen-2xl mx-auto">
@@ -15,7 +15,8 @@ const Review = () => {
         {/* Top of screen (below nav bar) */}
         <div className="flex flex-col gap-4 mb-12">
           <h2 className="font-bold text-3xl">
-            {schoolName} ({schoolNameShort})
+            {/* {schoolName} ({schoolNameShort}) */}
+            University of Nevada, Las Vegas (UNLV)
           </h2>
           <Searchbar
             searchingCourses={true}
