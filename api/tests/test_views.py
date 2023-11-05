@@ -125,7 +125,7 @@ class TestSchoolRequestAIPView(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
         self.assertEqual(len(response.data['data']), 0)
         # try to delete a school request that doesnt exist
-        response = self.client.delete(reverse('school_request', kwargs={'short_name':"TEST"}))
+        response = self.client.delete(reverse('school_request', kwargs={'school_name':"TEST"}))
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
         self.assertEqual(len(response.data['data']), 0)
 
