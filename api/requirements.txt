@@ -6,3 +6,4 @@ gunicorn
 django-cors-headers
 django-extensions
 django-filter
+drf_yasg
