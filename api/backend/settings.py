@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'rest_framework', # Django REST Framwork
     'corsheaders',
     'school',
+    'requestschool',
 ]
 
 CORS_ALLOWED_ORIGINS = [
