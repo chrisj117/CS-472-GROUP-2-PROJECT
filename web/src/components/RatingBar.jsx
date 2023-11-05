@@ -24,10 +24,10 @@ const RatingBar = ({ question, rating }) => {
         setSegmentColor3('bg-yellow-400');
         break;
       case 4:
-        setSegmentColor4('bg-green-400');
+        setSegmentColor4('bg-blue-400');
         break;
       case 5:
-        setSegmentColor5('bg-green-500');
+        setSegmentColor5('bg-blue-500');
         break;
     }
   }, [rating]);

@@ -1,9 +1,6 @@
 /* eslint-disable react/prop-types */
 
-import {
-  BsFillHandThumbsUpFill,
-  BsFillHandThumbsDownFill,
-} from 'react-icons/bs';
+import { FaThumbsUp, FaThumbsDown } from 'react-icons/fa';
 
 const ReviewCard = ({
   additionalComments,
@@ -20,47 +17,47 @@ const ReviewCard = ({
   return (
     <div className="flex">
       <div
-        className={`w-4 flex ${
-          recommended ? 'bg-blue-300' : 'bg-red-300'
+        className={`w-5 flex ${
+          recommended ? 'bg-blue-500' : 'bg-red-500'
         } rounded-l-lg`}
       ></div>
-      <div className="border-t-2 border-b-2 border-r-2 rounded-r-lg border-gray-200 px-4 py-2">
-        <div>
-          <span className="italic">
+      <div className="border-t-2 border-b-2 border-r-2 rounded-r-lg border-gray-200 px-4 py-4 flex flex-col gap-6 w-full">
+        <div className="flex items-center gap-1">
+          <span className="font-semibold text-lg">
             {recommended != null
               ? `${recommended ? 'Recommended' : 'Not Recommended'}`
               : 'N/A'}
           </span>
-          <span>
-            {' '}
-            | {professor ? professor : 'N/A'} | {term ? term : 'N/A'}{' '}
-            {year ? year : 'N/A'}
+          <span className="font-semibold">
+            — {professor ? professor : 'N/A'} / {term ? term : 'N/A'}{' '}
+            {year ? year : 'N/A'} / Grade: {grade ? grade : 'N/A'} / Delivery:{' '}
+            {delivery ? delivery : 'N/A'} / Textbook:{' '}
+            {textbook ? textbook : 'N/A'}
           </span>
         </div>
-        <div className="">
+
+        <div className="px-2">
           {additionalComments ? additionalComments : 'N/A'}
         </div>
 
-        <div className="">
-          Grade: {grade ? grade : 'N/A'} | Delivery:{' '}
-          {delivery ? delivery : 'N/A'} | Textbook:{' '}
-          {textbook ? textbook : 'N/A'} | {date}{' '}
-        </div>
-
-        <div className="flex gap-4 items-center">
-          <span>
-            {likes > 0
-              ? `{${likes} people found this review helpful}`
-              : 'Be the first to rate this review'}
-          </span>
-          <div className="flex gap-1">
-            <button className="bg-green-500 px-4 py-1.5 rounded-l-md text-white">
-              <BsFillHandThumbsUpFill />
-            </button>
-            <button className="bg-red-500 px-4 py-1.5 rounded-r-md text-white">
-              <BsFillHandThumbsDownFill />
-            </button>
+        <div className="flex justify-between items-center">
+          <div className="flex gap-4 items-center">
+            <span className="text-sm">
+              {likes > 0
+                ? `${likes} people found this review helpful`
+                : 'Be the first to rate this review'}
+            </span>
+            <div className="flex gap-0.5">
+              <button className="bg-gray-400 hover:bg-blue-500 px-4 py-1 rounded-l-md text-white">
+                <FaThumbsUp />
+              </button>
+              <button className="bg-gray-400 hover:bg-red-500 px-4 py-1 rounded-r-md text-white">
+                <FaThumbsDown />
+              </button>
+            </div>
           </div>
+
+          <span className="italic">{date ? date : 'N/A'}</span>
         </div>
       </div>
     </div>

@@ -20,10 +20,10 @@ const SquareRating = ({ rating }) => {
         setRatingColor('bg-yellow-400');
         break;
       case 4:
-        setRatingColor('bg-green-400');
+        setRatingColor('bg-blue-400');
         break;
       case 5:
-        setRatingColor('bg-green-500');
+        setRatingColor('bg-blue-500');
         break;
     }
   }, [rating]);

@@ -65,63 +65,114 @@ const Review = () => {
         </a>
       </div>
 
-      <h3 className="font-semibold text-2xl max-w-screen-xl w-full mx-auto mb-4">
-        Ratings Summary
-      </h3>
-      <div className="flex justify-between px-16 w-full max-w-screen-xl mx-auto mb-10 border-b-2 border-gray-100 pb-12">
-        <div className="flex flex-col gap-5">
-          <RatingBar question="The course as a whole was:" rating={2} />
-          <RatingBar question="The course content was:" rating={3} />
-          <RatingBar
-            question="The instructor's contribution to the course was:"
-            rating={2}
-          />
-          <RatingBar question="Course organization was:" rating={1} />
-          <RatingBar question="Explanations by instructor were:" rating={5} />
-          <RatingBar
-            question="Instructor's interest in student's progress was:"
-            rating={4}
-          />
-        </div>
-        <div className="flex flex-col gap-5">
-          <RatingBar question="Amount of assigned work was:" rating={5} />
-          <RatingBar
-            question="Clarity of student requirements was:"
-            rating={4}
-          />
-          <RatingBar question="Use of class time was:" rating={2} />
-          <RatingBar
-            question="Student's confidence in instructor's knowledge was:"
-            rating={3}
-          />
-          <RatingBar
-            question="Quality of questions or problems raised by the instructor was:"
-            rating={3}
-          />
-          <RatingBar
-            question="Instructor's interest in student's progress was:"
-            rating={5}
-          />
+      <div className="w-full max-w-screen-xl mx-auto mb-10 border-b-2 border-gray-100 pb-12">
+        <h3 className="font-semibold text-2xl max-w-screen-xl w-full mx-auto mb-4">
+          Ratings Summary
+        </h3>
+        <div className="flex justify-between">
+          <div className="flex flex-col gap-5">
+            <RatingBar question="The course as a whole was:" rating={2} />
+            <RatingBar question="The course content was:" rating={3} />
+            <RatingBar
+              question="The instructor's contribution to the course was:"
+              rating={2}
+            />
+            <RatingBar question="Course organization was:" rating={1} />
+            <RatingBar question="Explanations by instructor were:" rating={5} />
+            <RatingBar
+              question="Instructor's interest in student's progress was:"
+              rating={4}
+            />
+          </div>
+          <div className="flex flex-col gap-5">
+            <RatingBar question="Amount of assigned work was:" rating={5} />
+            <RatingBar
+              question="Clarity of student requirements was:"
+              rating={4}
+            />
+            <RatingBar question="Use of class time was:" rating={2} />
+            <RatingBar
+              question="Student's confidence in instructor's knowledge was:"
+              rating={3}
+            />
+            <RatingBar
+              question="Quality of questions or problems raised by the instructor was:"
+              rating={3}
+            />
+            <RatingBar
+              question="Instructor's interest in student's progress was:"
+              rating={5}
+            />
+          </div>
         </div>
       </div>
 
-      <h3 className="font-semibold text-2xl max-w-screen-xl w-full mx-auto mb-4">
-        Written Reviews (20)
-      </h3>
-      <div className="flex max-w-screen-xl mx-auto w-full pb-12 mb-10 border-b-2 border-gray-100">
-        <ReviewCard />
-      </div>
+      <div className="pb-12 mb-10 border-b-2 border-gray-100 max-w-screen-xl mx-auto w-full">
+        <h3 className="font-semibold text-2xl mb-4">Written Reviews (4)</h3>
+        <div className="flex flex-col gap-4 ">
+          <ReviewCard
+            additionalComments="Lorem ipsum dolor sit amet consectetur adipisicing elit. Vero cumque quaerat consequatur cum obcaecati molestias praesentium, repellendus, consequuntur corporis dolorem aut ratione dolores ab nostrum maiores?"
+            recommended={true}
+            date="November 5th, 2023"
+            grade="B"
+            delivery="In-Person"
+            textbook="No"
+            likes={1}
+            professor="Dr. Professor"
+            term="Fall"
+            year="2023"
+          />
 
-      <h3
-        className="font-semibold text-2xl max-w-screen-xl w-full mx-auto mb-4"
-        id="review"
-      >
-        Leave a Review
-      </h3>
+          <ReviewCard
+            additionalComments="Lorem ipsum dolor sit amet consectetur adipisicing elit. Vero cumque quaerat consequatur cum obcaecati molestias praesentium, repellendus, consequuntur corporis delectus velit eos nulla dolorem aut ratione dolores ab nostrum maiores?"
+            recommended={true}
+            date="November 5th, 2023"
+            grade="B"
+            delivery="In-Person"
+            textbook="No"
+            likes={1}
+            professor="Dr. Professor"
+            term="Fall"
+            year="2023"
+          />
+
+          <ReviewCard
+            additionalComments="Vero cumque quaerat consequatur cum obcaecati molestias praesentium, repellendus, consequuntur corporis delectus velit eos nulla dolorem aut ratione dolores ab nostrum maiores?"
+            recommended={true}
+            date="November 5th, 2023"
+            grade="B"
+            delivery="In-Person"
+            textbook="No"
+            likes={1}
+            professor="Dr. Professor"
+            term="Fall"
+            year="2023"
+          />
+
+          <ReviewCard
+            additionalComments="Lorem ipsum dolor sit amet consectetur adipisicing elit."
+            recommended={false}
+            date="November 5th, 2023"
+            grade="B"
+            delivery="In-Person"
+            textbook="No"
+            likes={1}
+            professor="Dr. Professor"
+            term="Fall"
+            year="2023"
+          />
+        </div>
+      </div>
 
       {/* Additional comment box + post button */}
       {/* NOTE: for now, this lives on Review.jsx, but this will be moved to the "writing review page" */}
-      <div className="flex justify-center w-full pb-40">
+      <div className="max-w-screen-xl mx-auto w-full pb-40">
+        <h3
+          className="font-semibold text-2xl max-w-screen-xl w-full mx-auto mb-4"
+          id="review"
+        >
+          Leave a Review
+        </h3>
         <div>
           <textarea
             placeholder="Add additional comments..."
