@@ -108,6 +108,7 @@ class TestSchoolAIPView(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
         self.assertEqual(len(response.data['data']), 0)
 
+
 # SCHOOL REQUEST TESTS
 class TestSchoolRequestAIPView(APITestCase):
     # should delete a school request
