@@ -27,7 +27,7 @@ const RequestSchool = () => {
               If you can&apos;t find your institution above, submit your
               school&apos;s information below!
             </p>
-            <label className="flex flex-col gap-1">
+            <label className="flex flex-col gap-1 text-lg">
               Enter School Name
               <input
                 type="text"
@@ -38,7 +38,7 @@ const RequestSchool = () => {
           </div>
 
           <div className="mb-4">
-            <label className="flex flex-col gap-1">
+            <label className="flex flex-col gap-1 text-lg">
               Enter School Address
               <input
                 type="text"

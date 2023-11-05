@@ -3,7 +3,7 @@ import QA from '../components/QA';
 
 const Home = () => {
   return (
-    <div className="flex flex-col justify-evenly h-[calc(100vh-89px)] max-w-screen-xl mx-auto">
+    <div className="flex flex-col justify-evenly h-[calc(100vh-94px)] max-w-screen-xl mx-auto">
       {/* Search bar */}
       <div className="flex-1 flex flex-col w-full justify-center items-center gap-4 ">
         <p className="text-3xl font-bold">
@@ -18,7 +18,7 @@ const Home = () => {
       </div>
 
       {/* Bottom of page: FAQ section */}
-      <div className="w-full justify-center transition-all mx-auto mb-8">
+      <div className="w-full justify-center transition-all mx-auto mb-12">
         <h1 className="text-center text-2xl no-underline text-grey-darkest hover:text-blue-dark mb-8 font-semibold">
           Frequently Asked Questions
         </h1>

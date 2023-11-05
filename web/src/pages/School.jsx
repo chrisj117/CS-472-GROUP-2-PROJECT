@@ -6,19 +6,16 @@ const School = () => {
   const schoolNameShort = 'UNLV';
 
   return (
-    <section className="max-w-screen-2xl mx-auto flex flex-col gap-8 mt-8">
+    <section className="max-w-screen-xl mx-auto flex flex-col gap-4 mt-8">
       <h2 className="font-bold text-3xl">
         {schoolName} ({schoolNameShort})
       </h2>
-      <div className="flex gap-4 items-center justify-left mb-8">
-        <h3 className="text-xl">Find your course:</h3>
-        <Searchbar
-          searchingSchools={false}
-          searchingCourses={true}
-          searchPlaceholder="Search for a course"
-          className="flex-1"
-        />
-      </div>
+      <Searchbar
+        searchingSchools={false}
+        searchingCourses={true}
+        searchPlaceholder="Search for a course"
+        className="flex-1 mb-8"
+      />
 
       <div className="">
         <h3 className="font-bold text-2xl mb-4 px-32">Popular Courses:</h3>
