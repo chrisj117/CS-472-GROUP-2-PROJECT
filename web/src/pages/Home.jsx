@@ -3,10 +3,12 @@ import QA from '../components/QA';
 
 const Home = () => {
   return (
-    <div className="flex flex-col justify-evenly h-[calc(100vh-89px)]">
+    <div className="flex flex-col justify-evenly h-[calc(100vh-89px)] max-w-screen-xl mx-auto">
       {/* Search bar */}
-      <div className="flex-1 mx-auto flex flex-col max-w-screen-lg w-full justify-center items-center gap-4 ">
-        <p className="text-xl">Find your school below to get started!</p>
+      <div className="flex-1 flex flex-col w-full justify-center items-center gap-4 ">
+        <p className="text-2xl font-semibold">
+          Find your school below to get started!
+        </p>
         <Searchbar
           searchingSchools={true}
           searchingCourses={false}
@@ -16,12 +18,12 @@ const Home = () => {
       </div>
 
       {/* Bottom of page: FAQ section */}
-      <div className="max-w-screen-lg w-full justify-center transition-all mx-auto">
-        <h1 className="text-center py-4 text-2xl no-underline text-grey-darkest hover:text-blue-dark">
+      <div className="w-full justify-center transition-all mx-auto mb-8">
+        <h1 className="text-center text-2xl no-underline text-grey-darkest hover:text-blue-dark mb-8 font-semibold">
           Frequently Asked Questions
         </h1>
         {/* Question/Answer Components */}
-        <div className="flex-end">
+        <div className="flex flex-col gap-4">
           <QA
             question="Why are evaluations important?"
             answer="Evaluations provide a detailed review of a course that covers
