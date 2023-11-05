@@ -1,32 +1,25 @@
 import Searchbar from '../components/Searchbar';
 import QA from '../components/QA';
+import { useState } from 'react';
 
 const Home = () => {
+  const [openedAccordion, setOpenedAccordion] = useState(0);
+
   return (
-    <div className="flex flex-col h-screen justify-between">
-      {/* Middle of page: "Search for your school" prompt and search bar */}
-      <div className="flex justify-center py-12 h-10 mb-auto">
-        <h1 className="text-xl no-underline text-grey-darkest hover:text-blue-dark">
-          Search for your school below to get started!
-        </h1>
-      </div>
+    <div className="flex flex-col h-full justify-evenly h-screen">
       {/* Search bar */}
-      <div className="flex-1 mx-60">
-        <div className="relative items-center w-full h-12 rounded-lg focus-within:shadow-lg bg-none">
-          <Searchbar searchingSchools={true} searchingCourses={false} />
-          {/* <input
-        <div className="relative items-center w-full h-12 rounded-lg focus-within:shadow-lg bg-none overflow-hidden">
-          <input
-            className="peer px-3 h-full w-full outline-none text-sm text-gray-900 bg-gray-300"
-            type="text"
-            id="search"
-            placeholder="Enter school"
-          /> */}
-        </div>
+      <div className="flex-1 mx-auto flex flex-col max-w-screen-lg w-full justify-center items-center gap-4 ">
+        <p className="text-xl">Find your school below to get started!</p>
+        <Searchbar
+          searchingSchools={true}
+          searchingCourses={false}
+          className="w-full"
+          searchPlaceholder="Ex: University of Nevada, Las Vegas / UNLV"
+        />
       </div>
 
       {/* Bottom of page: FAQ section */}
-      <div className="h-auto px-20 py-12 justify-center transition-all">
+      <div className="max-w-screen-lg w-full justify-center transition-all mx-auto">
         <h1 className="text-center py-4 text-2xl no-underline text-grey-darkest hover:text-blue-dark">
           Frequently Asked Questions
         </h1>
@@ -36,6 +29,7 @@ const Home = () => {
           answer="Evaluations provide a detailed review of a course that covers
               almost every aspect of the class, including workload, professors,
               textbooks, and more!"
+          opened={openedAccordion == 1 ? true : false}
         />
         <QA
           question="How can I contribute?"
@@ -43,11 +37,13 @@ const Home = () => {
         pressing the Review button, and it will take you to a page where
         you can fill out a simple questionnaire. Sign ups are not
         required!"
+          opened={openedAccordion == 2 ? true : false}
         />
         <QA
           question="Why don't I see my school?"
           answer="You can send a request to add your school here! Your request may
         take 2 or more weeks to be processed."
+          opened={openedAccordion == 3 ? true : false}
         />
       </div>
     </div>
