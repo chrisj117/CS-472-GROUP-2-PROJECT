@@ -1,33 +1,30 @@
-import { Link } from "react-router-dom";
+import { Link } from 'react-router-dom';
+import { BsFillPencilFill } from 'react-icons/bs';
 
 const Navbar = () => {
   return (
-    <header className="bg-white text-black p-4 mt-2 flex justify-between items-center">
+    <header className="bg-white text-black py-6 px-10 flex justify-between items-center">
       {/* Logo */}
-      <div className="text-4xl font-extrabold">
-        <div className="ml-4">
-          <Link to="/">
-            <span className="text-black">MyCourse</span>
-            <span className="text-blue-600">Evaluation</span>
-          </Link>
+      <Link to="/" className="flex gap-1 items-center">
+        <div>
+          <span className="text-black text-4xl font-extrabold">MyCourse</span>
+          <span className="text-blue-600 text-4xl font-extrabold">
+            Evaluation
+          </span>
         </div>
-      </div>
+        <BsFillPencilFill fontSize={24} />
+      </Link>
       {/* Top Right Corner */}
-      <div className="flex space-x-2 items-center mr-8">
+      <div className="flex gap-4 items-center">
         <button className="bg-black text-white p-2 rounded hover:bg-gray-800">
           Light Mode
         </button>
-        <div className="flex space-x-4">
-          <Link to="/about" className="text-black hover:underline">
-            About
-          </Link>
-          <Link
-            to="/request-school"
-            className="text-black hover:underline mr-2"
-          >
-            Request a School
-          </Link>
-        </div>
+        <Link to="/about" className="text-black hover:underline">
+          About
+        </Link>
+        <Link to="/request-school" className="text-black hover:underline">
+          Request School
+        </Link>
       </div>
     </header>
   );

@@ -1,12 +1,9 @@
 import Searchbar from '../components/Searchbar';
 import QA from '../components/QA';
-import { useState } from 'react';
 
 const Home = () => {
-  const [openedAccordion, setOpenedAccordion] = useState(0);
-
   return (
-    <div className="flex flex-col h-full justify-evenly h-screen">
+    <div className="flex flex-col justify-evenly h-[calc(100vh-89px)]">
       {/* Search bar */}
       <div className="flex-1 mx-auto flex flex-col max-w-screen-lg w-full justify-center items-center gap-4 ">
         <p className="text-xl">Find your school below to get started!</p>
@@ -24,27 +21,26 @@ const Home = () => {
           Frequently Asked Questions
         </h1>
         {/* Question/Answer Components */}
-        <QA
-          question="Why are evaluations important?"
-          answer="Evaluations provide a detailed review of a course that covers
+        <div className="flex-end">
+          <QA
+            question="Why are evaluations important?"
+            answer="Evaluations provide a detailed review of a course that covers
               almost every aspect of the class, including workload, professors,
               textbooks, and more!"
-          opened={openedAccordion == 1 ? true : false}
-        />
-        <QA
-          question="How can I contribute?"
-          answer="You can leave your own course evaluations on a course page when
+          />
+          <QA
+            question="How can I contribute?"
+            answer="You can leave your own course evaluations on a course page when
         pressing the Review button, and it will take you to a page where
         you can fill out a simple questionnaire. Sign ups are not
         required!"
-          opened={openedAccordion == 2 ? true : false}
-        />
-        <QA
-          question="Why don't I see my school?"
-          answer="You can send a request to add your school here! Your request may
+          />
+          <QA
+            question="Why don't I see my school?"
+            answer="You can send a request to add your school here! Your request may
         take 2 or more weeks to be processed."
-          opened={openedAccordion == 3 ? true : false}
-        />
+          />
+        </div>
       </div>
     </div>
   );
