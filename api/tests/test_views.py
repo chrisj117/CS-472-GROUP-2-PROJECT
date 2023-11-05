@@ -108,8 +108,8 @@ class TestSchoolAIPView(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
         self.assertEqual(len(response.data['data']), 0)
 
-    # SCHOOL REQUEST TESTS
-    
+# SCHOOL REQUEST TESTS
+class TestSchoolRequestAIPView(APITestCase):
     # should delete a school request
     def test_should_delete_school_request(self):
         test_data = {
@@ -117,21 +117,21 @@ class TestSchoolAIPView(APITestCase):
             "website" : "https://www.test-university.com"
         }
         # create school request
-        response = self.client.post(reverse('schoolrequest'), test_data)
+        response = self.client.post(reverse('school_requests'), test_data)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         # delete it
-        response = self.client.delete(reverse('schoolrequest', kwargs={'school_name':"TEST_U"}))
+        response = self.client.delete(reverse('school_request', kwargs={'school_name':"TEST_U"}))
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
         self.assertEqual(len(response.data['data']), 0)
         # try to delete a school request that doesnt exist
-        response = self.client.delete(reverse('schoolrequest', kwargs={'short_name':"TEST"}))
+        response = self.client.delete(reverse('school_request', kwargs={'short_name':"TEST"}))
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
         self.assertEqual(len(response.data['data']), 0)
 
     # should get all school requests
     def test_should_get_all_school_requests(self):
 
-        response = self.client.get(reverse('schoolrequest'))
+        response = self.client.get(reverse('school_requests'))
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertNotEqual(len(response.data), 0)
         self.assertIsInstance(response.data['data'], list)
@@ -143,13 +143,13 @@ class TestSchoolAIPView(APITestCase):
             "website" : "https://www.test-university.com"
         }
 
-        response = self.client.post(reverse('schoolrequest'), test_data)
+        response = self.client.post(reverse('school_requests'), test_data)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        response = self.client.get(reverse('schoolrequest', kwargs={'school_name':"TEST_U"}))
+        response = self.client.get(reverse('school_request', kwargs={'school_name':"TEST_U"}))
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data['data']['school_name'],'TEST_U')
         # Attempt to get a school that isnt in database
-        response = self.client.get(reverse('schoolrequest', kwargs={'school_name':"NOT_A_UNIVERSITY"}))
+        response = self.client.get(reverse('school_request', kwargs={'school_name':"NOT_A_UNIVERSITY"}))
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
         self.assertEqual(len(response.data['data']), 0)
 
@@ -164,8 +164,8 @@ class TestSchoolAIPView(APITestCase):
         }
 
         # Make sure a created request returns a created code
-        response = self.client.post(reverse('schoolrequest'), test_data)
+        response = self.client.post(reverse('school_requests'), test_data)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         # Make sure a bad request returns a bad request code
-        response = self.client.post(reverse('schoolrequest'), test_data_with_missing_required_field)
+        response = self.client.post(reverse('school_requests'), test_data_with_missing_required_field)
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)

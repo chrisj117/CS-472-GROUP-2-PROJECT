@@ -20,6 +20,6 @@ urlpatterns += [
     path('admin/', admin.site.urls),
     path(f'{base_url}/school/', school_views.SchoolAPIView.as_view(), name='schools'),
     path(f'{base_url}/school/<str:short_name>/', school_views.SchoolAPIView.as_view(), name='school'),
-    path(f'{base_url}/request-school/', request_school_views.RequestSchoolAPIView.as_view(), name='schoolrequests'),
-    path(f'{base_url}/request-school/<str:school_name>/', request_school_views.RequestSchoolAPIView.as_view(), name='schoolrequest')
+    path(f'{base_url}/request-school/', request_school_views.RequestSchoolAPIView.as_view(), name='school_requests'),
+    path(f'{base_url}/request-school/<str:school_name>/', request_school_views.RequestSchoolAPIView.as_view(), name='school_request')
 ]
