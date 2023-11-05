@@ -1,7 +1,6 @@
 // import { useState } from 'react';
 import Searchbar from '../components/Searchbar';
 import RatingBar from '../components/RatingBar';
-import { Link } from 'react-router-dom';
 import { BsFillPencilFill } from 'react-icons/bs';
 import ReviewCard from '../components/ReviewCard';
 // import ReviewCard from '../components/ReviewCard';
@@ -58,12 +57,12 @@ const Review = () => {
           </h2>
         </div>
 
-        <Link
-          to="#review"
+        <a
+          href="#review"
           className="flex gap-2 items-center rounded-lg bg-blue-600 hover:bg-blue-700 px-6 py-3 text-md font-medium text-white transition focus:outline-none focus:ring"
         >
           <span>Review</span> <BsFillPencilFill />
-        </Link>
+        </a>
       </div>
 
       <h3 className="font-semibold text-2xl max-w-screen-xl w-full mx-auto mb-4">
@@ -109,11 +108,14 @@ const Review = () => {
       <h3 className="font-semibold text-2xl max-w-screen-xl w-full mx-auto mb-4">
         Written Reviews (20)
       </h3>
-      <div className="max-w-screen-xl mx-auto w-full pb-12 mb-10 border-b-2 border-gray-100">
+      <div className="flex max-w-screen-xl mx-auto w-full pb-12 mb-10 border-b-2 border-gray-100">
         <ReviewCard />
       </div>
 
-      <h3 className="font-semibold text-2xl max-w-screen-xl w-full mx-auto mb-4">
+      <h3
+        className="font-semibold text-2xl max-w-screen-xl w-full mx-auto mb-4"
+        id="review"
+      >
         Leave a Review
       </h3>
 

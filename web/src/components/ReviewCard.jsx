@@ -13,7 +13,6 @@ const ReviewCard = ({
   delivery,
   textbook,
   likes,
-  dislikes,
   professor,
   term,
   year,
@@ -28,16 +27,25 @@ const ReviewCard = ({
       <div className="border-t-2 border-b-2 border-r-2 rounded-r-lg border-gray-200 px-4 py-2">
         <div>
           <span className="italic">
-            {recommended ? 'Recommended' : 'Not Recommended'}
+            {recommended != null
+              ? `${recommended ? 'Recommended' : 'Not Recommended'}`
+              : 'N/A'}
           </span>
           <span>
             {' '}
-            | {professor} | {term} {year}
+            | {professor ? professor : 'N/A'} | {term ? term : 'N/A'}{' '}
+            {year ? year : 'N/A'}
           </span>
         </div>
-        <div className="">{additionalComments}</div>
+        <div className="">
+          {additionalComments ? additionalComments : 'N/A'}
+        </div>
 
-        <div></div>
+        <div className="">
+          Grade: {grade ? grade : 'N/A'} | Delivery:{' '}
+          {delivery ? delivery : 'N/A'} | Textbook:{' '}
+          {textbook ? textbook : 'N/A'} | {date}{' '}
+        </div>
 
         <div className="flex gap-4 items-center">
           <span>
