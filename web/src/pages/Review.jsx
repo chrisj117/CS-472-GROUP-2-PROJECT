@@ -178,49 +178,100 @@ const Review = () => {
 
       {/* Additional comment box + post button */}
       {/* NOTE: for now, this lives on Review.jsx, but this will be moved to the "writing review page" */}
-      <div className="max-w-screen-xl mx-auto w-full pb-40">
+      <div className="max-w-screen-xl mx-auto w-full pb-32">
         <h3
           className="font-semibold text-2xl max-w-screen-xl w-full mx-auto mb-4"
           id="evaluation"
         >
           Leave an Evaluation
         </h3>
-        <div className="max-w-screen-lg mx-auto flex flex-col gap-16 border-2 border-gray-200 rounded-xl px-10 py-8">
+        <div className="max-w-screen-xl mx-auto flex flex-col gap-16 border-2 border-gray-200 rounded-xl px-16 py-8">
           <div>
             <h4 className="font-semibold text-xl mb-4">Teaching Approaches</h4>
             <div className="flex flex-col gap-4">
-              <RatingBar question="The course as a whole was:" rating={3} />
-              <RatingBar question="The course content was:" rating={3} />
+              <RatingBar
+                question="The course as a whole was:"
+                rating={3}
+                customWidth="flex-1"
+                customHeight="h-5"
+                className="max-w-xl"
+              />
+              <RatingBar
+                question="The course content was:"
+                rating={3}
+                customWidth="flex-1"
+                customHeight="h-5"
+                className="max-w-xl"
+              />
               <RatingBar
                 question="The instructor's contribution to the course was:"
                 rating={3}
+                customWidth="flex-1"
+                customHeight="h-5"
+                className="max-w-xl"
               />
-              <RatingBar question="Course organization was:" rating={3} />
+              <RatingBar
+                question="Course organization was:"
+                rating={3}
+                customWidth="flex-1"
+                customHeight="h-5"
+                className="max-w-xl"
+              />
               <RatingBar
                 question="Explanations by instructor were:"
                 rating={3}
+                customWidth="flex-1"
+                customHeight="h-5"
+                className="max-w-xl"
               />
               <RatingBar
                 question="Instructor's interest in student's progress was:"
                 rating={3}
+                customWidth="flex-1"
+                customHeight="h-5"
+                className="max-w-xl"
               />
-              <RatingBar question="Amount of assigned work was:" rating={3} />
+              <RatingBar
+                question="Amount of assigned work was:"
+                rating={3}
+                customWidth="flex-1"
+                customHeight="h-5"
+                className="max-w-xl"
+              />
               <RatingBar
                 question="Clarity of student requirements was:"
                 rating={3}
+                customWidth="flex-1"
+                customHeight="h-5"
+                className="max-w-xl"
               />
-              <RatingBar question="Use of class time was:" rating={3} />
+              <RatingBar
+                question="Use of class time was:"
+                rating={3}
+                customWidth="flex-1"
+                customHeight="h-5"
+                className="max-w-xl"
+              />
               <RatingBar
                 question="Student's confidence in instructor's knowledge was:"
                 rating={3}
+                customWidth="flex-1"
+                customHeight="h-5"
+                className="max-w-xl"
               />
               <RatingBar
                 question="Quality of questions or problems raised by the instructor was:"
                 rating={3}
+                customWidth="flex-1"
+                customHeight="h-5"
+                className="max-w-xl"
               />
               <RatingBar
                 question="Instructor's interest in student's progress was:"
                 rating={3}
+                customWidth="flex-1"
+                customHeight="h-5"
+                className="max-w-xl"
               />
             </div>
           </div>

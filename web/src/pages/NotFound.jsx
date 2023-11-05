@@ -7,7 +7,7 @@ const NotFound = () => {
       <Navbar />
       <div className="flex flex-col h-[calc(100vh-94px)] items-center">
         <h2 className="mt-8 text-3xl font-bold text-center">404</h2>
-        <p className="text-center mt-64">
+        <p className="text-center mt-64 text-xl">
           The page you have requested cannot be found.
         </p>
         <div className="flex flex-col items-center w-screen">
