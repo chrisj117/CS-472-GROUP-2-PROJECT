@@ -22,10 +22,10 @@ const RequestSchool = () => {
           />
         </div>
         <div className="mb-4">
-          <label className="block mb-2">Enter School Address</label>
+          <label className="block mb-2">Enter School Website</label>
           <input 
             type="text" 
-            placeholder="Ex: 4505 S Maryland Pkwy, Las Vegas, NV 89154" 
+            placeholder="Ex: https://www.unlv.edu/" 
             className="p-2 w-full border-2 rounded"
           />
         </div>
