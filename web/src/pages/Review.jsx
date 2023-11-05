@@ -1,7 +1,11 @@
 // import { useState } from 'react';
 import Searchbar from '../components/Searchbar';
 import RatingBar from '../components/RatingBar';
-import { BsChevronDown, BsFillPencilFill } from 'react-icons/bs';
+import {
+  BsChevronDown,
+  BsFillEnvelopePaperFill,
+  BsFillPencilFill,
+} from 'react-icons/bs';
 import ReviewCard from '../components/ReviewCard';
 // import ReviewCard from '../components/ReviewCard';
 
@@ -181,7 +185,7 @@ const Review = () => {
         >
           Leave an Evaluation
         </h3>
-        <div className="max-w-screen-lg mx-auto flex flex-col gap-16 border-2 border-gray-200 rounded-xl px-8 py-4">
+        <div className="max-w-screen-lg mx-auto flex flex-col gap-16 border-2 border-gray-200 rounded-xl px-10 py-8">
           <div>
             <h4 className="font-semibold text-xl mb-4">Teaching Approaches</h4>
             <div className="flex flex-col gap-4">
@@ -343,8 +347,8 @@ const Review = () => {
               className="p-2 focus:outline-1 focus:outline-blue-500 border-[0.1px] resize-none h-[120px] border-[#9EA5B1] rounded-md w-full mb-4"
             ></textarea>
 
-            <button className="text-lg font-semibold bg-blue-500 hover:bg-blue-600 text-white py-2 rounded px-3 w-full">
-              Post Evaluation
+            <button className="text-lg font-semibold bg-blue-500 hover:bg-blue-600 text-white py-3 rounded-md px-3 w-full flex justify-center gap-4 items-center">
+              <span>Post Evaluation</span> <BsFillEnvelopePaperFill />
             </button>
           </div>
         </div>
