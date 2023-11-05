@@ -34,7 +34,7 @@ const RatingBar = ({ question, rating }) => {
 
   return (
     <div>
-      <p className="text-lg mb-[2px] font-medium">{question}</p>
+      <p className="mb-[2px]">{question}</p>
       <div className="flex gap-1">
         <div
           className={`w-16 h-3 text-white font-bold text-lg flex items-center justify-center rounded-l-md ${segmentColor1}`}

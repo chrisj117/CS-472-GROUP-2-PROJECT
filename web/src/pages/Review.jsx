@@ -69,10 +69,10 @@ const Review = () => {
       <h3 className="font-semibold text-2xl max-w-screen-xl w-full mx-auto mb-4">
         Ratings Summary
       </h3>
-      <div className="flex justify-between w-full max-w-screen-xl mx-auto mb-10 border-b-2 border-gray-100 pb-12">
+      <div className="flex justify-between px-16 w-full max-w-screen-xl mx-auto mb-10 border-b-2 border-gray-100 pb-12">
         <div className="flex flex-col gap-5">
           <RatingBar question="The course as a whole was:" rating={2} />
-          <RatingBar question="The course as a whole was:" rating={3} />
+          <RatingBar question="The course content was:" rating={3} />
           <RatingBar
             question="The instructor's contribution to the course was:"
             rating={2}
