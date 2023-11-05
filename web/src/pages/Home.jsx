@@ -6,8 +6,8 @@ const Home = () => {
     <div className="flex flex-col justify-evenly h-[calc(100vh-89px)] max-w-screen-xl mx-auto">
       {/* Search bar */}
       <div className="flex-1 flex flex-col w-full justify-center items-center gap-4 ">
-        <p className="text-2xl font-semibold">
-          Find your school below to get started!
+        <p className="text-3xl font-bold">
+          Find your school below to leave an evaluation!
         </p>
         <Searchbar
           searchingSchools={true}
