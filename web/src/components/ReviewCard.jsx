@@ -22,13 +22,13 @@ const ReviewCard = ({
         } rounded-l-lg`}
       ></div>
       <div className="border-t-2 border-b-2 border-r-2 rounded-r-lg border-gray-200 px-4 py-4 flex flex-col gap-6 w-full">
-        <div className="flex items-center gap-1">
-          <span className="font-semibold text-lg">
+        <div className="flex items-center gap-1 font-semibold">
+          <span className="text-lg">
             {recommended != null
               ? `${recommended ? 'Recommended' : 'Not Recommended'}`
               : 'N/A'}
           </span>
-          <span className="font-semibold">
+          <span>
             — {professor ? professor : 'N/A'} / {term ? term : 'N/A'}{' '}
             {year ? year : 'N/A'} / Grade: {grade ? grade : 'N/A'} / Delivery:{' '}
             {delivery ? delivery : 'N/A'} / Textbook:{' '}
@@ -40,12 +40,12 @@ const ReviewCard = ({
           {additionalComments ? additionalComments : 'N/A'}
         </div>
 
-        <div className="flex justify-between items-center">
+        <div className="flex justify-between items-center font-semibold">
           <div className="flex gap-4 items-center">
             <span className="text-sm">
               {likes > 0
-                ? `${likes} people found this review helpful`
-                : 'Be the first to rate this review'}
+                ? `${likes} people found this evaluation helpful`
+                : 'Be the first to rate this evaluation'}
             </span>
             <div className="flex gap-0.5">
               <button className="bg-gray-400 hover:bg-blue-500 px-4 py-1 rounded-l-md text-white">
