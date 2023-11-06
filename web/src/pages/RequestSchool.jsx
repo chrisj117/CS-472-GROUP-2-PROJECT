@@ -38,14 +38,12 @@ const RequestSchool = () => {
           </div>
 
           <div className="mb-4">
-            <label className="flex flex-col gap-1 text-lg">
-              Enter School Address
-              <input
-                type="text"
-                placeholder="Ex: 4505 S Maryland Pkwy, Las Vegas, NV 89154"
-                className="px-4 py-2 w-full border-2 rounded"
-              />
-            </label>
+            <label className="block mb-2">Enter School Website</label>
+            <input
+              type="text"
+              placeholder="Ex: https://www.unlv.edu/"
+              className="p-2 w-full border-2 rounded"
+            />
           </div>
         </div>
 
