@@ -1,5 +1,5 @@
-/* eslint-disable react-refresh/only-export-components */
 /* eslint-disable react/prop-types */
+/* eslint-disable react-refresh/only-export-components */
 const QA = ({ question, answer }) => {
   return (
     <button className="w-full border-b-2 border-gray-300 pb-6 text-left group focus:outline-none">

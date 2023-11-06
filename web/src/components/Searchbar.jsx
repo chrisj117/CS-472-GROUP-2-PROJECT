@@ -3,7 +3,12 @@ import AsyncSelect from 'react-select/async';
 import { useEffect, useState } from 'react';
 import api from '../utilities/schools';
 
-const Searchbar = ({ searchingSchools, searchingCourses }) => {
+const Searchbar = ({
+  searchingSchools,
+  searchingCourses,
+  searchPlaceholder,
+  className,
+}) => {
   const [schools, setSchools] = useState([]);
 
   useEffect(() => {
@@ -54,12 +59,15 @@ const Searchbar = ({ searchingSchools, searchingCourses }) => {
   };
 
   return (
-    <AsyncSelect
-      loadOptions={loadOptions}
-      cacheOptions
-      defaultOptions
-      onChange={handleChange}
-    />
+    <div className={className}>
+      <AsyncSelect
+        loadOptions={loadOptions}
+        cacheOptions
+        placeholder={searchPlaceholder}
+        defaultOptions
+        onChange={handleChange}
+      />
+    </div>
   );
 };
 export default Searchbar;
