@@ -8,12 +8,13 @@ from .models import School
 
 
 class SchoolAPIView(views.APIView):
-    """
-    Endpoints for creating and listing schools
-    """
+    
     serializer_class = SchoolSerializer
 
     def post(self, request):
+        """
+        Endpoint for creating a new school
+        """
         data = request.data
         serializer = self.serializer_class(data=data)
         if serializer.is_valid():
@@ -27,6 +28,9 @@ class SchoolAPIView(views.APIView):
         return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
     def get(self, request, short_name=None):
+        """
+        Endpoint for retrieving schools
+        """
         try:
             if short_name:
                 school_object = School.objects.get(short_name=short_name)
@@ -44,6 +48,9 @@ class SchoolAPIView(views.APIView):
 
     
     def put(self, request, short_name=None, format=None):
+        """
+        Endpoint for updating school
+        """
         try:
             school_object = School.objects.get(short_name=short_name)
             data = request.data
@@ -61,6 +68,9 @@ class SchoolAPIView(views.APIView):
             return Response({"message": "school not found!", "data":[]}, status=status.HTTP_404_NOT_FOUND)
     
     def delete(self, request, short_name=None, format=None):
+        """
+        Endpoint for deleting a school
+        """
         try:
             school_object = School.objects.get(short_name=short_name)
             school_object.delete()

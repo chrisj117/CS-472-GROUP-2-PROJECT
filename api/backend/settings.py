@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django_filters', #Used with DRF
     'rest_framework', # Django REST Framwork
     'corsheaders',
+    'drf_yasg', #Swagger UI docs
     'school',
     'review',
     'requestschool',

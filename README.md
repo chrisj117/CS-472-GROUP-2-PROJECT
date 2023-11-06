@@ -1,7 +1,7 @@
 # Course Evaluation App
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![ci-pipeline](https://github.com/chrisj117/CS-472-GROUP-2-PROJECT/actions/workflows/ci.yaml/badge.svg)](https://github.com/chrisj117/CS-472-GROUP-2-PROJECT/actions/workflows/ci.yaml)
-[![codecov](https://codecov.io/gh/chrisj117/CS-472-GROUP-2-PROJECT/graph/badge.svg?token=****)](https://codecov.io/gh/airqo-platform/AirQo-frontend)
+[![codecov](https://codecov.io/gh/chrisj117/CS-472-GROUP-2-PROJECT/graph/badge.svg?token=****)](https://codecov.io/gh/chrisj117/CS-472-GROUP-2-PROJECT)
 
 This repository contain source code and documentation for Group 2's CS 472 project. This project’s aim is to be a web application that serves as a hub for students to discuss courses. As of now, student feedback and information for courses are fragmented across various sites and amongst course catalogues. With this app, the main categorization for user posts would be the classes themselves. Main inputs will be comments about the course and rating scales, and users will navigate the website via sorting by schools and classes
 ## System Architecture
