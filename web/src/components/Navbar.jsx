@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { BsFillSunFill } from 'react-icons/bs';
+import { BsSun } from 'react-icons/bs';
 import { MdSchool } from 'react-icons/md';
 
 const Navbar = () => {
@@ -19,7 +19,7 @@ const Navbar = () => {
       <div className="flex gap-6 items-center">
         <button className="text-black px-4 py-2 rounded-lg hover:bg-gray-900 hover:text-white hover:border-gray-900 border-2 border-gray-300">
           <div className="flex gap-2 items-center">
-            <span className="">Light Mode</span> <BsFillSunFill fontSize={21} />
+            <span className="">Light Mode</span> <BsSun fontSize={21} />
           </div>
         </button>
         <Link to="/about" className="text-black hover:underline text-lg">
