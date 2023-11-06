@@ -315,6 +315,7 @@ class TestReviewAPIView(APITestCase):
         self.assertEqual(response_non_existent.status_code,
                          status.HTTP_404_NOT_FOUND)
 
+
 # SCHOOL REQUEST TESTS
 class TestSchoolRequestAIPView(APITestCase):
     # should delete a school request
