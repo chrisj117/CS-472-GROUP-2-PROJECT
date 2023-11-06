@@ -3,6 +3,7 @@ from django.urls import reverse
 from rest_framework import status
 from school.models import School
 from review.models import Review
+import uuid
 
 
 class TestSchoolAIPView(APITestCase):
@@ -145,14 +146,66 @@ class TestReviewAPIView(APITestCase):
         self.assertEqual(created_review_data.get('review_text'),
                          test_data['review_text'], response.data)
 
+        # Attempt to create a review with a non-UUID string for 'school' that should trigger the ValueError
+        response_non_uuid = self.client.post(
+            reverse('review_list'),
+            {
+                "school": "not-a-uuid",
+                "review_text": "Invalid school identifier.",
+                "term": "Fall",
+                "grade_received": "B+",
+                "delivery_method": "In Person",
+                "helpful_count": 10
+            },
+            format='json'
+        )
+        self.assertEqual(response_non_uuid.status_code, status.HTTP_404_NOT_FOUND)
+
+        # Attempt to create a review with a UUID that does not correspond to an existing school
+        response_invalid_uuid = self.client.post(
+            reverse('review_list'),
+            {
+                "school": uuid.uuid4(),  # Generates a valid UUID that does not exist in the database
+                "review_text": "Non-existent school UUID.",
+                "term": "Fall",
+                "grade_received": "B+",
+                "delivery_method": "In Person",
+                "helpful_count": 10
+            },
+            format='json'
+        )
+        self.assertEqual(response_invalid_uuid.status_code, status.HTTP_404_NOT_FOUND)
+
+        # Attempt to create a review with a school 'short_name' that does not exist
+        response_invalid_short_name = self.client.post(
+            reverse('review_list'),
+            {
+                "school": "invalid-short-name",
+                "review_text": "Non-existent school short name.",
+                "term": "Fall",
+                "grade_received": "B+",
+                "delivery_method": "In Person",
+                "helpful_count": 10
+            },
+            format='json'
+        )
+        self.assertEqual(response_invalid_short_name.status_code, status.HTTP_404_NOT_FOUND)
+
+        # Attempt to create a review with valid data but expect serializer to fail due to bad data (like missing fields)
+        response_bad_data = self.client.post(
+            reverse('review_list'),
+            {
+                "school": self.school.id,
+            },
+            format='json'
+        )
+        self.assertEqual(response_bad_data.status_code, status.HTTP_400_BAD_REQUEST)
+
         # print('Response Data:', response.data)
 
     def test_should_list_all_reviews(self):
         test_data = {
-            "school": {
-                "name": "Test School",
-                "short_name": "TS"
-            },
+            "school": self.school.id,
             "review_text": "This is a sample review.",
             "term": "Fall",
             "grade_received": "B+",
@@ -280,6 +333,37 @@ class TestReviewAPIView(APITestCase):
 
         # 400 BAD REQUEST for invalid data
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_should_not_update_review_with_invalid_school_id(self):
+        test_data = {
+            "school": self.school.id,
+            "review_text": "This is a review for an update test.",
+            "term": "Spring",
+            "grade_received": "B",
+            "delivery_method": "Online",
+            "helpful_count": 8
+        }
+        post_response = self.client.post(reverse('review_list'), test_data, format='json')
+        review_id = post_response.data['data']['id']
+
+        # update data with an invalid school identifier
+        invalid_school_identifier = "not-valid-uuid-or-shortname"
+        update_data = {
+            "school": invalid_school_identifier,
+            "review_text": "Attempt to update with invalid school identifier.",
+            "term": "Spring",
+            "grade_received": "B+",
+            "delivery_method": "Online",
+            "helpful_count": 10
+        }
+
+        # Send PUT request to update the review
+        response = self.client.put(
+            reverse('review_detail', kwargs={'review_id': review_id}), update_data, format='json')
+
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+        self.assertIn("School not found with the provided identifier.", response.data['error'])
+
 
     def test_should_delete_review(self):
         test_data = {
