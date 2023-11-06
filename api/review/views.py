@@ -3,6 +3,7 @@ from rest_framework.response import Response
 from review.models import Review
 from school.models import School
 from review.serializers import ReviewSerializer
+import uuid
 
 
 class ReviewAPIView(views.APIView):
@@ -14,6 +15,25 @@ class ReviewAPIView(views.APIView):
 
     def post(self, request):
         data = request.data
+
+        school_identifier = data.get('school', None)
+        if school_identifier:
+            try:
+                # Checking if valid UUID is provided
+                if uuid.UUID(school_identifier):
+                    school = School.objects.get(pk=school_identifier)
+            except (ValueError, School.DoesNotExist):
+                # Getting school from short_name if UUID is not valid.
+                school = School.objects.filter(short_name=school_identifier).first()
+                if not school:
+                    # Error response if no school object is found with the short_name or UUID
+                    return Response(
+                        {"error": "School not found with the provided identifier."},
+                        status=status.HTTP_404_NOT_FOUND
+                    )
+
+            data['school'] = school.pk
+
         serializer = self.serializer_class(data=data)
         if serializer.is_valid():
             serializer.save()
