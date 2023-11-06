@@ -2,11 +2,11 @@
 import { useEffect, useState } from 'react';
 
 const RatingBar = ({ question, rating }) => {
-  const [segmentColor1, setSegmentColor1] = useState('bg-gray-200');
-  const [segmentColor2, setSegmentColor2] = useState('bg-gray-200');
-  const [segmentColor3, setSegmentColor3] = useState('bg-gray-200');
-  const [segmentColor4, setSegmentColor4] = useState('bg-gray-200');
-  const [segmentColor5, setSegmentColor5] = useState('bg-gray-200');
+  const [segmentColor1, setSegmentColor1] = useState('bg-gray-300');
+  const [segmentColor2, setSegmentColor2] = useState('bg-gray-300');
+  const [segmentColor3, setSegmentColor3] = useState('bg-gray-300');
+  const [segmentColor4, setSegmentColor4] = useState('bg-gray-300');
+  const [segmentColor5, setSegmentColor5] = useState('bg-gray-300');
 
   if (rating < 1 || rating > 5) {
     console.log('Error: Rating does not fit range of 1-5');
@@ -34,7 +34,7 @@ const RatingBar = ({ question, rating }) => {
 
   return (
     <div>
-      <p className="text-lg mb-[2px]">{question}</p>
+      <p className="mb-[2px]">{question}</p>
       <div className="flex gap-1">
         <div
           className={`w-16 h-3 text-white font-bold text-lg flex items-center justify-center rounded-l-md ${segmentColor1}`}

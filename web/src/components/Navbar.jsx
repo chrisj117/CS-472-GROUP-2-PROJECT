@@ -1,33 +1,36 @@
-import { Link } from "react-router-dom";
+import { Link } from 'react-router-dom';
+import { BsFillSunFill } from 'react-icons/bs';
+import { MdSchool } from 'react-icons/md';
 
 const Navbar = () => {
   return (
-    <header className="bg-white text-black p-4 mt-2 flex justify-between items-center">
+    <header className="bg-white text-black py-6 px-10 flex justify-between items-center border-b-2 border-gray-200">
       {/* Logo */}
-      <div className="text-4xl font-extrabold">
-        <div className="ml-4">
-          <Link to="/">
-            <span className="text-black">MyCourse</span>
-            <span className="text-blue-600">Evaluation</span>
-          </Link>
+      <Link to="/" className="flex items-center">
+        <div>
+          <span className="text-black text-4xl font-extrabold">MyCourse</span>
+          <span className="text-blue-600 text-4xl font-extrabold">
+            Evaluation
+          </span>
         </div>
-      </div>
+        <MdSchool fontSize={36} />
+      </Link>
       {/* Top Right Corner */}
-      <div className="flex space-x-2 items-center mr-8">
-        <button className="bg-black text-white p-2 rounded hover:bg-gray-800">
-          Light Mode
+      <div className="flex gap-6 items-center">
+        <button className="text-black px-4 py-2 rounded-lg hover:bg-gray-900 hover:text-white hover:border-gray-900 border-2 border-gray-300">
+          <div className="flex gap-2 items-center">
+            <span className="">Light Mode</span> <BsFillSunFill fontSize={21} />
+          </div>
         </button>
-        <div className="flex space-x-4">
-          <Link to="/about" className="text-black hover:underline">
-            About
-          </Link>
-          <Link
-            to="/request-school"
-            className="text-black hover:underline mr-2"
-          >
-            Request a School
-          </Link>
-        </div>
+        <Link to="/about" className="text-black hover:underline text-lg">
+          About
+        </Link>
+        <Link
+          to="/request-school"
+          className="text-black hover:underline text-lg"
+        >
+          Request School
+        </Link>
       </div>
     </header>
   );
