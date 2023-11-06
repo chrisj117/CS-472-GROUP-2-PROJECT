@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'drf_yasg', #Swagger UI docs
     'school',
+    'requestschool',
 ]
 
 CORS_ALLOWED_ORIGINS = [

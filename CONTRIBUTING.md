@@ -60,7 +60,8 @@ When you're finished with the changes, create a pull request, also known as a PR
   Once you submit your PR, team members will review your proposal.
 - We may ask for changes to be made before a PR can be merged. You can apply suggested changes and/or make any other changes in your fork, then commit them to your branch.
 - As you update your PR and apply changes, mark each conversation as [resolved](https://docs.github.com/en/github/collaborating-with-issues-and-pull-requests/commenting-on-a-pull-request#resolving-conversations).
-- If you run into any merge conflict issues, checkout this [git tutorial](https://github.com/skills/resolve-merge-conflicts) to help you resolve merge conflicts and other issues.
+- If you run into any merge conflict issues, checkout this [git tutorial](https://github.com/skills/resolve-merge-conflicts) to help you resolve merge conflicts and other issues. 
+- IMPROTANT: Read our PR review guidelines [Here](docs/PR-CHECKLIST.md)
 
 ### Your PR is merged!
 

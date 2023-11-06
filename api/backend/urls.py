@@ -3,6 +3,7 @@ from django.contrib import admin
 from rest_framework import routers
 from rest_framework import permissions
 from school import views as school_views
+from requestschool import views as request_school_views
 from django.conf.urls import handler400, handler403, handler404, handler500
 
 from drf_yasg import openapi
@@ -32,8 +33,9 @@ urlpatterns += [
     path('admin/', admin.site.urls),
     path(f'{base_url}/school/', school_views.SchoolAPIView.as_view(), name='schools'),
     path(f'{base_url}/school/<str:short_name>/', school_views.SchoolAPIView.as_view(), name='school'),
-    # path('/swagger/schema', schema_view.with_ui('swagger', cache_timeout=0), name='swagger-schema'),
     path('swagger<format>/', schema_view.without_ui(cache_timeout=0), name='schema-json'),
    path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
    path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
+    path(f'{base_url}/request-school/', request_school_views.RequestSchoolAPIView.as_view(), name='school_requests'),
+    path(f'{base_url}/request-school/<str:school_name>/', request_school_views.RequestSchoolAPIView.as_view(), name='school_request')
 ]
