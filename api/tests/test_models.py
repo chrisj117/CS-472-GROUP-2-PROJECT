@@ -28,7 +28,10 @@ class TestModels(TestCase):
             term='Spring',
             grade_received='A',
             delivery_method='Online',
-            helpful_count=5
+            helpful_count=5,
+            year_taken=2023,
+            textbook_required=False,
+            recommended=True
         )
 
         self.assertTrue(Review.objects.filter(pk=review.pk).exists())

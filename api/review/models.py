@@ -1,6 +1,7 @@
 from utils.models import TrackingModel
 from django.db import models
 from school.models import School
+import datetime
 
 
 class Review(TrackingModel):
@@ -49,6 +50,13 @@ class Review(TrackingModel):
     delivery_method = models.CharField(max_length=10, choices=DELIVERY_CHOICES)
     # count of how many people found the review helpful
     helpful_count = models.IntegerField(default=0)
+
+    # year field with default value of current year
+    year_taken = models.IntegerField(default=datetime.datetime.now().year)
+
+    textbook_required = models.BooleanField(default=False)
+
+    recommended = models.BooleanField(default=True)
 
     class Meta:
         verbose_name_plural = "Reviews"
