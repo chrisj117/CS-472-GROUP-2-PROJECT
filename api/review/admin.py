@@ -12,6 +12,9 @@ class ReviewAdmin(admin.ModelAdmin):
         'grade_received',
         'delivery_method',
         'helpful_count',
+        'year_taken',
+        'textbook_required',
+        'recommended',
         'created_at',
         'updated_at'
     )
@@ -20,5 +23,8 @@ class ReviewAdmin(admin.ModelAdmin):
         'school',
         'term',
         'grade_received',
-        'delivery_method'
+        'delivery_method',
+        'year_taken',
+        'textbook_required',
+        'recommended'
     )
