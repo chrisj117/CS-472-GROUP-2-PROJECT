@@ -8,4 +8,4 @@ django-extensions
 django-filter
 drf_yasg
 djangorestframework-simplejwt
-flaker
+Faker
