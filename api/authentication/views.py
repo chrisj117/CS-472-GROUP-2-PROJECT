@@ -13,6 +13,7 @@ from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
 from .renderers import UserRender
 
+
 class RegisterView(generics.GenericAPIView):
 
     serializer_class = RegisterSerializer
