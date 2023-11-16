@@ -33,34 +33,45 @@ class RegisterView(generics.GenericAPIView):
         current_site = get_current_site(request).domain
         relative_link = reverse('email-verify')
         absurl = f'http://{current_site}{relative_link}?token={str(token)}'
-        email_body =f"""<tr> 
-                            <td
-                                style='color: #344054; font-size: 16px; font-family: Inter; font-weight: 400; line-height: 24px; word-wrap: break-word;'>
-                                Welcome to MyCourseEvaluation 🎉
-                                    <br />
-                                    Thanks for signing up; we can't wait for you to get started! Click the button to verify your email:
-                                    <br /><br />
-                                    <a href={absurl} target='_blank'>
-                                        <div
-                                            style='width: 20%; height: 100%; padding-left: 32px; padding-right: 32px; padding-top: 16px; padding-bottom: 16px; background: #135DFF; border-radius: 1px; justify-content: center; align-items: center; gap: 10px; display: inline-flex'>
-                                            <div
-                                                style='text-align: center; color: white; font-size: 16px; font-family: Inter; font-weight: 400; line-height: 24px; word-wrap: break-word'>
-                                                Verify Email</div>
-                                        </div>
-                                    </a>
-                                    <br /><br />
-                                    Trouble logging in? Paste this URL into your browser:
-                                    </br>
-                                    <a href={absurl} target='_blank'>{absurl}</a>
-                                    <br /><br />
-                                    <div
-                                        style='width: 100%; opacity: 0.60; color: #344054; font-size: 16px; font-family: Inter; font-weight: 400; line-height: 24px; word-wrap: break-word'>
-                                        You can set a permanent password anytime within your MyCourseEvaluation personal settings<br />Didn't make this
-                                        request? You can safely ignore and delete this email</div>
-                                    <br />
-                                    <br />
-                                </td>
-                            </tr>"""
+        email_body =f"""<center style='font-family:Arial, Helvetica, sans-serif;'>
+    <tr> 
+        <td
+            style='color: #344054; font-size: 16px; font-family:inherit; font-weight: 400; line-height: 24px; word-wrap: break-word;'>
+            <br>
+            <br>
+            <h2 style='color: #344054;'>Welcome to MyCourseEvaluation, Daniel</h2>
+                <br />
+                Your account is almost ready.
+                <br /><br />
+                <a href={absurl} target='_blank' style="text-decoration: none;">
+                    <div
+                        style='width: 20%; height: 100%; padding-left: 32px; padding-right: 32px; padding-top: 16px; padding-bottom: 16px; background: #135DFF; border-radius: 1px; justify-content: center; align-items: center; gap: 10px; display: inline-flex; border-radius: 5px 5px;'>
+                        <div
+                            style='text-align: center; color: white; font-size: 16px; font-weight: 400; line-height: 24px; word-wrap: break-word'>
+                            Activate your Account</div>
+                    </div>
+                </a>
+                <br />
+                <br />
+                You can also click or paste the following link into your browser:
+                <br />
+                <br />
+                <a href={absurl} target='_blank' style='text-decoration: none; font-size:11px; line-height: 12px;  color:dodgerblue'>{absurl}</a>
+                <br /><br />
+                <div
+                    style='width: 100%; opacity: 0.60; color: #344054; font-weight: 400; word-wrap: break-word'>
+                    If you did not request account creation on MyCourseEvaluation, ignore this email and account will not be created.
+                </div>
+                <br />
+                <br />
+                <hr style='border-width: 1px;' />
+                <div
+                    style='width: 100%; opacity: 0.60; color: #344054;font-size:12px; word-wrap: break-word'>
+                    Sent by MyCourseEvaluation System, CS472 Project, University of Nevada-Las Vegas. 
+                     Reply to this email to contact us. <a href="" style='text-decoration: none; font-size:12px; color:dodgerblue'>Unsubscribe</a></div>
+            </td>
+        </tr>
+    </center>"""
         
         # f'Hi {user.username} \n User the link below to verify your email. \n {absurl}'
         data = {'email_body': email_body, 'to_email': user.email, 'email_subject': 'MyCourseEvaluation Account Activation'}
