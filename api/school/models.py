@@ -17,3 +17,25 @@ class School(TrackingModel):
 
     def __str__(self) -> str:
         return f'{self.short_name}'
+
+
+class Course(TrackingModel):
+    class Meta:
+        verbose_name_plural = "Courses"
+    
+    # Each course is linked to a certain school, 
+    # courses cant exist without a school for our purposes
+    school = models.ForeignKey(School, on_delete=models.CASCADE)
+    # i.e. "CS"
+    subject = models.CharField(max_length=4, verbose_name="SubjectAbbreviation")
+    # "101"
+    catalog_number = models.CharField(max_length=5, verbose_name="CatalogNumber")
+    # "Computer Science I"
+    title = models.CharField(max_length=55, verbose_name="Title")
+
+    # TODO: Professor foreign key, a course can have multiple professors,
+    # professors can have multiple courses
+
+    # Include school name in this string representation too?
+    def __str__(self) -> str:
+        return f'{self.subject} {self.catalog_number}'
