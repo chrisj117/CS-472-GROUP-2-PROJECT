@@ -45,6 +45,11 @@ class TestModels(TestCase):
         self.assertEqual(str(school_req), "TEST_U")
 
     def test_should_create_course(self):
+        # Create a school to attach this test course to
+        school = School.objects.create(short_name="TEST_U",
+                                       long_name="The Test University")
+        school.save()
+
         course = Course.objects.create(
             school="TEST_U", 
             subject="TEST", 
