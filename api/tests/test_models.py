@@ -51,7 +51,7 @@ class TestModels(TestCase):
         school.save()
 
         course = Course.objects.create(
-            school="TEST_U", 
+            school=school, 
             subject="TEST", 
             catalog_number="101", 
             title="Introduction to Tests"
