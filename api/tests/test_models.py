@@ -2,6 +2,7 @@ from django.test import TestCase
 from school.models import School
 from review.models import Review
 from requestschool.models import RequestSchool
+from school.models import Course
 
 
 class TestModels(TestCase):
@@ -42,3 +43,18 @@ class TestModels(TestCase):
                                                   website="https://www.test-university.edu/")
         school_req.save()
         self.assertEqual(str(school_req), "TEST_U")
+
+    def test_should_create_course(self):
+        # Create a school to attach this test course to
+        school = School.objects.create(short_name="TEST_U",
+                                       long_name="The Test University")
+        school.save()
+
+        course = Course.objects.create(
+            school=school, 
+            subject="TEST", 
+            catalog_number="101", 
+            title="Introduction to Tests"
+        )
+        course.save()
+        self.assertEqual(str(course), "TEST 101")
