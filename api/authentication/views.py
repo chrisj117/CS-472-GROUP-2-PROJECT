@@ -68,7 +68,7 @@ class RegisterView(generics.GenericAPIView):
                 <div
                     style='width: 100%; opacity: 0.60; color: #344054;font-size:12px; word-wrap: break-word'>
                     Sent by MyCourseEvaluation System, CS472 Project, University of Nevada-Las Vegas. 
-                     Reply to this email to contact us. <a href="" style='text-decoration: none; font-size:12px; color:dodgerblue'>Unsubscribe</a></div>
+                     Reply to this email to contact us. <a href='' style='text-decoration: none; font-size:12px; color:dodgerblue'>Unsubscribe</a></div>
             </td>
         </tr>
     </center>"""
