@@ -12,7 +12,7 @@ import Course from "./pages/Course"
 import Review from "./pages/Review"
 import Home from "./pages/Home"
 import Login from "./pages/Login"
-import SignUp from "./pages/SignUp"
+import Register from "./pages/Register"
 
 const router = createBrowserRouter([
   {
@@ -24,7 +24,7 @@ const router = createBrowserRouter([
       { path: "about", element: <About /> },
       { path: "request-school", element: <RequestSchool /> },
       { path: "login", element: <Login /> },
-      { path: "sign-up", element: <SignUp /> },
+      { path: "register", element: <Register /> },
       // TEMPORARY: Review page quick access
       {
         path: "review",
