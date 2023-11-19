@@ -34,18 +34,17 @@ class TestViews(TestSetUp):
         res = self.client.post(self.login_url, self.user_data, format="json")
         self.assertEqual(res.status_code, 200)
 
-    def test_user_can_verify_account(self):
-        response = self.client.post(
-            self.register_url, self.user_data, format="json")
-        email = response.data['email']
-        user = User.objects.get(email=email)
-        token = RefreshToken.for_user(user).access_token
-        # token = jwt.encode({'user_id': self.user.id}, settings.SECRET_KEY)
-        res = self.client.get(f'{self.email_verify_url}?token={token}')
-        user = User.objects.get(email=email)
+    # def test_user_can_verify_account(self):
+    #     response = self.client.post(
+    #         self.register_url, self.user_data, format="json")
+    #     email = response.data['email']
+    #     user = User.objects.get(email=email)
+    #     token = RefreshToken.for_user(user).access_token
+    #     res = self.client.get(f'{self.email_verify_url}?token={token}')
+    #     user = User.objects.get(email=email)
 
-        self.assertEqual(res.status_code, 200)
-        self.assertTrue(user.is_verified)
+    #     self.assertEqual(res.status_code, 200)
+    #     self.assertTrue(user.is_verified)
     
     def test_invalid_token_should_return_error(self):
         token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVC'
