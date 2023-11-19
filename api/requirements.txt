@@ -9,3 +9,6 @@ django-filter
 drf_yasg
 djangorestframework-simplejwt
 Faker
+python-dotenv
+dj_database_url
+psycopg2-binary
