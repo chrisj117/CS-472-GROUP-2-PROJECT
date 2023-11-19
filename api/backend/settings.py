@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'django_extensions', #Great packaged to access abstract models
     'django_filters', #Used with DRF
     'rest_framework', # Django REST Framwork
+    'rest_framework_simplejwt.token_blacklist',
     'corsheaders',
     'drf_yasg', #Swagger UI docs
     'school',

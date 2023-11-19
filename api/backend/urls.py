@@ -63,5 +63,6 @@ urlpatterns = [
     path(f'{base_url}/auth/register/', authentication_views.RegisterView.as_view(), name='register'),
     path(f'{base_url}/auth/email-verify/', authentication_views.VerifyEmail.as_view(), name='email-verify'),
     path(f'{base_url}/auth/login/', authentication_views.LoginAPIView.as_view(), name='login'),
+    path(f'{base_url}/auth/logout/', authentication_views.LogoutAPIView.as_view(), name="logout"),
     path(f'{base_url}/auth/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 ]
