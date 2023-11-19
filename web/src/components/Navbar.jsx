@@ -1,6 +1,6 @@
-import { Link } from 'react-router-dom';
-import { BsSun } from 'react-icons/bs';
-import { MdSchool } from 'react-icons/md';
+import { Link } from "react-router-dom"
+import { BsSun } from "react-icons/bs"
+import { MdSchool } from "react-icons/md"
 
 const Navbar = () => {
   return (
@@ -31,9 +31,15 @@ const Navbar = () => {
         >
           Request School
         </Link>
+        <Link to="/login" className="text-black hover:underline text-lg">
+          Login
+        </Link>
+        <Link to="/register" className="text-black hover:underline text-lg">
+          Register
+        </Link>
       </div>
     </header>
-  );
-};
+  )
+}
 
-export default Navbar;
+export default Navbar
