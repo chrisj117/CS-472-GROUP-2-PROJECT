@@ -65,4 +65,10 @@ urlpatterns = [
     path(f'{base_url}/auth/login/', authentication_views.LoginAPIView.as_view(), name='login'),
     path(f'{base_url}/auth/logout/', authentication_views.LogoutAPIView.as_view(), name="logout"),
     path(f'{base_url}/auth/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path(f'{base_url}/auth/request-reset-email/', authentication_views.RequestPasswordResetEmail.as_view(),
+         name="request-reset-email"),
+    path(f'{base_url}/auth/password-reset/<uidb64>/<token>/',
+         authentication_views.PasswordTokenCheckAPI.as_view(), name='password-reset-confirm'),
+    path(f'{base_url}/auth/password-reset-complete', authentication_views.SetNewPasswordAPIView.as_view(),
+         name='password-reset-complete')
 ]
