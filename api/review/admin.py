@@ -7,6 +7,7 @@ class ReviewAdmin(admin.ModelAdmin):
     list_display = (
         'id',
         'school',
+        'course',
         'review_text',
         'term',
         'grade_received',
@@ -21,6 +22,7 @@ class ReviewAdmin(admin.ModelAdmin):
 
     list_filter = (
         'school',
+        'course',
         'term',
         'grade_received',
         'delivery_method',
