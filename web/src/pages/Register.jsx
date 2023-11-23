@@ -38,7 +38,8 @@ const Register = () => {
         <label className="flex flex-col gap-1 text-lg">
           Password
           <input
-            type="text"
+            type="password"
+            id="password"
             placeholder="Password (must be 8 characters long and include at least 1 numeric character)"
             className="px-4 py-2 w-full border-2 rounded"
           />
@@ -51,7 +52,8 @@ const Register = () => {
       <div className="mb-4">
         <label className="flex flex-col gap-1 text-lg">
           <input
-            type="text"
+            type="password"
+            id="password"
             placeholder="Confirm password"
             className="px-4 py-2 w-full border-2 rounded"
           />
