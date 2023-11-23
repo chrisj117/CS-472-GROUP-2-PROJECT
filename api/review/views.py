@@ -35,33 +35,36 @@ class ReviewAPIView(views.APIView):
                         status=status.HTTP_404_NOT_FOUND,
                     )
 
-        course_identifier = data.pop("course", None)
+        course_identifier = data.get("course", None)
         if course_identifier:
             if isinstance(course_identifier, list):
                 course_identifier = course_identifier[0]
 
             try:
-                # checking if it's a UUID
+                # Check if it's a valid UUID
                 uuid.UUID(course_identifier)
-                course_pk = course_identifier
+                course = Course.objects.get(pk=course_identifier)
+                data["course"] = course.pk
             except ValueError:
-                # If not a UUID, it's a string like "CS 472"
+                # If not a UUID, try parsing as "subject & catalog_number"
                 try:
                     subject, catalog_number = course_identifier.split()
-                    course = Course.objects.get(
-                        subject=subject, catalog_number=catalog_number
-                    )
-                    course_pk = course.pk
+                    course = Course.objects.get(subject=subject, catalog_number=catalog_number)
+                    data["course"] = course.pk
                 except (ValueError, Course.DoesNotExist):
+                    # Handle cases where the format is incorrect or course does not exist
                     return Response(
-                        {
-                            "error": "Invalid course identifier format or course not found."
-                        },
+                        {"error": "Invalid course identifier format or course not found."},
                         status=status.HTTP_400_BAD_REQUEST,
                     )
+        else:
+            # Handle case where course identifier is not provided
+            return Response(
+                {"error": "Course identifier is required."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
 
-        data["course"] = course_pk
-
+        # Proceed with serialization
         serializer = self.serializer_class(data=data)
         if serializer.is_valid():
             serializer.save()
@@ -79,7 +82,7 @@ class ReviewAPIView(views.APIView):
                 status=status.HTTP_201_CREATED,
             )
 
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST) # line not covered in test
 
     def get(self, request, review_id=None, short_name=None):
         if review_id:
