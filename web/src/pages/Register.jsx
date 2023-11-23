@@ -1,8 +1,9 @@
 const Register = () => {
   return (
     <div className="max-w-screen-xl mx-auto flex flex-col items-center">
+      <h2 className="text-3xl font-bold mb-12 mt-8">Account Registration</h2>
       <div className="flex flex-col gap-3 w-full">
-      <div className="mb-4 mt-4">
+      <div className="mb-4">
         {/* E-mail input */}
         <label className="flex flex-col gap-1 text-lg">
           E-mail
