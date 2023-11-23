@@ -64,7 +64,7 @@ const Navbar = () => {
         </div>
       </div>
       {hamburgerMenu ? (
-        <div className="flex flex-col gap-4 md:hidden justify-center items-center py-6 border-b-2 border-gray-200">
+        <div className="flex flex-col gap-6 md:hidden justify-center items-center py-6 border-b-2 border-gray-200">
           <button className="text-black px-2 py-2 xl:px-4 xl:py-2 rounded-lg hover:bg-gray-900 hover:text-white hover:border-gray-900 xl:border-2 border-gray-300">
             <div className="flex gap-2 items-center">
               <span className="hidden xl:block">Light Mode</span>{" "}
