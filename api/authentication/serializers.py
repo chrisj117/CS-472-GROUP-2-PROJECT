@@ -7,6 +7,7 @@ from rest_framework.exceptions import AuthenticationFailed
 from django.utils.encoding import smart_str, force_str, smart_bytes, DjangoUnicodeDecodeError
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 
+
 class RegisterSerializer(serializers.ModelSerializer):
     password =serializers.CharField(max_length=68, min_length=6, write_only=True)
 
@@ -74,6 +75,7 @@ class LoginSerializer(serializers.ModelSerializer):
 
         return super().validate(attrs)
 
+
 class ResetPasswordEmailRequestSerializer(serializers.Serializer):
     email = serializers.EmailField(min_length=2)
 
@@ -112,6 +114,7 @@ class SetNewPasswordSerializer(serializers.Serializer):
         except Exception as e:
             raise AuthenticationFailed('The reset link is invalid', 401)
         return super().validate(attrs)
+    
     
 class LogoutSerializer(serializers.Serializer):
     refresh = serializers.CharField()

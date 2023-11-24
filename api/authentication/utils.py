@@ -1,7 +1,6 @@
 from django.core.mail import EmailMessage, send_mail
 from django.utils.html import strip_tags
 import os
-
 import threading
 
 
@@ -13,6 +12,7 @@ class EmailThread(threading.Thread):
 
     def run(self):
         self.email.send()
+
 
 class Util:
 
