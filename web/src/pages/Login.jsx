@@ -1,3 +1,5 @@
+import InputField from "../components/InputField.jsx";
+
 const Login = () => {
   return (
     <div className="max-w-screen-xl mx-auto flex flex-col items-center">
@@ -7,33 +9,20 @@ const Login = () => {
       </h2>
 
       {/* Email Input */}
-      <div className="flex flex-col gap-3 w-full">
-        <div className="mb-4">
-          <label className="flex flex-col gap-1 text-lg">
-            E-mail
-            <input
-              type="text"
-              placeholder="Please enter your e-mail"
-              className="px-4 py-2 w-full border-2 rounded"
-            />
-          </label>
-        </div>
-      </div>
+      <InputField
+        labelName="E-mail"
+        inputType="text"
+        inputID="email"
+        inputPlaceholder="Please enter your e-mail"
+      />
 
       {/* Password Input */}
-      <div className="flex flex-col gap-3 w-full">
-        <div className="mb-4">
-          <label className="flex flex-col gap-1 text-lg">
-            Password
-            <input
-              type="password"
-              id="password"
-              placeholder="Please enter your password"
-              className="px-4 py-2 w-full border-2 rounded"
-            />
-          </label>
-        </div>
-      </div>
+      <InputField
+        labelName="Password"
+        inputType="password"
+        inputID="password"
+        inputPlaceholder="Please enter your password"
+      />
 
       {/* Login Button */}
       <button className="bg-blue-600 text-white px-5 py-3 rounded-lg hover:bg-blue-700 flex gap-3 items-center justify-center">
