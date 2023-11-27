@@ -11,6 +11,7 @@ class TestSetUp(APITestCase):
         self.register_url = reverse('register')
         self.login_url = reverse('login')
         self.email_verify_url = reverse('email-verify')
+        self.logout = reverse('logout')
         self.fake = Faker()
 
         self.user_data = {

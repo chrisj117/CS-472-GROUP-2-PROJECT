@@ -11,7 +11,7 @@ class EmailThread(threading.Thread):
         threading.Thread.__init__(self)
 
     def run(self):
-        self.email.send()
+        self.email
 
 
 class Util:
@@ -23,11 +23,12 @@ class Util:
         #                      body=data['email_body'],
         #                      to=[data['to_email']])
         plain_message = strip_tags(data['email_body'])
-        email = send_mail(subject=data['email_subject'],
+        EmailThread(
+            send_mail(subject=data['email_subject'],
                           message=plain_message,
                           from_email=os.environ.get('EMAIL_HOST_USER'),
                           recipient_list=[data['to_email']],
                           html_message=data['email_body'],
                           fail_silently=False
                           )
-        EmailThread(email).start()
+                ).start()
