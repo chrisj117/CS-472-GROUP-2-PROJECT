@@ -1,5 +1,5 @@
-import Searchbar from '../components/Searchbar';
-import QA from '../components/QA';
+import Searchbar from "../components/Searchbar"
+import QA from "../components/QA"
 
 const Home = () => {
   return (
@@ -18,7 +18,7 @@ const Home = () => {
       </div>
 
       {/* Bottom of page: FAQ section */}
-      <div className="w-full justify-center transition-all mx-auto mb-12">
+      <div className="w-full justify-center mx-auto mb-12">
         <h1 className="text-center text-2xl no-underline text-grey-darkest hover:text-blue-dark mb-8 font-semibold">
           Frequently Asked Questions
         </h1>
@@ -45,6 +45,6 @@ const Home = () => {
         </div>
       </div>
     </div>
-  );
-};
-export default Home;
+  )
+}
+export default Home
