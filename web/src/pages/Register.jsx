@@ -1,3 +1,5 @@
+import InputField from "../components/InputField.jsx"
+
 const Register = () => {
   return (
     <div className="max-w-screen-xl mx-auto flex flex-col items-center h-[calc(100vh-94px)]">
@@ -5,61 +7,36 @@ const Register = () => {
       <h2 className="text-3xl font-bold mb-12 mt-8">Account Registration</h2>
 
       {/* E-mail input */}
-      <div className="flex flex-col gap-3 w-full">
-        <div className="mb-4">
-          <label className="flex flex-col gap-1 text-lg">
-            E-mail
-            <input
-              type="text"
-              placeholder="E-mail"
-              className="px-4 py-2 w-full border-2 rounded"
-            />
-          </label>
-        </div>
-      </div>
+      <InputField
+        labelName="E-mail"
+        inputType="text"
+        inputID="email"
+        inputPlaceholder="E-mail"
+      />
 
       {/* Username */}
-      <div className="flex flex-col gap-3 w-full">
-        <div className="mb-4">
-          <label className="flex flex-col gap-1 text-lg">
-            Username
-            <input
-              type="text"
-              placeholder="Username"
-              className="px-4 py-2 w-full border-2 rounded"
-            />
-          </label>
-        </div>
-      </div>
+      <InputField
+        labelName="Username"
+        inputType="text"
+        inputID="username"
+        inputPlaceholder="Username"
+      />
 
       {/* 1st password input */}
-      <div className="flex flex-col gap-3 w-full">
-        <div className="mb-4">
-          <label className="flex flex-col gap-1 text-lg">
-            Password
-            <input
-              type="password"
-              id="password"
-              placeholder="Password (must be 8 characters long and include at least 1 numeric character)"
-              className="px-4 py-2 w-full border-2 rounded"
-            />
-          </label>
-        </div>
-      </div>
+      <InputField
+        labelName="Password"
+        inputType="password"
+        inputID="password"
+        inputPlaceholder="Password (must be 8 characters long and include at least 1 numeric character)"
+      />
 
       {/* Password confirmation input */}
-      <div className="flex flex-col gap-3 w-full">
-        <div className="mb-4">
-          <label className="flex flex-col gap-1 text-lg">
-            <input
-              type="password"
-              id="password"
-              placeholder="Confirm password"
-              className="px-4 py-2 w-full border-2 rounded"
-            />
-          </label>
-        </div>
-      </div>
+      <InputField
+        labelName=""
+        inputType="password"
+        inputID="confirmPassword"
+        inputPlaceholder="Confirm password"
+      />
 
       {/* Register button */}
       <button className="bg-blue-600 text-white px-5 py-3 rounded-lg hover:bg-blue-700 flex gap-3 items-center justify-center">
