@@ -1,3 +1,5 @@
+/* eslint-disable react/prop-types */
+
 import { Link } from "react-router-dom"
 import { BsMoon, BsSun } from "react-icons/bs"
 import { MdSchool } from "react-icons/md"
