@@ -1,12 +1,24 @@
-import InputField from "../components/InputField.jsx";
+import { useState } from "react"
+import InputField from "../components/InputField.jsx"
+import axios from "../utilities/axios.jsx"
 
 const Login = () => {
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    console.log(email)
+    console.log(password)
+  }
+
   return (
-    <div className="max-w-screen-xl mx-auto flex flex-col items-center h-[calc(100vh-94px)]">
+    <form
+      onSubmit={handleSubmit}
+      className="max-w-screen-xl mx-auto flex flex-col items-center h-[calc(100vh-94px)]"
+    >
       {/* Login Page Heading */}
-      <h2 className="text-3xl font-bold mb-12 mt-8">
-        Please enter your account details
-      </h2>
+      <h2 className="text-3xl font-bold mb-12 mt-8">Login</h2>
 
       {/* Email Input */}
       <InputField
@@ -14,6 +26,9 @@ const Login = () => {
         inputType="text"
         inputID="email"
         inputPlaceholder="Please enter your e-mail"
+        onChange={(e) => {
+          setEmail(e.target.value)
+        }}
       />
 
       {/* Password Input */}
@@ -22,13 +37,16 @@ const Login = () => {
         inputType="password"
         inputID="password"
         inputPlaceholder="Please enter your password"
+        onChange={(e) => {
+          setPassword(e.target.value)
+        }}
       />
 
       {/* Login Button */}
       <button className="bg-blue-600 text-white px-5 py-3 rounded-lg hover:bg-blue-700 flex gap-3 items-center justify-center">
-        <span>Login</span>
+        Login
       </button>
-    </div>
+    </form>
   )
 }
 export default Login
