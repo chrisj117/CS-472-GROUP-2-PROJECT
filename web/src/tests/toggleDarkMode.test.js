@@ -6,3 +6,10 @@ describe('#toggleDarkMode', () => {
     expect(toggleDarkMode()).toBe("Dark Mode True");
   });
 });
+
+describe('#toggleDarkMode', () => {
+  it('Returns dark mode false when true', () => {
+    expect(toggleDarkMode()).toBe("Dark Mode False");
+  });
+});
+

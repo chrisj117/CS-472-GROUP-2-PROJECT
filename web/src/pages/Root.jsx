@@ -1,6 +1,6 @@
 import { Outlet } from "react-router-dom"
 import Navbar from "../components/Navbar"
-import { createContext, useEffect, useState } from "react"
+import { useState } from "react"
 
 const Root = () => {
   const [darkMode, setDarkMode] = useState(() => {
