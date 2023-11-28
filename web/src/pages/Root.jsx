@@ -12,11 +12,9 @@ const Root = () => {
     if (window.localStorage.getItem("DARK_MODE") == "true") {
       window.localStorage.setItem("DARK_MODE", "false")
       setDarkMode("false")
-      return "Dark Mode False"
     } else {
       window.localStorage.setItem("DARK_MODE", "true")
       setDarkMode("true")
-      return "Dark Mode True"
     }
   }
 
