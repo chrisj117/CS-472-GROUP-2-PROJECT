@@ -1,9 +1,9 @@
-import Searchbar from '../components/Searchbar';
-import { BsFillEnvelopePaperFill } from 'react-icons/bs';
+import Searchbar from "../components/Searchbar"
+import { BsFillEnvelopePaperFill } from "react-icons/bs"
 
 const RequestSchool = () => {
   return (
-    <div className="max-w-screen-xl mx-auto flex flex-col items-center">
+    <div className="max-w-screen-xl mx-auto flex flex-col items-center h-[calc(100vh-94px)]">
       <h2 className="text-3xl font-bold mb-12 mt-8">Request School</h2>
       <div className="w-full flex flex-col items-center gap-4">
         {/* Check if your school is already here */}
@@ -52,6 +52,6 @@ const RequestSchool = () => {
         </button>
       </div>
     </div>
-  );
-};
-export default RequestSchool;
+  )
+}
+export default RequestSchool
