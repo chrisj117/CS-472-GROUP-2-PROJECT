@@ -22,9 +22,15 @@ class TestModels(TestCase):
             city="Test City",
             country="Test Country"
         )
-
+        course = Course.objects.create(
+            school=school,
+            subject="TEST",
+            catalog_number="101",
+            title="Introduction to Tests"
+        )
         review = Review.objects.create(
             school=school,
+            course=course,
             review_text="This is an excellent class!",
             term='Spring',
             grade_received='A',
@@ -34,9 +40,9 @@ class TestModels(TestCase):
             textbook_required=False,
             recommended=True
         )
-
+        review.save()
         self.assertTrue(Review.objects.filter(pk=review.pk).exists())
-        self.assertEqual(str(review), "Review for TEST")
+        self.assertEqual(str(review), "Review for TEST 101 at TEST")
 
     def test_should_create_school_request(self):
         school_req = RequestSchool.objects.create(school_name="TEST_U", 

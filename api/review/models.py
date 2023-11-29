@@ -1,6 +1,6 @@
 from utils.models import TrackingModel
 from django.db import models
-from school.models import School
+from school.models import School, Course
 import datetime
 
 
@@ -37,8 +37,19 @@ class Review(TrackingModel):
     # If a school is deleted, all related reviews will also be deleted. Reviews can be nullable and optional
     # each review is associated with one school, and each school can have many reviews
     school = models.ForeignKey(
-        School, on_delete=models.CASCADE, related_name='reviews', null=True, blank=True)
+        School,
+        on_delete=models.CASCADE,
+        related_name='reviews',
+        null=True,
+        blank=True)
     # TODO: Course Model Foreign Key
+    course = models.ForeignKey(
+        Course,
+        on_delete=models.CASCADE,
+        related_name='reviews',
+        null=True,
+        blank=True
+    )
     # TODO: Professor Model Foreign Key
     # limiting reviews to 500 characters
     review_text = models.CharField(max_length=500)
@@ -62,7 +73,8 @@ class Review(TrackingModel):
         verbose_name_plural = "Reviews"
 
     def __str__(self):
-        return f'Review for {self.school.short_name}'
+        course_info = f'{self.course.subject} {self.course.catalog_number}' if self.course else 'No Course'
+        return f'Review for {course_info} at {self.school.short_name}'
 
 
 # TODO Rating Criteria Model
