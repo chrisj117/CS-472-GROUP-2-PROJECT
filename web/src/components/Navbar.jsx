@@ -23,7 +23,7 @@ const Navbar = ({ darkMode, toggleDarkMode }) => {
               Evaluation
             </span>
           </div>
-          <MdSchool className="text-5xl xl:text-4xl xl:text-black" />
+          <MdSchool className="text-5xl xl:text-4xl" />
         </Link>
         {/* Top Right Corner */}
         <div className="hidden md:flex gap-6 items-center">
