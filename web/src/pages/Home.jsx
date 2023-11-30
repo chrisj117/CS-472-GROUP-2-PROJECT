@@ -1,12 +1,12 @@
-import Searchbar from "../components/Searchbar"
-import QA from "../components/QA"
+import Searchbar from '../components/Searchbar';
+import QA from '../components/QA';
 
 const Home = () => {
   return (
     <div className="flex flex-col justify-evenly h-[calc(100vh-94px)] max-w-screen-xl mx-auto">
       {/* Search bar */}
-      <div className="flex-1 flex flex-col w-full justify-center items-center gap-4 ">
-        <p className="text-3xl font-bold">
+      <div className="flex-1 flex flex-col w-full justify-center items-center gap-4">
+        <p className="sm:text-lg md:text-xl l:text-2xl xl:text-3xl font-bold text-center mx-14">
           Find your school below to leave an evaluation!
         </p>
         <Searchbar
@@ -19,7 +19,7 @@ const Home = () => {
 
       {/* Bottom of page: FAQ section */}
       <div className="w-full justify-center mx-auto mb-12">
-        <h1 className="text-center text-2xl no-underline text-grey-darkest hover:text-blue-dark mb-8 font-semibold">
+        <h1 className="sm:text-md md:text-l l:text-xl xl:text-2xl text-center no-underline text-grey-darkest hover:text-blue-dark mb-8 font-semibold">
           Frequently Asked Questions
         </h1>
         {/* Question/Answer Components */}
