@@ -1,12 +1,14 @@
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import InputField from "../components/InputField.jsx"
 import FormError from "../components/FormError.jsx"
+import FormSuccess from "../components/FormSuccess.jsx"
 import { LoginAuth } from "../utilities/Auth.js"
 
 const Login = () => {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [error, setError] = useState("")
+  const [success, setSuccess] = useState("")
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -49,6 +51,7 @@ const Login = () => {
       />
 
       <FormError error={error} />
+      <FormSuccess success={success} />
 
       {/* Login Button */}
       <button className="bg-blue-600 text-white px-5 py-3 rounded-lg hover:bg-blue-700 flex gap-3 items-center justify-center">

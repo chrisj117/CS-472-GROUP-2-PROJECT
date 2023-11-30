@@ -43,9 +43,17 @@ export async function RegisterAuth(data) {
   } catch (err) {
     if (err.response) {
       // Not in the 200 response range
-      console.log(err.response.data)
-      console.log(err.response.status)
-      console.log(err.response.headers)
+      // console.log(err.response.data)
+      // console.log(err.response.status)
+      // console.log(err.response.headers)
+      if(err.response.data.errors.email) {
+        return "ERROR: This email is already in use."
+      }
+
+      if(err.response.data.errors.username) {
+        return "ERROR: This username is already in use."
+      }
+      
       return `ERROR: ${err.response.data}`
     } else {
       console.log(`Error: ${err.message}`)

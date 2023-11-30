@@ -2,6 +2,8 @@ import { useState } from "react"
 import InputField from "../components/InputField.jsx"
 import { RegisterAuth } from "../utilities/Auth.js"
 import FormError from "../components/FormError.jsx"
+import FormSuccess from "../components/FormSuccess.jsx"
+import { useNavigate } from "react-router-dom"
 
 const Register = () => {
   const [email, setEmail] = useState("")
@@ -9,6 +11,9 @@ const Register = () => {
   const [password, setPassword] = useState("")
   const [confirmPassword, setConfirmPassword] = useState("")
   const [error, setError] = useState("")
+  const [success, setSuccess] = useState("")
+
+  const navigate = useNavigate()
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -22,7 +27,34 @@ const Register = () => {
 
     if (registerResult.includes("ERROR:")) {
       setError(registerResult.substring(7))
+      return
     }
+
+    setError("")
+    setSuccess(
+      "Registration Successful, please wait a moment before being redirected."
+    )
+
+    let loginResult
+    setTimeout(async () => {
+      loginResult = await LoginAuth({
+        email: email,
+        password: password,
+      })
+    }, 1500)
+
+    if (loginResult.includes("ERROR:")) {
+      setError("Login Failed. Redirecting to login page.")
+      setSuccess("")
+      setTimeout(() => {
+        navigate("/login")
+      }, 2000)
+      return
+    }
+
+    setTimeout(() => {
+      navigate(-1)
+    }, 1500)
   }
 
   return (
@@ -78,11 +110,7 @@ const Register = () => {
       />
 
       <FormError error={error} />
-      <FormSuccess
-        success={
-          "Registration Successful. Please wait a few seconds to be redirected."
-        }
-      />
+      <FormSuccess success={success} />
 
       {/* Register button */}
       <button className="bg-blue-600 text-white px-5 py-3 rounded-lg hover:bg-blue-700 flex gap-3 items-center justify-center">
