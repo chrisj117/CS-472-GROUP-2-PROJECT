@@ -56,7 +56,7 @@ INSTALLED_APPS = [
     'authentication',
 ]
 
-CORS_ALLOWED_ORIGINS = os.environ.get('CORS_ALLOWED_ORIGINS', default='*').split(',')
+CORS_ALLOWED_ORIGINS = os.environ.get('CORS_ALLOWED_ORIGINS').split(',')
 
 CORS_ORIGIN_REGEX_WHITELIST = [
     r"^https://\w+\.vercel\.app$",
