@@ -25,7 +25,7 @@ const RequestSchool = () => {
           <div className="mb-4">
             <p className="mb-4 text-center text-xl">
               If you can&apos;t find your institution above, submit your
-              school&apos;s information below!
+              school&apos;s information below.
             </p>
             <label className="flex flex-col gap-1 text-lg">
               Enter School Name
@@ -38,17 +38,20 @@ const RequestSchool = () => {
           </div>
 
           <div className="mb-4">
-            <label className="block mb-2">Enter School Website</label>
-            <input
-              type="text"
-              placeholder="Ex: https://www.unlv.edu/"
-              className="p-2 w-full border-2 rounded"
-            />
+            <label className="flex flex-col gap-1 text-lg">
+              Enter School Website
+              <input
+                type="text"
+                placeholder="Ex: https://www.unlv.edu/"
+                className="px-4 py-2 w-full border-2 rounded"
+              />
+            </label>
           </div>
         </div>
 
-        <button className="bg-blue-600 text-white px-5 py-3 rounded-lg hover:bg-blue-700 flex gap-3 items-center justify-center">
-          <span>Submit School</span> <BsFillEnvelopePaperFill />
+        <button className="bg-blue-600 text-white px-10 py-3 rounded-lg hover:bg-blue-700 flex gap-3 items-center justify-center">
+          <span className="font-semibold">Request School</span>{" "}
+          <BsFillEnvelopePaperFill />
         </button>
       </div>
     </div>
