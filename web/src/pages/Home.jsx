@@ -1,5 +1,5 @@
-import Searchbar from "../components/Searchbar";
-import QA from "../components/QA";
+import Searchbar from "../components/Searchbar"
+import QA from "../components/QA"
 
 const Home = () => {
   return (
