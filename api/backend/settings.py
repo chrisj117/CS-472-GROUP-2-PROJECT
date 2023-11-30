@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'django_extensions', #Great packaged to access abstract models
     'django_filters', #Used with DRF
     'rest_framework', # Django REST Framwork
+    'rest_framework_simplejwt.token_blacklist',
     'corsheaders',
     'drf_yasg', #Swagger UI docs
     'school',
@@ -61,6 +62,16 @@ CORS_ALLOWED_ORIGINS = ['http://localhost:8000','http://127.0.0.1:8000','http://
 CORS_ORIGIN_REGEX_WHITELIST = [
     r"^https://\w+\.vercel\.app$",
 ]
+
+SWAGGER_SETTINGS = {
+    'SECURITY_DEFINITIONS': {
+        'Bearer': {
+            'type': 'apiKey',
+            'name': 'Authorization',
+            'in': 'header'
+        }
+    }
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
