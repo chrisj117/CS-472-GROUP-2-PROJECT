@@ -1,18 +1,28 @@
 import { useState } from "react"
 import InputField from "../components/InputField.jsx"
+import { RegisterAuth } from "../utilities/Auth.js"
+import FormError from "../components/FormError.jsx"
 
 const Register = () => {
   const [email, setEmail] = useState("")
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
   const [confirmPassword, setConfirmPassword] = useState("")
+  const [error, setError] = useState("")
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    console.log(email)
-    console.log(username)
-    console.log(password)
-    console.log(confirmPassword)
+
+    const registerResult = await RegisterAuth({
+      email: email,
+      username: username,
+      password: password,
+      confirmPassword: confirmPassword,
+    })
+
+    if (registerResult.includes("ERROR:")) {
+      setError(registerResult.substring(7))
+    }
   }
 
   return (
@@ -65,6 +75,13 @@ const Register = () => {
         onChange={(e) => {
           setConfirmPassword(e.target.value)
         }}
+      />
+
+      <FormError error={error} />
+      <FormSuccess
+        success={
+          "Registration Successful. Please wait a few seconds to be redirected."
+        }
       />
 
       {/* Register button */}

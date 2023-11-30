@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import AsyncSelect from "react-select/async"
 import { useEffect, useState } from "react"
-import api from "../utilities/axios"
+import api from "../utilities/Axios"
 
 const Searchbar = ({
   searchingSchools,
@@ -51,7 +51,7 @@ const Searchbar = ({
 
       // console.log('loadOptions', searchValue, filteredOptions);
       callback(filteredOptions)
-    }, 500)
+    }, 200)
   }
 
   const handleChange = (selectedOption) => {

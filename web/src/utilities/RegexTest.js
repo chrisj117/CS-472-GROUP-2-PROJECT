@@ -3,11 +3,11 @@ export function EmailRegexTest(data) {
 }
 
 export function UsernameRegexTest(data) {
-  return RegExp(/^[a-zA-Z0-9]{4,24}$/).test(data)
+  return RegExp(/^[a-zA-Z0-9]{3,24}$/).test(data)
 }
 
 export function PasswordRegexTest(data) {
-  return RegExp(/^.{6,32}$/).test(data);
+  return RegExp(/^.{6,68}$/).test(data);
 }
 
 export function LinkRegexTest(data) {
