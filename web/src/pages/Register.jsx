@@ -2,7 +2,7 @@ import InputField from "../components/InputField.jsx";
 
 const Register = () => {
   return (
-    <div className="max-w-screen-xl mx-auto flex flex-col items-center">
+    <div className="max-w-screen-xl mx-auto flex flex-col items-center h-[calc(100vh-94px)]">
       {/* Account registration page banner */}
       <h2 className="text-3xl font-bold mb-12 mt-8">Account Registration</h2>
 

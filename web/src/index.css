@@ -9,3 +9,7 @@ button {
   font-family: 'Poppins', sans-serif;
   scroll-behavior: smooth;
 }
+
+.dark {
+  @apply bg-zinc-900 text-white
+}

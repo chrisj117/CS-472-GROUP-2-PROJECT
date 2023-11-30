@@ -2,7 +2,7 @@ import InputField from "../components/InputField.jsx";
 
 const Login = () => {
   return (
-    <div className="max-w-screen-xl mx-auto flex flex-col items-center">
+    <div className="max-w-screen-xl mx-auto flex flex-col items-center h-[calc(100vh-94px)]">
       {/* Login Page Heading */}
       <h2 className="text-3xl font-bold mb-12 mt-8">
         Please enter your account details
@@ -29,6 +29,6 @@ const Login = () => {
         <span>Login</span>
       </button>
     </div>
-  );
-};
-export default Login;
+  )
+}
+export default Login

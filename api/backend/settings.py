@@ -31,7 +31,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY', default='cgle=tg=3o-29%%=fd)8p?+aaxs(2
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DEBUG', default=False)
 
-ALLOWED_HOSTS = ["*","localhost","127.0.0.1","[::1]", ".vercel.app"] 
+ALLOWED_HOSTS = ["*","localhost","127.0.0.1","[::1]",".vercel.app"]
 
 AUTH_USER_MODEL = 'authentication.User'
 
@@ -57,12 +57,7 @@ INSTALLED_APPS = [
     'authentication',
 ]
 
-CORS_ALLOWED_ORIGINS = [
-    'http://localhost:8000',
-    'http://127.0.0.1:8000',
-    'http://localhost:5173',
-    'http://127.0.0.1:5173'
-]
+CORS_ALLOWED_ORIGINS = ['http://localhost:8000','http://127.0.0.1:8000','http://localhost:5173']
 
 CORS_ORIGIN_REGEX_WHITELIST = [
     r"^https://\w+\.vercel\.app$",
@@ -87,6 +82,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'backend.urls'
@@ -163,6 +159,14 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = 'static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+STORAGES = {
+    # ...
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
