@@ -31,7 +31,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY', default='cgle=tg=3o-29%%=fd)8p?+aaxs(2
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DEBUG', default=False)
 
-ALLOWED_HOSTS = ["*","localhost","127.0.0.1","[::1]", ".vercel.app"] 
+ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOSTS', '*').split(',')
 
 AUTH_USER_MODEL = 'authentication.User'
 
@@ -56,11 +56,7 @@ INSTALLED_APPS = [
     'authentication',
 ]
 
-CORS_ALLOWED_ORIGINS = [
-    'http://localhost:8000',
-    'http://127.0.0.1:8000',
-    'http://localhost:5173'
-]
+CORS_ALLOWED_ORIGINS = os.environ.get('CORS_ALLOWED_ORIGINS', default='*').split(',')
 
 CORS_ORIGIN_REGEX_WHITELIST = [
     r"^https://\w+\.vercel\.app$",
@@ -102,7 +98,17 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-DATABASES = {'default': dj_database_url.config(default='sqlite:///db.sqlite3')}
+DATABASES = {}
+
+if DEBUG:
+
+    DATABASES['default'] = {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
+else:
+    DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=False)
+    DATABASES['default'] = dj_database_url.config(default='sqlite:///db.sqlite3')
 
 REST_FRAMEWORK = {
     'NON_FIELD_ERRORS_KEY': 'error',
