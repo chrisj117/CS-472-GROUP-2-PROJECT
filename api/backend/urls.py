@@ -47,6 +47,8 @@ urlpatterns = [
     # listing reviews for a specific school (will be for courses later)
     path(f'{base_url}/school/<str:short_name>/reviews/',
          review_views.ReviewAPIView.as_view(), name='school_reviews'),
+    # listing reviews for a specific course
+    path(f'{base_url}/reviews/<str:school_short_name>/<str:course_subject_catalog>/', review_views.ReviewAPIView.as_view(), name='course_reviews'),
   
     path(f'{base_url}/school/', school_views.SchoolAPIView.as_view(), name='schools'),
     path(f'{base_url}/school/<str:short_name>/', school_views.SchoolAPIView.as_view(), name='school'),

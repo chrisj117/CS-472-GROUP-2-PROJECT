@@ -84,7 +84,7 @@ class ReviewAPIView(views.APIView):
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST) # line not covered in test
 
-    def get(self, request, review_id=None, short_name=None):
+    def get(self, request, review_id=None, short_name=None, school_short_name=None, course_subject_catalog=None):
         if review_id:
             # retrieving a single review by ID
             try:
@@ -108,7 +108,6 @@ class ReviewAPIView(views.APIView):
                     {"message": "Review not found!", "data": []},
                     status=status.HTTP_404_NOT_FOUND,
                 )
-
         if short_name:
             # retrieving reviews for school when short_name is provided.
             try:
@@ -119,6 +118,9 @@ class ReviewAPIView(views.APIView):
                     {"message": "School not found!", "data": []},
                     status=status.HTTP_404_NOT_FOUND,
                 )
+        elif school_short_name and course_subject_catalog:
+            return self.course_review_list(request, school_short_name, course_subject_catalog)
+
         else:
             # list all reviews when id or shortname is not provided.
             reviews = Review.objects.all()
@@ -135,6 +137,25 @@ class ReviewAPIView(views.APIView):
 
         response = {"message": "Reviews listed successfully", "data": response_data}
         return Response(data=response, status=status.HTTP_200_OK)
+
+    def course_review_list(self, request, school_short_name, course_subject_catalog):
+        try:
+            school = School.objects.get(short_name=school_short_name)
+        except School.DoesNotExist:
+            return Response({'error': 'School not found'}, status=status.HTTP_404_NOT_FOUND)
+
+        # Splitting course_subject_catalog into subject and catalog_number
+        subject = ''.join(filter(str.isalpha, course_subject_catalog))
+        catalog_number = ''.join(filter(str.isdigit, course_subject_catalog))
+
+        try:
+            course = Course.objects.get(subject=subject, catalog_number=catalog_number, school=school)
+        except Course.DoesNotExist:
+            return Response({'error': 'Course not found'}, status=status.HTTP_404_NOT_FOUND)
+
+        reviews = Review.objects.filter(course=course)
+        serializer = self.serializer_class(reviews, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
     def put(self, request, review_id=None):
         try:
