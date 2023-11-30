@@ -12,18 +12,18 @@ const Home = () => {
         <Searchbar
           searchingSchools={true}
           searchingCourses={false}
-          className="w-full"
+          className="w-full px-4 truncate"
           searchPlaceholder="Ex: University of Nevada, Las Vegas / UNLV"
         />
       </div>
 
       {/* Bottom of page: FAQ section */}
-      <div className="w-full justify-center mx-auto mb-12">
+      <div className="w-full justify-center mx-auto mb-12 pt-4">
         <h1 className="sm:text-md md:text-l l:text-xl xl:text-2xl text-center no-underline text-grey-darkest hover:text-blue-dark mb-8 font-semibold">
           Frequently Asked Questions
         </h1>
         {/* Question/Answer Components */}
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-4 px-4">
           <QA
             question="Why are evaluations important?"
             answer="Evaluations provide a detailed review of a course that covers
