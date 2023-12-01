@@ -82,11 +82,17 @@ const Login = () => {
 
       {/* Login Button */}
       <button className="bg-blue-600 text-white px-10 py-3 rounded-lg hover:bg-blue-700 flex gap-2 items-center justify-center mt-2 font-semibold">
-        Login <IoMdPerson className="text-lg" />
+        {loading ? (
+          <ClipLoader color="#ffffff" size="26px" />
+        ) : (
+          <>
+            Login <IoMdPerson className="text-lg" />
+          </>
+        )}
       </button>
 
       <p className="mt-7 text-lg">
-        Don't have an account yet?{" "}
+        Don&apos;t have an account yet?{" "}
         <Link to="/register" replace={true} className="text-blue-500 underline">
           Register here
         </Link>

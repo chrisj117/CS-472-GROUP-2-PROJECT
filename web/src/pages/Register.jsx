@@ -3,7 +3,7 @@ import InputField from "../components/InputField.jsx"
 import { RegisterAuth } from "../utilities/Auth.jsx"
 import FormError from "../components/FormError.jsx"
 import FormSuccess from "../components/FormSuccess.jsx"
-import { Link, useNavigate } from "react-router-dom"
+import { Link } from "react-router-dom"
 import { IoMdPersonAdd } from "react-icons/io"
 import Popup from "reactjs-popup"
 import { ClipLoader } from "react-spinners"
@@ -33,7 +33,8 @@ const Register = () => {
   }
 
   const handleRegister = async (e) => {
-    if (!setSubmitting) setSubmitting(true)
+    if (!submitting) setSubmitting(true)
+    else return
 
     e.preventDefault()
     setLoading(true)
@@ -156,7 +157,7 @@ const Register = () => {
           <ClipLoader color="#ffffff" size="26px" />
         ) : (
           <>
-            Register <IoMdPersonAdd className="text-lg" />{" "}
+            Register <IoMdPersonAdd className="text-lg" />
           </>
         )}
       </button>
