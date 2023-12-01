@@ -4,7 +4,7 @@ from rest_framework import status, views
 from rest_framework.response import Response
 from review.models import Review
 from review.serializers import ReviewSerializer
-from school.models import Course, School
+from school.models import Course, School, Professor
 
 
 class ReviewAPIView(views.APIView):
@@ -64,6 +64,28 @@ class ReviewAPIView(views.APIView):
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
+        # Handle professor identifier
+        professor_identifier = data.pop("professor", None)
+        if professor_identifier:
+            try:
+                # Check if it's a valid UUID
+                if uuid.UUID(professor_identifier):
+                    professor = Professor.objects.get(pk=professor_identifier)
+                    data["professor"] = professor.pk
+                else:
+                    raise ValueError
+            except (ValueError, Professor.DoesNotExist):
+                # If not a UUID, try parsing as "first_name last_name"
+                try:
+                    first_name, last_name = professor_identifier.split(maxsplit=1)
+                    professor = Professor.objects.get(first_name=first_name, last_name=last_name)
+                    data["professor"] = professor.pk
+                except (ValueError, Professor.DoesNotExist):
+                    return Response(
+                        {"error": "Invalid professor identifier format or professor not found."},
+                        status=status.HTTP_400_BAD_REQUEST,
+                    )
+
         # Proceed with serialization
         serializer = self.serializer_class(data=data)
         if serializer.is_valid():
@@ -71,11 +93,13 @@ class ReviewAPIView(views.APIView):
             # Fetch the school and course objects to get their short name and code
             school = School.objects.get(pk=serializer.data["school"])
             course = Course.objects.get(pk=serializer.data["course"])
+            professor = Professor.objects.get(pk=serializer.data["professor"])
 
             # Update the response data with school's short name and course code
             response_data = serializer.data
             response_data["school"] = school.short_name
             response_data["course"] = f'{course.subject} {course.catalog_number}'
+            response_data["professor"] = f'{professor.first_name} {professor.last_name}'
 
             return Response(
                 {"message": "Review created successfully", "data": response_data},
@@ -95,8 +119,11 @@ class ReviewAPIView(views.APIView):
                 # Update school's short name and course code
                 school = School.objects.get(pk=response_data["school"])
                 course = Course.objects.get(pk=response_data["course"])
+                professor = Professor.objects.get(pk=response_data["professor"])
+
                 response_data["school"] = school.short_name
                 response_data["course"] = f'{course.subject} {course.catalog_number}'
+                response_data["professor"] = professor.first_name + " " + professor.last_name
 
                 response = {
                     "message": "Review retrieved successfully",
@@ -128,15 +155,22 @@ class ReviewAPIView(views.APIView):
         serializer = self.serializer_class(reviews, many=True)
         response_data = serializer.data
 
-        # Update each review in the response data
-        for review in response_data:
-            school = School.objects.get(pk=review["school"])
-            course = Course.objects.get(pk=review["course"])
-            review["school"] = school.short_name
-            review["course"] = f'{course.subject} {course.catalog_number}'
+        if not review_id and not short_name and not school_short_name and not course_subject_catalog:
+            reviews = Review.objects.all()
+            response_data = []
 
-        response = {"message": "Reviews listed successfully", "data": response_data}
-        return Response(data=response, status=status.HTTP_200_OK)
+            for review in reviews:
+                review_data = ReviewSerializer(review).data
+                review_school = School.objects.get(pk=review_data["school"])
+                review_course = Course.objects.get(pk=review_data["course"])
+                review_professor = Professor.objects.get(pk=review_data["professor"])
+
+                review_data["school"] = review_school.short_name
+                review_data["course"] = f'{review_course.subject} {review_course.catalog_number}'
+                review_data["professor"] = f'{review_professor.first_name} {review_professor.last_name}'
+                response_data.append(review_data)
+
+            return Response(response_data, status=status.HTTP_200_OK)
 
     def course_review_list(self, request, school_short_name, course_subject_catalog):
         try:
@@ -154,8 +188,20 @@ class ReviewAPIView(views.APIView):
             return Response({'error': 'Course not found'}, status=status.HTTP_404_NOT_FOUND)
 
         reviews = Review.objects.filter(course=course)
-        serializer = self.serializer_class(reviews, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        response_data = []
+
+        for review in reviews:
+            review_data = ReviewSerializer(review).data
+            review_school = School.objects.get(pk=review_data["school"])
+            review_course = Course.objects.get(pk=review_data["course"])
+            review_professor = Professor.objects.get(pk=review_data["professor"])
+
+            review_data["school"] = review_school.short_name
+            review_data["course"] = f'{review_course.subject} {review_course.catalog_number}'
+            review_data["professor"] = f'{review_professor.first_name} {review_professor.last_name}'
+            response_data.append(review_data)
+
+        return Response(response_data, status=status.HTTP_200_OK)
 
     def put(self, request, review_id=None):
         try:
@@ -201,18 +247,42 @@ class ReviewAPIView(views.APIView):
 
                 data["course"] = course_pk
 
+        # Handle professor identifier
+            professor_identifier = data.pop("professor", None)
+            if professor_identifier:
+                # Check if identifier is a list and get the first element
+                if isinstance(professor_identifier, list) and professor_identifier:
+                    professor_identifier = professor_identifier[0]
+
+                try:
+                    uuid.UUID(professor_identifier)
+                    professor_pk = professor_identifier
+                except ValueError:
+                    try:
+                        first_name, last_name = professor_identifier.split(maxsplit=1)
+                        professor = Professor.objects.get(first_name=first_name, last_name=last_name)
+                        professor_pk = professor.pk
+                    except (ValueError, Professor.DoesNotExist):
+                        return Response(
+                            {"error": "Invalid professor identifier format or professor not found."},
+                            status=status.HTTP_400_BAD_REQUEST,
+                        )
+            data["professor"] = professor_pk
+
             serializer = self.serializer_class(review_object, data=data)
             if serializer.is_valid():
                 serializer.save()
 
-                # Fetch the school and course objects to get their short name and code
+                # Fetch the school, course, and professor objects
                 school = School.objects.get(pk=serializer.data["school"])
                 course = Course.objects.get(pk=serializer.data["course"])
+                professor = Professor.objects.get(pk=serializer.data["professor"])
 
-                # Update the response data with school's short name and course code
+                # Update the response data with detailed information
                 response_data = serializer.data
                 response_data["school"] = school.short_name
                 response_data["course"] = f'{course.subject} {course.catalog_number}'
+                response_data["professor"] = f'{professor.first_name} {professor.last_name}'
 
                 return Response(
                     {"message": "Review updated successfully", "data": response_data},
