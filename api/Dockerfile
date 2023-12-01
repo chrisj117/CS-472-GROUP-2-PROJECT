@@ -23,5 +23,6 @@ COPY . .
 # The "python manage.py migrate" command migrates the results of 
 # "python manage.py makemigrations" command to the [remote] deployment database
 # which may (supposed to) be different from the [local] development database
-CMD python manage.py migrate && \
+CMD python manage.py migrate --noinput && \
+    python manage.py collectstatic --noinput && \
     gunicorn --bind=0.0.0.0:8000 backend.wsgi
