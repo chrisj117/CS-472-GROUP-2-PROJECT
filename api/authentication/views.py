@@ -51,7 +51,7 @@ class RegisterView(generics.GenericAPIView):
             style='color: #344054; font-size: 16px; font-family:inherit; font-weight: 400; line-height: 24px; word-wrap: break-word;'>
             <br>
             <br>
-            <h2 style='color: #344054;'>Welcome to MyCourseEvaluation, Daniel</h2>
+            <h2 style='color: #344054;'>Welcome to MyCourseEvaluation, {user.username}</h2>
                 <br />
                 Your account is almost ready.
                 <br /><br />
