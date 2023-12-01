@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable react-refresh/only-export-components */
+/* eslint-disable react-hooks/exhaustive-deps */
 
 import { createContext, useContext, useMemo } from "react"
 import useLocalStorage from "./useLocalStorage"
@@ -26,7 +27,7 @@ export const AuthProvider = ({ children }) => {
       authProviderLogin,
       authProviderLogout,
     }),
-    [user, username]
+    [user]
   )
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
