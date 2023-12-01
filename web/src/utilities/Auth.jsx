@@ -16,7 +16,13 @@ export async function LoginAuth(data) {
       // console.log(err.response.data)
       // console.log(err.response.status)
       // console.log(err.response.headers)
-      return "ERROR: Invalid Credentials."
+      if (
+        err.response.data.detail &&
+        err.response.data.detail.includes("Email is not verified")
+      ) {
+        return "ERROR: Email is not verified."
+      }
+      return "ERROR: Invalid credentials."
     } else {
       return `ERROR: ${err.message}`
     }
@@ -46,9 +52,6 @@ export async function RegisterAuth(data) {
   } catch (err) {
     if (err.response) {
       // Not in the 200 response range
-      // console.log(err.response.data)
-      // console.log(err.response.status)
-      // console.log(err.response.headers)
       if (err.response.data.errors.email) {
         return "ERROR: This email is already in use."
       }

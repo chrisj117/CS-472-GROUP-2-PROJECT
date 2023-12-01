@@ -5,6 +5,7 @@ import FormSuccess from "../components/FormSuccess.jsx"
 import { LoginAuth } from "../utilities/Auth.jsx"
 import { Link, useNavigate } from "react-router-dom"
 import { IoMdPerson } from "react-icons/io"
+import { useAuth } from "../utilities/AuthProvider.jsx"
 
 const Login = () => {
   const [email, setEmail] = useState("")
@@ -12,10 +13,11 @@ const Login = () => {
   const [error, setError] = useState("")
   const [success, setSuccess] = useState("")
   const [loading, setLoading] = useState(false)
+  const { authProviderLogin } = useAuth()
 
   const navigate = useNavigate()
 
-  const handleSubmit = async (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault()
     setLoading(true)
 
@@ -30,22 +32,20 @@ const Login = () => {
       }
     }
 
-    console.log(loginResult)
-
     setError("")
     setSuccess(
       "Login Successful, please wait a moment before being redirected."
     )
 
     setTimeout(() => {
-      // authProviderLogin()
-      // navigate("/")
+      authProviderLogin(loginResult.tokens)
+      navigate("/")
     }, 2000)
   }
 
   return (
     <form
-      onSubmit={handleSubmit}
+      onSubmit={handleLogin}
       className="max-w-screen-xl mx-auto flex flex-col items-center h-[calc(100vh-94px)]"
     >
       {/* Login Page Heading */}

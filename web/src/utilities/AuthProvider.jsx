@@ -7,13 +7,11 @@ export const AuthProvider = ({ children }) => {
   const [username, setUsername] = useLocalStorage("username", null)
 
   const authProviderLogin = (token, username) => {
-    if (token) {
-      setUser(token)
-      setUsername(username)
-    }
+    setUser(token)
+    setUsername(username)
   }
 
-  const authProviderLogout = (token) => {
+  const authProviderLogout = () => {
     setUser(null)
     setUsername(null)
   }
