@@ -2,8 +2,8 @@ import { useState } from "react"
 import InputField from "../components/InputField.jsx"
 import FormError from "../components/FormError.jsx"
 import FormSuccess from "../components/FormSuccess.jsx"
-import { LoginAuth } from "../utilities/Auth.js"
-import { Link } from "react-router-dom"
+import { LoginAuth } from "../utilities/Auth.jsx"
+import { Link, useNavigate } from "react-router-dom"
 import { IoMdPerson } from "react-icons/io"
 
 const Login = () => {
@@ -11,15 +11,36 @@ const Login = () => {
   const [password, setPassword] = useState("")
   const [error, setError] = useState("")
   const [success, setSuccess] = useState("")
+  const [loading, setLoading] = useState(false)
+
+  const navigate = useNavigate()
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+    setLoading(true)
 
     const loginResult = await LoginAuth({ email: email, password: password })
 
-    if (loginResult.includes("ERROR:")) {
-      setError(loginResult.substring(7))
+    if (typeof loginResult === "string") {
+      if (loginResult.includes("ERROR:")) {
+        setError(loginResult.substring(7))
+        setSuccess("")
+        setLoading(false)
+        return
+      }
     }
+
+    console.log(loginResult)
+
+    setError("")
+    setSuccess(
+      "Login Successful, please wait a moment before being redirected."
+    )
+
+    setTimeout(() => {
+      // authProviderLogin()
+      // navigate("/")
+    }, 2000)
   }
 
   return (

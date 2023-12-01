@@ -1,6 +1,6 @@
 import { useState } from "react"
 import InputField from "../components/InputField.jsx"
-import { LoginAuth, RegisterAuth } from "../utilities/Auth.js"
+import { LoginAuth, RegisterAuth } from "../utilities/Auth.jsx"
 import FormError from "../components/FormError.jsx"
 import FormSuccess from "../components/FormSuccess.jsx"
 import { useNavigate } from "react-router-dom"
@@ -13,11 +13,13 @@ const Register = () => {
   const [confirmPassword, setConfirmPassword] = useState("")
   const [error, setError] = useState("")
   const [success, setSuccess] = useState("")
+  const [loading, setLoading] = useState(false)
 
   const navigate = useNavigate()
 
-  const handleSubmit = async (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault()
+    setLoading(true)
 
     const registerResult = await RegisterAuth({
       email: email,
@@ -30,6 +32,7 @@ const Register = () => {
       if (registerResult.includes("ERROR:")) {
         setError(registerResult.substring(7))
         setSuccess("")
+        setLoading(false)
         return
       }
     }
@@ -39,31 +42,30 @@ const Register = () => {
       "Registration Successful, please wait a moment before being redirected."
     )
 
-    let loginResult
-    setTimeout(async () => {
-      loginResult = await LoginAuth({
-        email: email,
-        password: password,
-      })
-    }, 500)
+    const loginResult = await LoginAuth({
+      email: email,
+      password: password,
+    })
 
-    if (loginResult.includes("ERROR:")) {
-      setError("Login Failed. Redirecting to login page.")
-      setSuccess("")
-      setTimeout(() => {
-        navigate("/login")
-      }, 500)
-      return
+    if (typeof registerResult === "string") {
+      if (loginResult.includes("ERROR:")) {
+        setError("Login Failed. Redirecting to login page.")
+        setSuccess("")
+        setTimeout(() => {
+          navigate("/login")
+        }, 1500)
+        return
+      }
     }
 
     setTimeout(() => {
       navigate("/")
-    }, 1500)
+    }, 2000)
   }
 
   return (
     <form
-      onSubmit={handleSubmit}
+      onSubmit={handleRegister}
       className="max-w-screen-xl mx-auto flex flex-col items-center h-[calc(100vh-94px)]"
     >
       {/* Account registration page banner */}

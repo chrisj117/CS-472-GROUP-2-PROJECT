@@ -6,9 +6,11 @@ import { MdSchool } from "react-icons/md"
 import { GiHamburgerMenu } from "react-icons/gi"
 import { IoMdClose } from "react-icons/io"
 import { useState } from "react"
+import { useAuth } from "../utilities/AuthProvider"
 
 const Navbar = ({ darkMode, toggleDarkMode }) => {
   const [hamburgerMenu, setHamburgerMenu] = useState(false)
+  // const { user, username } = useAuth()
 
   return (
     <nav>
@@ -81,9 +83,13 @@ const Navbar = ({ darkMode, toggleDarkMode }) => {
             </Link>
           </button>
           <button onClick={() => setHamburgerMenu(false)}>
-            <Link to="/login" className="hover:underline xl:text-lg">
-              Login
-            </Link>
+            {user ? (
+              <p>Welcome, {username}</p>
+            ) : (
+              <Link to="/login" className="hover:underline xl:text-lg">
+                Login
+              </Link>
+            )}
           </button>
         </div>
       ) : null}
