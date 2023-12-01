@@ -6,6 +6,7 @@ import { LoginAuth } from "../utilities/Auth.jsx"
 import { Link, useNavigate } from "react-router-dom"
 import { IoMdPerson } from "react-icons/io"
 import { useAuth } from "../utilities/AuthProvider.jsx"
+import { ClipLoader } from "react-spinners"
 
 const Login = () => {
   const [email, setEmail] = useState("")
@@ -81,7 +82,7 @@ const Login = () => {
       ) : null}
 
       {/* Login Button */}
-      <button className="bg-blue-600 text-white px-10 py-3 rounded-lg hover:bg-blue-700 flex gap-2 items-center justify-center mt-2 font-semibold">
+      <button className="bg-blue-600 text-white px-10 py-3 rounded-lg hover:bg-blue-700 flex mt-2 gap-2 items-center justify-center font-semibold">
         {loading ? (
           <ClipLoader color="#ffffff" size="26px" />
         ) : (
