@@ -4,18 +4,18 @@ import { BsFillEnvelopePaperFill } from "react-icons/bs"
 const RequestSchool = () => {
   return (
     <div className="max-w-screen-xl mx-auto flex flex-col items-center h-[calc(100vh-94px)]">
-      <h2 className="text-3xl font-bold mb-12 mt-8">Request School</h2>
+      <h2 className="sm:text-lg md:text-xl lg:text-2xl xl:text-3xl font-bold mb-12 mt-8">Request School</h2>
       <div className="w-full flex flex-col items-center gap-4">
         {/* Check if your school is already here */}
         <div className="mb-4 flex flex-col w-full">
-          <p className="mb-4 text-xl text-center">
+          <p className="sm:text-base md:text-base lg:text-xl xl:text-2xl mb-4 text-center">
             <span className="font-bold text-blue-600">Wait!</span> Check if your
             school is already here:
           </p>
           <Searchbar
             searchingSchools={true}
             searchPlaceholder="Ex: University of Nevada, Las Vegas / UNLV"
-            className="w-full mb-8"
+            className="w-full mb-8 truncate"
           />
         </div>
         {/* Request a School Form */}
@@ -23,27 +23,29 @@ const RequestSchool = () => {
 
         <div className="flex flex-col gap-3 w-full">
           <div className="mb-4">
-            <p className="mb-4 text-center text-xl">
+            <p className="sm:text-base md:text-lg lg:text-xl xl:text-2xl mb-4 text-center">
               If you can&apos;t find your institution above, submit your
               school&apos;s information below!
             </p>
-            <label className="flex flex-col gap-1 text-lg">
+            <label className="flex flex-col gap-1 sm:text-sm md:text-base lg:text-lg">
               Enter School Name
               <input
                 type="text"
                 placeholder="Ex: University of Nevada Las Vegas"
-                className="px-4 py-2 w-full border-2 rounded"
+                className="p-2 w-full border-2 rounded truncate"
               />
             </label>
           </div>
 
           <div className="mb-4">
-            <label className="block mb-2">Enter School Website</label>
+            <label className="flex flex-col gap-1 sm:text-sm md:text-base lg:text-lg">
+            Enter School Website
             <input
               type="text"
               placeholder="Ex: https://www.unlv.edu/"
-              className="p-2 w-full border-2 rounded"
+              className="p-2 w-full border-2 rounded truncate"
             />
+            </label>
           </div>
         </div>
 
