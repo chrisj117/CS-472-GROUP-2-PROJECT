@@ -64,14 +64,10 @@ const Login = () => {
         Login <IoMdPerson className="text-lg" />
       </button>
 
-      <p className="dark:text-gray-300 mt-7">
+      <p className="mt-7 text-lg">
         Don't have an account yet?{" "}
-        <Link
-          to="/register"
-          replace={true}
-          className="text-blue-500 underline font-semibold"
-        >
-          Create one here
+        <Link to="/register" replace={true} className="text-blue-500 underline">
+          Register here
         </Link>
       </p>
     </form>

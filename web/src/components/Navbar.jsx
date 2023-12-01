@@ -28,19 +28,13 @@ const Navbar = ({ darkMode, toggleDarkMode }) => {
         {/* Top Right Corner */}
         <div className="hidden md:flex gap-6 items-center">
           <button
-            className="px-2 py-2 xl:px-4 xl:py-2 rounded-lg xl:border-2 border-gray-300 dark:border-gray-600"
+            className="px-2 py-2 xl:px-4 xl:py-2 rounded-lg border-2 border-gray-300 dark:border-gray-600"
             onClick={() => toggleDarkMode()}
           >
             {darkMode == "true" ? (
-              <div className="flex gap-2 items-center">
-                <span className="hidden xl:inline-block">Dark Mode</span>{" "}
-                <BsMoon fontSize={24} />
-              </div>
+              <BsMoon fontSize={24} />
             ) : (
-              <div className="flex gap-2 items-center">
-                <span className="hidden xl:inline-block">Light Mode</span>{" "}
-                <BsSun fontSize={24} />
-              </div>
+              <BsSun fontSize={24} />
             )}
           </button>
           <Link to="/about" className="hover:underline xl:text-lg">
@@ -51,9 +45,6 @@ const Navbar = ({ darkMode, toggleDarkMode }) => {
           </Link>
           <Link to="/login" className="hover:underline xl:text-lg">
             Login
-          </Link>
-          <Link to="/register" className="hover:underline xl:text-lg">
-            Register
           </Link>
         </div>
         <div className="inline-block md:hidden">
@@ -70,16 +61,12 @@ const Navbar = ({ darkMode, toggleDarkMode }) => {
         </div>
       </div>
       {hamburgerMenu ? (
-        <div className="flex flex-col gap-6 md:hidden justify-center items-center py-6 border-b-2 border-gray-200 dark:border-gray-700">
+        <div className="flex flex-col gap-6 md:hidden justify-center items-center py-6 border-b-2 border-gray-300 dark:border-gray-600">
           <button className="px-2 py-1" onClick={() => toggleDarkMode()}>
             {darkMode == "true" ? (
-              <div className="flex gap-2 items-center">
-                <span className="">Dark Mode</span> <BsMoon fontSize={21} />
-              </div>
+              <BsMoon fontSize={21} />
             ) : (
-              <div className="flex gap-2 items-center">
-                <span className="">Light Mode</span> <BsSun fontSize={21} />
-              </div>
+              <BsSun fontSize={21} />
             )}
           </button>
 
@@ -96,11 +83,6 @@ const Navbar = ({ darkMode, toggleDarkMode }) => {
           <button onClick={() => setHamburgerMenu(false)}>
             <Link to="/login" className="hover:underline xl:text-lg">
               Login
-            </Link>
-          </button>
-          <button onClick={() => setHamburgerMenu(false)}>
-            <Link to="/register" className="hover:underline xl:text-lg">
-              Register
             </Link>
           </button>
         </div>
