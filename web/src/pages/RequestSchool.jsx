@@ -25,7 +25,7 @@ const RequestSchool = () => {
           <div className="mb-4">
             <p className="text-base md:text-lg lg:text-xl xl:text-2xl mb-4 text-center">
               If you can&apos;t find your institution above, submit your
-              school&apos;s information below!
+              school&apos;s information below.
             </p>
             <label className="flex flex-col gap-1 text-sm md:text-base lg:text-lg px-4">
               Enter School Name
@@ -49,8 +49,9 @@ const RequestSchool = () => {
           </div>
         </div>
 
-        <button className="bg-blue-600 text-white px-5 py-3 rounded-lg hover:bg-blue-700 flex gap-3 items-center justify-center">
-          <span>Submit School</span> <BsFillEnvelopePaperFill />
+        <button className="bg-blue-600 text-white px-10 py-3 rounded-lg hover:bg-blue-700 flex gap-3 items-center justify-center">
+          <span className="font-semibold">Request School</span>{" "}
+          <BsFillEnvelopePaperFill />
         </button>
       </div>
     </div>
