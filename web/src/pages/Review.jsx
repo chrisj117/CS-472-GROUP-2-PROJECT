@@ -1,12 +1,12 @@
 // import { useState } from 'react';
-import Searchbar from '../components/Searchbar';
-import RatingBar from '../components/RatingBar';
+import Searchbar from "../components/Searchbar"
+import RatingBar from "../components/RatingBar"
 import {
   BsChevronDown,
   BsFillEnvelopePaperFill,
   BsFillPencilFill,
-} from 'react-icons/bs';
-import ReviewCard from '../components/ReviewCard';
+} from "react-icons/bs"
+import ReviewCard from "../components/ReviewCard"
 // import ReviewCard from '../components/ReviewCard';
 
 const Review = () => {
@@ -16,7 +16,7 @@ const Review = () => {
   // const [schoolNameShort, setSchoolNameShort] = useState('UNLV');
 
   return (
-    <div className="max-w-screen-xl mx-auto mt-8 flex flex-col">
+    <div className="max-w-screen-xl mx-auto mt-8 flex flex-col min-h-[calc(100vh-98px)]">
       {/* Top of screen (below nav bar) */}
       <div className="flex flex-col gap-4 mb-8 border-b-2 border-gray-100 pb-10">
         <h2 className="font-bold text-3xl">
@@ -405,6 +405,6 @@ const Review = () => {
         </div>
       </div>
     </div>
-  );
-};
-export default Review;
+  )
+}
+export default Review

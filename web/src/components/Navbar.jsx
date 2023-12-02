@@ -44,7 +44,7 @@ const Navbar = ({ darkMode, toggleDarkMode }) => {
               Evaluation
             </span>
           </div>
-          <MdSchool className="text-5xl xl:text-4xl" />
+          <MdSchool className="text-5xl xl:text-5xl" />
         </Link>
         {/* Top Right Corner */}
         <div className="hidden md:flex gap-5 items-center">
@@ -66,82 +66,111 @@ const Navbar = ({ darkMode, toggleDarkMode }) => {
           </Link>
 
           {user ? (
-            <div className="flex gap-4 items-center justify-center">
-              <Popup
-                trigger={
-                  <p className="border-2 border-zinc-300 dark:border-zinc-600 rounded-md px-4 py-2">
-                    <span className="font-bold flex gap-2 items-center justify-center">
-                      <span className="overflow-ellipsis whitespace-nowrap overflow-hidden max-w-[200px]">
-                        {username}
-                      </span>
-                      <FaChevronDown />
+            <Popup
+              trigger={
+                <p className="border-2 border-zinc-300 dark:border-zinc-600 rounded-md px-4 py-2">
+                  <span className="font-bold flex gap-2 items-center justify-center">
+                    <span className="overflow-ellipsis whitespace-nowrap overflow-hidden max-w-[200px]">
+                      {username}
                     </span>
-                  </p>
-                }
-                position="bottom right"
-                on="hover"
-                closeOnDocumentClick
-                mouseLeaveDelay={300}
-                mouseEnterDelay={0}
-                contentStyle={{ padding: "0px", border: "none" }}
-                arrow={false}
-              >
-                <div className={`w-[180px] flex flex-col py-1`}>
-                  <Link
-                    to="profile"
-                    className={`px-3 py-2 rounded-t-lg flex gap-1 items-center justify-between w-full ${
-                      darkMode == "true"
-                        ? "bg-zinc-600 hover:bg-zinc-700 text-white"
-                        : "bg-zinc-300 hover:bg-zinc-400"
-                    }`}
-                  >
-                    Profile <IoMdPerson className="text-lg" />
-                  </Link>
-                  <button
-                    className="rounded-b-lg bg-red-600 dark:text-white text-white px-3 py-2 hover:bg-red-700 dark:hover:text-white flex"
-                    onClick={handleLogout}
-                  >
-                    {loading ? (
-                      <div className="py-0.5 flex items-center justify-center">
-                        <BeatLoader color="#ffffff" size="8px" />
-                      </div>
-                    ) : (
-                      <div className="flex gap-1 justify-between w-full items-center  ">
-                        <>Logout</> <MdLogout className="text-lg" />
-                      </div>
-                    )}
-                  </button>
-                </div>
-              </Popup>
-            </div>
+                    <FaChevronDown className="text-sm" />
+                  </span>
+                </p>
+              }
+              position="bottom right"
+              on="click"
+              closeOnDocumentClick
+              mouseLeaveDelay={300}
+              mouseEnterDelay={0}
+              contentStyle={{ padding: "0px", border: "none" }}
+              arrow={false}
+            >
+              <div className={`w-[180px] flex flex-col py-1`}>
+                <Link
+                  to="profile"
+                  className={`px-3 py-2 outline-none rounded-t-lg flex gap-1 items-center justify-between w-full ${
+                    darkMode == "true"
+                      ? "bg-zinc-600 hover:bg-zinc-700 text-white"
+                      : "bg-zinc-200 hover:bg-zinc-400"
+                  }`}
+                >
+                  Profile <IoMdPerson className="text-lg" />
+                </Link>
+                <button
+                  className="rounded-b-lg bg-red-600 dark:text-white text-white px-3 py-2 hover:bg-red-700 dark:hover:text-white"
+                  onClick={handleLogout}
+                >
+                  {loading ? (
+                    <div className="py-0.5 flex items-center justify-center">
+                      <BeatLoader color="#ffffff" size="8px" />
+                    </div>
+                  ) : (
+                    <div className="flex gap-1 justify-between w-full items-center">
+                      <>Logout</> <MdLogout className="text-lg" />
+                    </div>
+                  )}
+                </button>
+              </div>
+            </Popup>
           ) : (
             <Link to="/login" className="hover:underline">
               Login
             </Link>
           )}
         </div>
-        <div className="inline-block md:hidden">
+        <div className="flex gap-4 justify-center items-center md:hidden">
+          {user ? (
+            <Popup
+              trigger={
+                <p className="border-2 border-zinc-300 dark:border-zinc-600 rounded-md px-4 py-2">
+                  <span className="font-bold flex gap-2 items-center justify-center">
+                    <span className="overflow-ellipsis whitespace-nowrap overflow-hidden max-w-[140px]">
+                      {username}
+                    </span>
+                    <FaChevronDown className="text-sm" />
+                  </span>
+                </p>
+              }
+              position="bottom right"
+              on="hover"
+              closeOnDocumentClick
+              mouseLeaveDelay={300}
+              mouseEnterDelay={0}
+              contentStyle={{ padding: "0px", border: "none" }}
+              arrow={false}
+            >
+              <div className={`w-[140px] flex flex-col py-1`}>
+                <Link
+                  to="profile"
+                  className={`px-3 py-2 rounded-t-lg outline-noneflex gap-1 items-center justify-between w-full ${
+                    darkMode == "true"
+                      ? "bg-zinc-600 hover:bg-zinc-700 text-white"
+                      : "bg-zinc-300 hover:bg-zinc-400"
+                  }`}
+                >
+                  Profile <IoMdPerson className="text-lg" />
+                </Link>
+                <button
+                  className="rounded-b-lg bg-red-600 dark:text-white text-white px-3 py-2 hover:bg-red-700 dark:hover:text-white flex"
+                  onClick={handleLogout}
+                >
+                  {loading ? (
+                    <div className="py-0.5 flex items-center justify-center">
+                      <BeatLoader color="#ffffff" size="8px" />
+                    </div>
+                  ) : (
+                    <div className="flex gap-1 justify-between w-full items-center  ">
+                      <>Logout</> <MdLogout className="text-lg" />
+                    </div>
+                  )}
+                </button>
+              </div>
+            </Popup>
+          ) : null}
           <button
             onClick={() => setHamburgerMenu(!hamburgerMenu)}
             className="flex items-center justify-center text-center gap-5"
           >
-            {user ? (
-              <Popup
-                trigger={
-                  <p>
-                    <span className="font-bold">Hello, </span>
-                    {username}!
-                  </p>
-                }
-                position="right top"
-                on="hover"
-                closeOnDocumentClick
-                mouseLeaveDelay={300}
-                mouseEnterDelay={0}
-                contentStyle={{ padding: "0px", border: "none" }}
-                arrow={false}
-              ></Popup>
-            ) : null}
             {hamburgerMenu ? (
               <IoMdClose fontSize={40} />
             ) : (
@@ -174,21 +203,8 @@ const Navbar = ({ darkMode, toggleDarkMode }) => {
             </Link>
           </button>
 
-          {user ? (
-            <div className="flex flex-col gap-5">
-              <button
-                className="rounded-md bg-red-600 dark:text-white text-white px-2 py-1.5 hover:bg-red-600 dark:hover:text-white flex items-center justify-center"
-                onClick={handleLogout}
-              >
-                {loading ? (
-                  <BeatLoader color="#ffffff" size="14px" />
-                ) : (
-                  <MdLogout className="text-xl" />
-                )}
-              </button>
-            </div>
-          ) : (
-            <button onClick={() => setHamburgerMenu(false)} className="mt-4">
+          {user ? null : (
+            <button onClick={() => setHamburgerMenu(false)}>
               <Link to="/login" className="hover:underline">
                 Login
               </Link>

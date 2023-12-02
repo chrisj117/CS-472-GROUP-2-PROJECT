@@ -1,12 +1,11 @@
 import { Outlet } from "react-router-dom"
 import Navbar from "../components/Navbar"
 import { useState } from "react"
-import { AuthProvider } from "../utilities/AuthProvider"
 
 const Root = () => {
   const [darkMode, setDarkMode] = useState(() => {
     const storedDarkMode = window.localStorage.getItem("DARK_MODE")
-    return storedDarkMode !== null ? storedDarkMode : false
+    return storedDarkMode !== null ? storedDarkMode : "false"
   })
 
   const toggleDarkMode = () => {

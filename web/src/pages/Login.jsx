@@ -49,7 +49,7 @@ const Login = () => {
   return (
     <form
       onSubmit={handleLogin}
-      className="max-w-screen-xl mx-auto flex flex-col items-center h-[calc(100vh-94px)]"
+      className="max-w-screen-xl mx-auto flex flex-col items-center h-[calc(100vh-98px)]"
     >
       {/* Login Page Heading */}
       <h2 className="text-3xl font-bold mb-12 mt-8">Login</h2>
@@ -102,7 +102,7 @@ const Login = () => {
           </>
         )}
       </button>
-      <p className="mt-4 text-lg">
+      <p className="mt-6 text-lg">
         Don&apos;t have an account yet?{" "}
         <Link to="/register" replace={true} className="text-blue-500 underline">
           Register here

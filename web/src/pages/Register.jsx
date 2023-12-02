@@ -67,7 +67,7 @@ const Register = () => {
   return (
     <form
       onSubmit={handleRegister}
-      className="max-w-screen-xl mx-auto flex flex-col items-center h-[calc(100vh-94px)]"
+      className="max-w-screen-xl mx-auto flex flex-col items-center min-h-[calc(100vh-94px)]"
     >
       <Popup
         open={modalOpen}
