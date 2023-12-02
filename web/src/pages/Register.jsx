@@ -150,7 +150,7 @@ const Register = () => {
       {/* Register button */}
       <button className="bg-blue-600 text-white px-10 py-3 rounded-lg hover:bg-blue-700 flex mt-2 gap-2 items-center justify-center font-semibold">
         {loading ? (
-          <BeatLoader color="#ffffff" size="16px" />
+          <BeatLoader color="#ffffff" size="14px" />
         ) : (
           <>
             Register <IoMdPersonAdd className="text-lg" />

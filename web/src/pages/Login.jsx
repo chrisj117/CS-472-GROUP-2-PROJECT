@@ -42,7 +42,7 @@ const Login = () => {
 
     setTimeout(() => {
       authProviderLogin(loginResult.tokens.access, loginResult.username)
-      navigate("/profile")
+      navigate("/")
     }, 1000)
   }
 
@@ -53,7 +53,6 @@ const Login = () => {
     >
       {/* Login Page Heading */}
       <h2 className="text-3xl font-bold mb-12 mt-8">Login</h2>
-
       {/* Email Input */}
       <InputField
         labelName="E-mail"
@@ -64,17 +63,28 @@ const Login = () => {
           setEmail(e.target.value)
         }}
       />
-
       {/* Password Input */}
-      <InputField
-        labelName="Password"
-        inputType="password"
-        inputID="password"
-        inputPlaceholder="Password must be between 6-68 characters"
-        onChange={(e) => {
-          setPassword(e.target.value)
-        }}
-      />
+      <div className="w-full">
+        <InputField
+          labelName="Password"
+          inputType="password"
+          inputID="password"
+          inputPlaceholder="Password must be between 6-68 characters"
+          onChange={(e) => {
+            setPassword(e.target.value)
+          }}
+        />
+        <span className="text-sm">
+          Forgot password?{" "}
+          <Link
+            to="/password-reset"
+            replace={true}
+            className="text-blue-500 underline"
+          >
+            Reset here
+          </Link>
+        </span>
+      </div>
 
       {error || success ? (
         <>
@@ -82,19 +92,17 @@ const Login = () => {
           <FormSuccess success={success} />
         </>
       ) : null}
-
       {/* Login Button */}
       <button className="bg-blue-600 text-white px-10 py-3 rounded-lg hover:bg-blue-700 flex mt-2 gap-2 items-center justify-center font-semibold">
         {loading ? (
-          <BeatLoader color="#ffffff" size="16px" />
+          <BeatLoader color="#ffffff" size="14px" />
         ) : (
           <>
             Login <IoMdPerson className="text-lg" />
           </>
         )}
       </button>
-
-      <p className="mt-7 text-lg">
+      <p className="mt-4 text-lg">
         Don&apos;t have an account yet?{" "}
         <Link to="/register" replace={true} className="text-blue-500 underline">
           Register here
