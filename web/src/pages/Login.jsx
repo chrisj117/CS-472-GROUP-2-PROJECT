@@ -95,7 +95,7 @@ const Login = () => {
       {/* Login Button */}
       <button className="bg-blue-600 text-white px-10 py-3 rounded-lg hover:bg-blue-700 flex mt-2 gap-2 items-center justify-center font-semibold">
         {loading ? (
-          <BeatLoader color="#ffffff" size="14px" />
+          <BeatLoader color="#ffffff" size="10px" />
         ) : (
           <>
             Login <IoMdPerson className="text-lg" />

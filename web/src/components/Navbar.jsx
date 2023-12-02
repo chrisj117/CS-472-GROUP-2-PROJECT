@@ -142,7 +142,7 @@ const Navbar = ({ darkMode, toggleDarkMode }) => {
               <div className={`w-[140px] flex flex-col py-1`}>
                 <Link
                   to="profile"
-                  className={`px-3 py-2 rounded-t-lg outline-noneflex gap-1 items-center justify-between w-full ${
+                  className={`px-3 py-2 rounded-t-lg outline-none flex gap-1 items-center justify-between w-full ${
                     darkMode == "true"
                       ? "bg-zinc-600 hover:bg-zinc-700 text-white"
                       : "bg-zinc-300 hover:bg-zinc-400"

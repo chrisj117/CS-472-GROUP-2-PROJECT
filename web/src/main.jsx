@@ -14,6 +14,7 @@ import Home from "./pages/Home"
 import Login from "./pages/Login"
 import Register from "./pages/Register"
 import { AuthProvider } from "./utilities/AuthProvider"
+import UnProtectedRoute from "./utilities/UnProtectedRoute"
 import ProtectedRoute from "./utilities/ProtectedRoute"
 import Profile from "./pages/Profile"
 
@@ -34,8 +35,22 @@ const router = createBrowserRouter([
       { index: true, element: <Home /> },
       { path: "about", element: <About /> },
       { path: "request-school", element: <RequestSchool /> },
-      { path: "login", element: <Login /> },
-      { path: "register", element: <Register /> },
+      {
+        path: "login",
+        element: (
+          <UnProtectedRoute>
+            <Login />
+          </UnProtectedRoute>
+        ),
+      },
+      {
+        path: "register",
+        element: (
+          <UnProtectedRoute>
+            <Register />
+          </UnProtectedRoute>
+        ),
+      },
       {
         path: "profile",
         element: (
