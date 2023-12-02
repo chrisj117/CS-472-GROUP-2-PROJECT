@@ -8,7 +8,7 @@ import {
 export async function LoginAuth(data) {
   try {
     const response = await api.post("/auth/login/", data)
-    if (response && response.data) return response.data.data
+    if (response) return response.data
   } catch (err) {
     if (err.response) {
       // Not in the 200 response range
@@ -48,7 +48,7 @@ export async function RegisterAuth(data) {
 
   try {
     const response = await api.post("/auth/register/", data)
-    if (response && response.data) return response.data.data
+    if (response) return response.data
   } catch (err) {
     if (err.response) {
       // Not in the 200 response range

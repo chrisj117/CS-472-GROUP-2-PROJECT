@@ -6,7 +6,7 @@ import FormSuccess from "../components/FormSuccess.jsx"
 import { Link } from "react-router-dom"
 import { IoMdPersonAdd } from "react-icons/io"
 import Popup from "reactjs-popup"
-import { ClipLoader } from "react-spinners"
+import { BeatLoader } from "react-spinners"
 import { FaArrowRight } from "react-icons/fa6"
 
 const Register = () => {
@@ -19,7 +19,6 @@ const Register = () => {
   const [success, setSuccess] = useState("")
   const [loading, setLoading] = useState(false)
   const [modalOpen, setModalOpen] = useState(false)
-  const [submitting, setSubmitting] = useState(false)
 
   const contentStyle = { background: "rgb(63, 63, 70)" }
   const overlayStyle = { background: "rgba(0,0,0,0.8)" }
@@ -33,11 +32,9 @@ const Register = () => {
   }
 
   const handleRegister = async (e) => {
-    if (!submitting) setSubmitting(true)
-    else return
-
     e.preventDefault()
-    setLoading(true)
+    if (!loading) setLoading(true)
+    else return
 
     const registerResult = await RegisterAuth({
       email: email,
@@ -51,7 +48,6 @@ const Register = () => {
         setError(registerResult.substring(7))
         setSuccess("")
         setLoading(false)
-        setSubmitting(false)
         return
       }
     }
@@ -154,7 +150,7 @@ const Register = () => {
       {/* Register button */}
       <button className="bg-blue-600 text-white px-10 py-3 rounded-lg hover:bg-blue-700 flex mt-2 gap-2 items-center justify-center font-semibold">
         {loading ? (
-          <ClipLoader color="#ffffff" size="26px" />
+          <BeatLoader color="#ffffff" size="16px" />
         ) : (
           <>
             Register <IoMdPersonAdd className="text-lg" />

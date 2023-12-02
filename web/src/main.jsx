@@ -13,18 +13,37 @@ import Review from "./pages/Review"
 import Home from "./pages/Home"
 import Login from "./pages/Login"
 import Register from "./pages/Register"
+import { AuthProvider } from "./utilities/AuthProvider"
+import ProtectedRoute from "./utilities/ProtectedRoute"
+import Profile from "./pages/Profile"
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Root />,
-    errorElement: <NotFound />,
+    element: (
+      <AuthProvider>
+        <Root />
+      </AuthProvider>
+    ),
+    errorElement: (
+      <AuthProvider>
+        <NotFound />
+      </AuthProvider>
+    ),
     children: [
       { index: true, element: <Home /> },
       { path: "about", element: <About /> },
       { path: "request-school", element: <RequestSchool /> },
       { path: "login", element: <Login /> },
       { path: "register", element: <Register /> },
+      {
+        path: "profile",
+        element: (
+          <ProtectedRoute>
+            <Profile />
+          </ProtectedRoute>
+        ),
+      },
       // TEMPORARY: Review page quick access
       {
         path: "review",

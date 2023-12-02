@@ -21,10 +21,8 @@ const Root = () => {
 
   return (
     <main className={`${darkMode == "true" ? "dark" : ""} bg-white`}>
-      <AuthProvider>
-        <Navbar darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
-        <Outlet />
-      </AuthProvider>
+      <Navbar darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
+      <Outlet />
     </main>
   )
 }

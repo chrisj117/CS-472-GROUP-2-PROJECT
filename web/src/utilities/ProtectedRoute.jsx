@@ -1,13 +1,15 @@
 /* eslint-disable react/prop-types */
 
 import { Navigate } from "react-router-dom"
-import { useAuth } from "../hooks/useAuth"
+import { useAuth } from "./AuthProvider"
 
-const ProtectedRoute = ({ children, redirect }) => {
+const ProtectedRoute = ({ children }) => {
   const { user } = useAuth()
+
   if (!user) {
-    return <Navigate to={`${redirect}`} />
+    return <Navigate to="/" />
   }
+
   return children
 }
 export default ProtectedRoute
