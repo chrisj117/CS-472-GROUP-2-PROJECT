@@ -2,7 +2,7 @@ import ReturnHome from "../components/ReturnHome";
 
 const About = () => {
   return (
-    <div className="flex flex-col items-center h-[calc(100vh-94px)] w-screen mx-auto px-4 md:max-w-screen-xl">
+    <div className="flex flex-col items-center h-[calc(100vh-94px)] w-screen mx-auto px-4 md:max-w-screen-xl overflow-auto">
       <h2 className="text-2xl md:text-3xl font-bold mb-8 mt-6">About</h2>
       {/* Middle of page: "About" content */}
       <div className="w-full md:max-w-screen-md">
