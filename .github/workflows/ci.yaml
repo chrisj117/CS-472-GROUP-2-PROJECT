@@ -82,6 +82,7 @@ jobs:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
         with:
           directory: ./web/coverage
+          flags: web
 
   ### api ci pipeline ###
   api:
@@ -114,3 +115,4 @@ jobs:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
         with:
           directory: ./api
+          flags: api
