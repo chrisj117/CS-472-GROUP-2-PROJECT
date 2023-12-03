@@ -51,7 +51,8 @@ urlpatterns = [
     path(f'{base_url}/school/<str:short_name>/reviews/',
          review_views.ReviewAPIView.as_view(), name='school_reviews'),
     # listing reviews for a specific course
-    path(f'{base_url}/reviews/<str:school_short_name>/<str:course_subject_catalog>/', review_views.ReviewAPIView.as_view(), name='course_reviews'),
+    path(f'{base_url}/reviews/<str:short_name>/<str:course_subject_catalog>/',
+         review_views.ReviewAPIView.as_view(), name='course_reviews'),
   
     path(f'{base_url}/school/', school_views.SchoolAPIView.as_view(), name='schools'),
     path(f'{base_url}/school/<str:short_name>/', school_views.SchoolAPIView.as_view(), name='school'),
@@ -61,6 +62,9 @@ urlpatterns = [
     path(f'{base_url}/request-school/', request_school_views.RequestSchoolAPIView.as_view(), name='school_requests'),
     path(f'{base_url}/request-school/<str:school_name>/', request_school_views.RequestSchoolAPIView.as_view(), name='school_request'),
     
+    # listing courses
+#     path(f'{base_url}/school/<str:short_name>/<str:course_subject_catalog>/', school_views.SchoolAPIView.as_view(), name='course'),
+
     # authentication
     path(f'{base_url}/auth/register/', authentication_views.RegisterView.as_view(), name='register'),
     path(f'{base_url}/auth/email-verify/', authentication_views.VerifyEmail.as_view(), name='email-verify'),
