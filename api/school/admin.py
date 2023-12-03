@@ -30,6 +30,7 @@ class CourseAdmin(admin.ModelAdmin):
     )
     list_filter = ("school", "subject")
 
+
 @admin.register(Professor)
 class ProfessorAdmin(admin.ModelAdmin):
     list_display = ("first_name", "last_name", "display_schools")
