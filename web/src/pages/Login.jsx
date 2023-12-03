@@ -2,7 +2,7 @@ import { useState } from "react"
 import InputField from "../components/InputField.jsx"
 import FormError from "../components/FormError.jsx"
 import FormSuccess from "../components/FormSuccess.jsx"
-import { LoginAuth } from "../utilities/Auth.jsx"
+import { LoginAuth, PasswordResetAuth } from "../utilities/Auth.jsx"
 import { Link, useNavigate } from "react-router-dom"
 import { IoMdPerson } from "react-icons/io"
 import { useAuth } from "../utilities/AuthProvider.jsx"
@@ -14,15 +14,41 @@ const Login = () => {
   const [error, setError] = useState("")
   const [success, setSuccess] = useState("")
   const [loading, setLoading] = useState(false)
+  const [loadingForgot, setLoadingForgot] = useState(false)
+  const [resetMessage, setResetMessage] = useState("")
   const { authProviderLogin } = useAuth()
 
   const navigate = useNavigate()
 
+  const handleForgotPassword = async () => {
+    if (!loadingForgot) {
+      setLoadingForgot(true)
+    } else return
+
+    const forgotResult = await PasswordResetAuth({ email: email })
+
+    if (typeof forgotResult === "string") {
+      if (forgotResult.includes("ERROR:")) {
+        setResetMessage(forgotResult.substring(7))
+        setLoadingForgot(false)
+        return
+      }
+    }
+
+    setResetMessage("")
+
+    setTimeout(() => {
+      setResetMessage("Password Reset Email Sent.")
+      setLoadingForgot(false)
+    }, 1000)
+  }
+
   const handleLogin = async (e) => {
     e.preventDefault()
 
-    if (!loading) setLoading(true)
-    else return
+    if (!loading) {
+      setLoading(true)
+    } else return
 
     const loginResult = await LoginAuth({ email: email, password: password })
 
@@ -41,7 +67,12 @@ const Login = () => {
     )
 
     setTimeout(() => {
-      authProviderLogin(loginResult.tokens.access, loginResult.username)
+      authProviderLogin(
+        loginResult.tokens.access,
+        loginResult.username,
+        loginResult.email
+      )
+      setLoading(false)
       navigate("/")
     }, 1000)
   }
@@ -74,15 +105,22 @@ const Login = () => {
             setPassword(e.target.value)
           }}
         />
-        <span className="text-sm">
-          Forgot password?{" "}
-          <Link
-            to="/password-reset"
-            replace={true}
-            className="text-blue-500 underline"
-          >
-            Reset here
-          </Link>
+        <span className="text-sm flex gap-4">
+          <div className="flex gap-1 items-center justify-center">
+            Forgot password?{" "}
+            <button
+              type="button"
+              onClick={handleForgotPassword}
+              className="text-blue-500 underline flex items-center justify-center"
+            >
+              {loadingForgot ? (
+                <BeatLoader color="#ffffff" size="10px" />
+              ) : (
+                <>Reset Here</>
+              )}
+            </button>
+          </div>
+          <span>{resetMessage}</span>
         </span>
       </div>
 
@@ -93,7 +131,7 @@ const Login = () => {
         </>
       ) : null}
       {/* Login Button */}
-      <button className="bg-blue-600 text-white px-10 py-3 rounded-lg hover:bg-blue-700 flex mt-2 gap-2 items-center justify-center font-semibold">
+      <button className="bg-blue-600 text-white px-10 py-3 rounded-lg hover:bg-blue-700 flex mt-8 gap-2 items-center justify-center font-semibold">
         {loading ? (
           <BeatLoader color="#ffffff" size="10px" />
         ) : (

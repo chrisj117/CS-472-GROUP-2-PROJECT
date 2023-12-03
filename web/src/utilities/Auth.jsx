@@ -67,3 +67,20 @@ export async function RegisterAuth(data) {
     }
   }
 }
+
+export async function PasswordResetAuth(data) {
+  if (!EmailRegexTest(data.email)) {
+    return "ERROR: Invalid email format."
+  }
+  try {
+    const response = await api.post("/auth/request-reset-email/", data)
+    if (response) return response.data
+  } catch (err) {
+    if (err.response) {
+      // Not in the 200 response range
+      console.log(`Error: ${err.response}`)
+    } else {
+      console.log(`Error: ${err.message}`)
+    }
+  }
+}

@@ -33,6 +33,7 @@ const Register = () => {
 
   const handleRegister = async (e) => {
     e.preventDefault()
+
     if (!loading) setLoading(true)
     else return
 
@@ -136,10 +137,10 @@ const Register = () => {
 
       {/* Password confirmation input */}
       <InputField
-        labelName="Confirm Password"
+        labelName=""
         inputType="password"
         inputID="confirmPassword"
-        inputPlaceholder="Enter the same password"
+        inputPlaceholder="Confirm Password"
         onChange={(e) => {
           setConfirmPassword(e.target.value)
         }}
@@ -149,7 +150,7 @@ const Register = () => {
       <FormSuccess success={success} />
 
       {/* Register button */}
-      <button className="bg-blue-600 text-white px-10 py-3 rounded-lg hover:bg-blue-700 flex mt-2 gap-2 items-center justify-center font-semibold">
+      <button className="bg-blue-600 text-white px-10 py-3 rounded-lg hover:bg-blue-700 flex mt-8 gap-2 items-center justify-center font-semibold">
         {loading ? (
           <BeatLoader color="#ffffff" size="10px" />
         ) : (

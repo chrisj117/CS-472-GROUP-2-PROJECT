@@ -17,6 +17,7 @@ import { AuthProvider } from "./utilities/AuthProvider"
 import UnProtectedRoute from "./utilities/UnProtectedRoute"
 import ProtectedRoute from "./utilities/ProtectedRoute"
 import Profile from "./pages/Profile"
+import PasswordReset from "./pages/PasswordReset.jsx"
 
 const router = createBrowserRouter([
   {
@@ -56,6 +57,14 @@ const router = createBrowserRouter([
         element: (
           <ProtectedRoute>
             <Profile />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "password-reset",
+        element: (
+          <ProtectedRoute>
+            <PasswordReset />
           </ProtectedRoute>
         ),
       },
