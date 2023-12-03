@@ -6,7 +6,7 @@ import FormSuccess from "../components/FormSuccess.jsx"
 import { Link } from "react-router-dom"
 import { IoMdPersonAdd } from "react-icons/io"
 import Popup from "reactjs-popup"
-import { ClipLoader } from "react-spinners"
+import { BeatLoader } from "react-spinners"
 import { FaArrowRight } from "react-icons/fa6"
 
 const Register = () => {
@@ -19,7 +19,6 @@ const Register = () => {
   const [success, setSuccess] = useState("")
   const [loading, setLoading] = useState(false)
   const [modalOpen, setModalOpen] = useState(false)
-  const [submitting, setSubmitting] = useState(false)
 
   const contentStyle = { background: "rgb(63, 63, 70)" }
   const overlayStyle = { background: "rgba(0,0,0,0.8)" }
@@ -33,11 +32,10 @@ const Register = () => {
   }
 
   const handleRegister = async (e) => {
-    if (!submitting) setSubmitting(true)
-    else return
-
     e.preventDefault()
-    setLoading(true)
+
+    if (!loading) setLoading(true)
+    else return
 
     const registerResult = await RegisterAuth({
       email: email,
@@ -51,7 +49,6 @@ const Register = () => {
         setError(registerResult.substring(7))
         setSuccess("")
         setLoading(false)
-        setSubmitting(false)
         return
       }
     }
@@ -71,7 +68,7 @@ const Register = () => {
   return (
     <form
       onSubmit={handleRegister}
-      className="max-w-screen-xl mx-auto flex flex-col items-center h-[calc(100vh-94px)]"
+      className="max-w-screen-xl mx-auto flex flex-col items-center min-h-[calc(100vh-94px)]"
     >
       <Popup
         open={modalOpen}
@@ -95,6 +92,7 @@ const Register = () => {
           <Link
             to="/login"
             className="bg-blue-600 text-white px-10 py-3 rounded-lg hover:bg-blue-700 flex mt-2 gap-2 items-center justify-center font-semibold"
+            replace={true}
           >
             Login <FaArrowRight className="text-xl" />
           </Link>
@@ -139,10 +137,10 @@ const Register = () => {
 
       {/* Password confirmation input */}
       <InputField
-        labelName="Confirm Password"
+        labelName=""
         inputType="password"
         inputID="confirmPassword"
-        inputPlaceholder="Enter the same password"
+        inputPlaceholder="Confirm Password"
         onChange={(e) => {
           setConfirmPassword(e.target.value)
         }}
@@ -152,9 +150,9 @@ const Register = () => {
       <FormSuccess success={success} />
 
       {/* Register button */}
-      <button className="bg-blue-600 text-white px-10 py-3 rounded-lg hover:bg-blue-700 flex mt-2 gap-2 items-center justify-center font-semibold">
+      <button className="bg-blue-600 text-white px-10 py-3 rounded-lg hover:bg-blue-700 flex mt-8 gap-2 items-center justify-center font-semibold">
         {loading ? (
-          <ClipLoader color="#ffffff" size="26px" />
+          <BeatLoader color="#ffffff" size="10px" />
         ) : (
           <>
             Register <IoMdPersonAdd className="text-lg" />
