@@ -9,21 +9,25 @@ const AuthContext = createContext()
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useLocalStorage("token", null)
   const [username, setUsername] = useLocalStorage("username", null)
+  const [email, setEmail] = useLocalStorage("email", null)
 
-  const authProviderLogin = (token, username) => {
+  const authProviderLogin = (token, username, email) => {
     setUser(token)
     setUsername(username)
+    setEmail(email)
   }
 
   const authProviderLogout = () => {
     setUser(null)
     setUsername(null)
+    setEmail(null)
   }
 
   const value = useMemo(
     () => ({
       user,
       username,
+      email,
       authProviderLogin,
       authProviderLogout,
     }),

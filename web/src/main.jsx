@@ -13,18 +13,61 @@ import Review from "./pages/Review"
 import Home from "./pages/Home"
 import Login from "./pages/Login"
 import Register from "./pages/Register"
+import { AuthProvider } from "./utilities/AuthProvider"
+import UnProtectedRoute from "./utilities/UnProtectedRoute"
+import ProtectedRoute from "./utilities/ProtectedRoute"
+import Profile from "./pages/Profile"
+import PasswordReset from "./pages/PasswordReset.jsx"
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Root />,
-    errorElement: <NotFound />,
+    element: (
+      <AuthProvider>
+        <Root />
+      </AuthProvider>
+    ),
+    errorElement: (
+      <AuthProvider>
+        <NotFound />
+      </AuthProvider>
+    ),
     children: [
       { index: true, element: <Home /> },
       { path: "about", element: <About /> },
       { path: "request-school", element: <RequestSchool /> },
-      { path: "login", element: <Login /> },
-      { path: "register", element: <Register /> },
+      {
+        path: "login",
+        element: (
+          <UnProtectedRoute>
+            <Login />
+          </UnProtectedRoute>
+        ),
+      },
+      {
+        path: "register",
+        element: (
+          <UnProtectedRoute>
+            <Register />
+          </UnProtectedRoute>
+        ),
+      },
+      {
+        path: "profile",
+        element: (
+          <ProtectedRoute>
+            <Profile />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "password-reset",
+        element: (
+          <ProtectedRoute>
+            <PasswordReset />
+          </ProtectedRoute>
+        ),
+      },
       // TEMPORARY: Review page quick access
       {
         path: "review",

@@ -2,11 +2,11 @@ import { useState } from "react"
 import InputField from "../components/InputField.jsx"
 import FormError from "../components/FormError.jsx"
 import FormSuccess from "../components/FormSuccess.jsx"
-import { LoginAuth } from "../utilities/Auth.jsx"
+import { LoginAuth, PasswordResetAuth } from "../utilities/Auth.jsx"
 import { Link, useNavigate } from "react-router-dom"
 import { IoMdPerson } from "react-icons/io"
 import { useAuth } from "../utilities/AuthProvider.jsx"
-import { ClipLoader } from "react-spinners"
+import { BeatLoader } from "react-spinners"
 
 const Login = () => {
   const [email, setEmail] = useState("")
@@ -14,13 +14,41 @@ const Login = () => {
   const [error, setError] = useState("")
   const [success, setSuccess] = useState("")
   const [loading, setLoading] = useState(false)
+  const [loadingForgot, setLoadingForgot] = useState(false)
+  const [resetMessage, setResetMessage] = useState("")
   const { authProviderLogin } = useAuth()
 
   const navigate = useNavigate()
 
+  const handleForgotPassword = async () => {
+    if (!loadingForgot) {
+      setLoadingForgot(true)
+    } else return
+
+    const forgotResult = await PasswordResetAuth({ email: email })
+
+    if (typeof forgotResult === "string") {
+      if (forgotResult.includes("ERROR:")) {
+        setResetMessage(forgotResult.substring(7))
+        setLoadingForgot(false)
+        return
+      }
+    }
+
+    setResetMessage("")
+
+    setTimeout(() => {
+      setResetMessage("Password Reset Email Sent.")
+      setLoadingForgot(false)
+    }, 1000)
+  }
+
   const handleLogin = async (e) => {
     e.preventDefault()
-    setLoading(true)
+
+    if (!loading) {
+      setLoading(true)
+    } else return
 
     const loginResult = await LoginAuth({ email: email, password: password })
 
@@ -39,19 +67,23 @@ const Login = () => {
     )
 
     setTimeout(() => {
-      authProviderLogin(loginResult.tokens)
+      authProviderLogin(
+        loginResult.tokens.access,
+        loginResult.username,
+        loginResult.email
+      )
+      setLoading(false)
       navigate("/")
-    }, 2000)
+    }, 1000)
   }
 
   return (
     <form
       onSubmit={handleLogin}
-      className="max-w-screen-xl mx-auto flex flex-col items-center h-[calc(100vh-94px)]"
+      className="max-w-screen-xl mx-auto flex flex-col items-center h-[calc(100vh-98px)]"
     >
       {/* Login Page Heading */}
       <h2 className="text-3xl font-bold mb-12 mt-8">Login</h2>
-
       {/* Email Input */}
       <InputField
         labelName="E-mail"
@@ -62,17 +94,35 @@ const Login = () => {
           setEmail(e.target.value)
         }}
       />
-
       {/* Password Input */}
-      <InputField
-        labelName="Password"
-        inputType="password"
-        inputID="password"
-        inputPlaceholder="Password must be between 6-68 characters"
-        onChange={(e) => {
-          setPassword(e.target.value)
-        }}
-      />
+      <div className="w-full">
+        <InputField
+          labelName="Password"
+          inputType="password"
+          inputID="password"
+          inputPlaceholder="Password must be between 6-68 characters"
+          onChange={(e) => {
+            setPassword(e.target.value)
+          }}
+        />
+        <span className="text-sm flex gap-4">
+          <div className="flex gap-1 items-center justify-center">
+            Forgot password?{" "}
+            <button
+              type="button"
+              onClick={handleForgotPassword}
+              className="text-blue-500 underline flex items-center justify-center"
+            >
+              {loadingForgot ? (
+                <BeatLoader color="#ffffff" size="10px" />
+              ) : (
+                <>Reset Here</>
+              )}
+            </button>
+          </div>
+          <span>{resetMessage}</span>
+        </span>
+      </div>
 
       {error || success ? (
         <>
@@ -80,19 +130,17 @@ const Login = () => {
           <FormSuccess success={success} />
         </>
       ) : null}
-
       {/* Login Button */}
-      <button className="bg-blue-600 text-white px-10 py-3 rounded-lg hover:bg-blue-700 flex mt-2 gap-2 items-center justify-center font-semibold">
+      <button className="bg-blue-600 text-white px-10 py-3 rounded-lg hover:bg-blue-700 flex mt-8 gap-2 items-center justify-center font-semibold">
         {loading ? (
-          <ClipLoader color="#ffffff" size="26px" />
+          <BeatLoader color="#ffffff" size="10px" />
         ) : (
           <>
             Login <IoMdPerson className="text-lg" />
           </>
         )}
       </button>
-
-      <p className="mt-7 text-lg">
+      <p className="mt-6 text-lg">
         Don&apos;t have an account yet?{" "}
         <Link to="/register" replace={true} className="text-blue-500 underline">
           Register here

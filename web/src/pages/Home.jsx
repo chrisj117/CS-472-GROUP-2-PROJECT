@@ -3,7 +3,7 @@ import QA from "../components/QA"
 
 const Home = () => {
   return (
-    <div className="overflow-auto flex flex-col justify-evenly h-[calc(100vh-94px)] max-w-screen-xl mx-auto">
+    <div className="overflow-auto flex flex-col justify-evenly min-h-[calc(100vh-98px)] max-w-screen-xl mx-auto">
       {/* Search bar */}
       <div className="flex-1 flex flex-col w-full justify-center items-center gap-4">
         <p className="sm:text-lg md:text-xl l:text-2xl xl:text-3xl font-bold text-center mx-14">

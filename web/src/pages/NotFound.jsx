@@ -21,7 +21,7 @@ const NotFound = () => {
   return (
     <div className={`${darkMode == "true" ? "dark" : ""} bg-white`}>
       <Navbar darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
-      <div className="flex flex-col h-[calc(100vh-94px)] items-center">
+      <div className="flex flex-col min-h-[calc(100vh-98px)] items-center">
         <h2 className="mt-8 text-3xl font-bold text-center">404</h2>
         <p className="text-center mt-64 text-xl">
           The page you have requested cannot be found.

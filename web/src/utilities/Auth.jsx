@@ -8,7 +8,7 @@ import {
 export async function LoginAuth(data) {
   try {
     const response = await api.post("/auth/login/", data)
-    if (response && response.data) return response.data.data
+    if (response) return response.data
   } catch (err) {
     if (err.response) {
       // Not in the 200 response range
@@ -48,7 +48,7 @@ export async function RegisterAuth(data) {
 
   try {
     const response = await api.post("/auth/register/", data)
-    if (response && response.data) return response.data.data
+    if (response) return response.data
   } catch (err) {
     if (err.response) {
       // Not in the 200 response range
@@ -64,6 +64,23 @@ export async function RegisterAuth(data) {
     } else {
       console.log(`Error: ${err.message}`)
       return "ERROR: Invalid credentials."
+    }
+  }
+}
+
+export async function PasswordResetAuth(data) {
+  if (!EmailRegexTest(data.email)) {
+    return "ERROR: Invalid email format."
+  }
+  try {
+    const response = await api.post("/auth/request-reset-email/", data)
+    if (response) return response.data
+  } catch (err) {
+    if (err.response) {
+      // Not in the 200 response range
+      console.log(`Error: ${err.response}`)
+    } else {
+      console.log(`Error: ${err.message}`)
     }
   }
 }

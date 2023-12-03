@@ -1,24 +1,23 @@
 // import { useState } from 'react';
-import Searchbar from '../components/Searchbar';
-import RatingBar from '../components/RatingBar';
+import Searchbar from "../components/Searchbar"
+import RatingBar from "../components/RatingBar"
 import {
   BsChevronDown,
   BsFillEnvelopePaperFill,
   BsFillPencilFill,
-} from 'react-icons/bs';
-import ReviewCard from '../components/ReviewCard';
-// import ReviewCard from '../components/ReviewCard';
+} from "react-icons/bs"
+import ReviewCard from "../components/ReviewCard"
+import { useAuth } from "../utilities/AuthProvider"
+import { Link } from "react-router-dom"
+import { FaArrowRight } from "react-icons/fa6"
 
 const Review = () => {
-  // const [schoolName, setSchoolName] = useState(
-  //   'University of Nevada, Las Vegas'
-  // );
-  // const [schoolNameShort, setSchoolNameShort] = useState('UNLV');
+  const { user } = useAuth()
 
   return (
-    <div className="max-w-screen-xl mx-auto mt-8 flex flex-col">
+    <div className="max-w-screen-xl mx-auto mt-8 flex flex-col min-h-[calc(100vh-98px)]">
       {/* Top of screen (below nav bar) */}
-      <div className="flex flex-col gap-4 mb-8 border-b-2 border-gray-100 pb-10">
+      <div className="flex flex-col gap-4 mb-8 border-b-2 border-zinc-200 dark:border-zinc-600 pb-10">
         <h2 className="font-bold text-3xl">
           {/* {schoolName} ({schoolNameShort}) */}
           University of Nevada, Las Vegas (UNLV)
@@ -28,7 +27,7 @@ const Review = () => {
           searchPlaceholder="Search for course"
         />
       </div>
-      <div className="flex justify-between items-center mb-10 border-b-2 border-gray-100 pb-8">
+      <div className="flex justify-between items-center mb-10 border-b-2 border-zinc-200 dark:border-zinc-600 pb-8">
         {/* Review button */}
         {/* NOTE: for now, this link is appearance only and will likely be refactored */}
         <div className="flex gap-6 items-center">
@@ -60,7 +59,7 @@ const Review = () => {
         </a>
       </div>
 
-      <div className="w-full max-w-screen-xl mx-auto mb-10 border-b-2 border-gray-100 pb-12">
+      <div className="w-full max-w-screen-xl mx-auto mb-10 border-b-2 border-zinc-200 dark:border-zinc-600 pb-12">
         <h3 className="font-semibold text-2xl max-w-screen-xl w-full mx-auto mb-4">
           Evaluation Summary
         </h3>
@@ -102,7 +101,7 @@ const Review = () => {
         </div>
       </div>
 
-      <div className="pb-12 mb-10 border-b-2 border-gray-100 max-w-screen-xl mx-auto w-full">
+      <div className="pb-12 mb-10 border-b-2 border-zinc-200 dark:border-zinc-600 max-w-screen-xl mx-auto w-full">
         <div className="flex gap-6 items-center mb-4">
           <h3 className="font-semibold text-2xl">Written Evaluations (4)</h3>
           {/* Professor dropdown */}
@@ -185,226 +184,247 @@ const Review = () => {
         >
           Leave an Evaluation
         </h3>
-        <div className="max-w-screen-xl mx-auto flex flex-col gap-16 border-2 border-gray-200 rounded-xl px-16 py-8">
-          <div>
-            <h4 className="font-semibold text-xl mb-4">Teaching Approaches</h4>
-            <div className="flex flex-col gap-4">
-              <RatingBar
-                question="The course as a whole was:"
-                rating={3}
-                customWidth="flex-1"
-                customHeight="h-5"
-                className="max-w-xl"
-              />
-              <RatingBar
-                question="The course content was:"
-                rating={3}
-                customWidth="flex-1"
-                customHeight="h-5"
-                className="max-w-xl"
-              />
-              <RatingBar
-                question="The instructor's contribution to the course was:"
-                rating={3}
-                customWidth="flex-1"
-                customHeight="h-5"
-                className="max-w-xl"
-              />
-              <RatingBar
-                question="Course organization was:"
-                rating={3}
-                customWidth="flex-1"
-                customHeight="h-5"
-                className="max-w-xl"
-              />
-              <RatingBar
-                question="Explanations by instructor were:"
-                rating={3}
-                customWidth="flex-1"
-                customHeight="h-5"
-                className="max-w-xl"
-              />
-              <RatingBar
-                question="Instructor's interest in student's progress was:"
-                rating={3}
-                customWidth="flex-1"
-                customHeight="h-5"
-                className="max-w-xl"
-              />
-              <RatingBar
-                question="Amount of assigned work was:"
-                rating={3}
-                customWidth="flex-1"
-                customHeight="h-5"
-                className="max-w-xl"
-              />
-              <RatingBar
-                question="Clarity of student requirements was:"
-                rating={3}
-                customWidth="flex-1"
-                customHeight="h-5"
-                className="max-w-xl"
-              />
-              <RatingBar
-                question="Use of class time was:"
-                rating={3}
-                customWidth="flex-1"
-                customHeight="h-5"
-                className="max-w-xl"
-              />
-              <RatingBar
-                question="Student's confidence in instructor's knowledge was:"
-                rating={3}
-                customWidth="flex-1"
-                customHeight="h-5"
-                className="max-w-xl"
-              />
-              <RatingBar
-                question="Quality of questions or problems raised by the instructor was:"
-                rating={3}
-                customWidth="flex-1"
-                customHeight="h-5"
-                className="max-w-xl"
-              />
-              <RatingBar
-                question="Instructor's interest in student's progress was:"
-                rating={3}
-                customWidth="flex-1"
-                customHeight="h-5"
-                className="max-w-xl"
-              />
-            </div>
-          </div>
-
-          <div>
-            <h4 className="font-semibold text-xl mb-4">Required Information</h4>
-            <div className="flex flex-col gap-4">
-              <div className="flex gap-2 items-center justify-between w-full max-w-sm">
-                <p className="text-lg">Professor </p>
-                <div className="relative inline-flex self-center">
-                  {/* dropdown arrow */}
-                  <BsChevronDown
-                    className="absolute right-3 top-4 pointer-events-none"
-                    fontSize={18}
-                  />
-
-                  {/* Professor list */}
-                  <select className="font-semibold rounded border-2 border-gray-400 h-10 w-48 pl-4 pr-10 bg-white appearance-none">
-                    <option>Dr. Professor</option>
-                  </select>
-                </div>
-              </div>
-
-              <div className="flex gap-2 items-center justify-between w-full max-w-sm">
-                <p className="text-lg">Term </p>
-                <div className="relative inline-flex self-center">
-                  {/* dropdown arrow */}
-                  <BsChevronDown
-                    className="absolute right-3 top-4 pointer-events-none"
-                    fontSize={18}
-                  />
-
-                  {/* Term list */}
-                  <select className="font-semibold rounded border-2 border-gray-400 h-10 w-48 pl-4 pr-10 bg-white appearance-none">
-                    <option>Spring</option>
-                  </select>
-                </div>
-              </div>
-
-              <div className="flex gap-2 items-center justify-between w-full max-w-sm">
-                <p className="text-lg">Year </p>
-                <div className="relative inline-flex self-center">
-                  {/* dropdown arrow */}
-                  <BsChevronDown
-                    className="absolute right-3 top-4 pointer-events-none"
-                    fontSize={18}
-                  />
-
-                  {/* Year list */}
-                  <select className="font-semibold rounded border-2 border-gray-400 h-10 w-48 pl-4 pr-10 bg-white appearance-none">
-                    <option>2023</option>
-                  </select>
-                </div>
-              </div>
-
-              <div className="flex items-center w-full max-w-sm">
-                <button className="border-t-2 border-l-2 border-b-2 border-r border-gray-400 rounded-l-lg px-4 py-2 flex-1">
-                  Recommended
-                </button>
-                <button className="border-t-2 border-r-2 border-b-2 border-l border-gray-400 rounded-r-lg px-4 py-2 flex-1">
-                  Not Recommended
-                </button>
+        {user ? (
+          <div className="max-w-screen-xl mx-auto flex flex-col gap-16 border-2 border-gray-200 rounded-xl px-16 py-8">
+            <div>
+              <h4 className="font-semibold text-xl mb-4">
+                Teaching Approaches
+              </h4>
+              <div className="flex flex-col gap-4">
+                <RatingBar
+                  question="The course as a whole was:"
+                  rating={3}
+                  customWidth="flex-1"
+                  customHeight="h-5"
+                  className="max-w-xl"
+                />
+                <RatingBar
+                  question="The course content was:"
+                  rating={3}
+                  customWidth="flex-1"
+                  customHeight="h-5"
+                  className="max-w-xl"
+                />
+                <RatingBar
+                  question="The instructor's contribution to the course was:"
+                  rating={3}
+                  customWidth="flex-1"
+                  customHeight="h-5"
+                  className="max-w-xl"
+                />
+                <RatingBar
+                  question="Course organization was:"
+                  rating={3}
+                  customWidth="flex-1"
+                  customHeight="h-5"
+                  className="max-w-xl"
+                />
+                <RatingBar
+                  question="Explanations by instructor were:"
+                  rating={3}
+                  customWidth="flex-1"
+                  customHeight="h-5"
+                  className="max-w-xl"
+                />
+                <RatingBar
+                  question="Instructor's interest in student's progress was:"
+                  rating={3}
+                  customWidth="flex-1"
+                  customHeight="h-5"
+                  className="max-w-xl"
+                />
+                <RatingBar
+                  question="Amount of assigned work was:"
+                  rating={3}
+                  customWidth="flex-1"
+                  customHeight="h-5"
+                  className="max-w-xl"
+                />
+                <RatingBar
+                  question="Clarity of student requirements was:"
+                  rating={3}
+                  customWidth="flex-1"
+                  customHeight="h-5"
+                  className="max-w-xl"
+                />
+                <RatingBar
+                  question="Use of class time was:"
+                  rating={3}
+                  customWidth="flex-1"
+                  customHeight="h-5"
+                  className="max-w-xl"
+                />
+                <RatingBar
+                  question="Student's confidence in instructor's knowledge was:"
+                  rating={3}
+                  customWidth="flex-1"
+                  customHeight="h-5"
+                  className="max-w-xl"
+                />
+                <RatingBar
+                  question="Quality of questions or problems raised by the instructor was:"
+                  rating={3}
+                  customWidth="flex-1"
+                  customHeight="h-5"
+                  className="max-w-xl"
+                />
+                <RatingBar
+                  question="Instructor's interest in student's progress was:"
+                  rating={3}
+                  customWidth="flex-1"
+                  customHeight="h-5"
+                  className="max-w-xl"
+                />
               </div>
             </div>
-          </div>
 
-          <div>
-            <h4 className="font-semibold text-xl mb-4">Optional Information</h4>
-            <div className="flex flex-col gap-4">
-              <div className="flex gap-2 items-center justify-between w-full max-w-sm">
-                <p className="text-lg">Textbook </p>
-                <div className="relative inline-flex self-center">
-                  {/* dropdown arrow */}
-                  <BsChevronDown
-                    className="absolute right-3 top-4 pointer-events-none"
-                    fontSize={18}
-                  />
+            <div>
+              <h4 className="font-semibold text-xl mb-4">
+                Required Information
+              </h4>
+              <div className="flex flex-col gap-4">
+                <div className="flex gap-2 items-center justify-between w-full max-w-sm">
+                  <p className="text-lg">Professor </p>
+                  <div className="relative inline-flex self-center">
+                    {/* dropdown arrow */}
+                    <BsChevronDown
+                      className="absolute right-3 top-4 pointer-events-none"
+                      fontSize={18}
+                    />
 
-                  {/* Professor list */}
-                  <select className="font-semibold rounded border-2 border-gray-400 h-10 w-48 pl-4 pr-10 bg-white appearance-none">
-                    <option>No</option>
-                  </select>
+                    {/* Professor list */}
+                    <select className="font-semibold rounded border-2 border-gray-400 h-10 w-48 pl-4 pr-10 bg-white appearance-none">
+                      <option>Dr. Professor</option>
+                    </select>
+                  </div>
                 </div>
-              </div>
 
-              <div className="flex gap-2 items-center justify-between w-full max-w-sm">
-                <p className="text-lg">Delivery </p>
-                <div className="relative inline-flex self-center">
-                  {/* dropdown arrow */}
-                  <BsChevronDown
-                    className="absolute right-3 top-4 pointer-events-none"
-                    fontSize={18}
-                  />
+                <div className="flex gap-2 items-center justify-between w-full max-w-sm">
+                  <p className="text-lg">Term </p>
+                  <div className="relative inline-flex self-center">
+                    {/* dropdown arrow */}
+                    <BsChevronDown
+                      className="absolute right-3 top-4 pointer-events-none"
+                      fontSize={18}
+                    />
 
-                  {/* Professor list */}
-                  <select className="font-semibold rounded border-2 border-gray-400 h-10 w-48 pl-4 pr-10 bg-white appearance-none">
-                    <option>In-Person</option>
-                  </select>
+                    {/* Term list */}
+                    <select className="font-semibold rounded border-2 border-gray-400 h-10 w-48 pl-4 pr-10 bg-white appearance-none">
+                      <option>Spring</option>
+                    </select>
+                  </div>
                 </div>
-              </div>
 
-              <div className="flex gap-2 items-center justify-between w-full max-w-sm">
-                <p className="text-lg">Grade </p>
-                <div className="relative inline-flex self-center">
-                  {/* dropdown arrow */}
-                  <BsChevronDown
-                    className="absolute right-3 top-4 pointer-events-none"
-                    fontSize={18}
-                  />
+                <div className="flex gap-2 items-center justify-between w-full max-w-sm">
+                  <p className="text-lg">Year </p>
+                  <div className="relative inline-flex self-center">
+                    {/* dropdown arrow */}
+                    <BsChevronDown
+                      className="absolute right-3 top-4 pointer-events-none"
+                      fontSize={18}
+                    />
 
-                  {/* Professor list */}
-                  <select className="font-semibold rounded border-2 border-gray-400 h-10 w-48 pl-4 pr-10 bg-white appearance-none">
-                    <option>A</option>
-                  </select>
+                    {/* Year list */}
+                    <select className="font-semibold rounded border-2 border-gray-400 h-10 w-48 pl-4 pr-10 bg-white appearance-none">
+                      <option>2023</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div className="flex items-center w-full max-w-sm">
+                  <button className="border-t-2 border-l-2 border-b-2 border-r border-gray-400 rounded-l-lg px-4 py-2 flex-1">
+                    Recommended
+                  </button>
+                  <button className="border-t-2 border-r-2 border-b-2 border-l border-gray-400 rounded-r-lg px-4 py-2 flex-1">
+                    Not Recommended
+                  </button>
                 </div>
               </div>
             </div>
-          </div>
 
-          <div>
-            <h4 className="font-semibold text-xl mb-4">Additional Comments</h4>
-            <textarea
-              placeholder="Add additional comments..."
-              className="p-2 focus:outline-1 focus:outline-blue-500 border-[0.1px] resize-none h-[120px] border-[#9EA5B1] rounded-md w-full mb-4"
-            ></textarea>
+            <div>
+              <h4 className="font-semibold text-xl mb-4">
+                Optional Information
+              </h4>
+              <div className="flex flex-col gap-4">
+                <div className="flex gap-2 items-center justify-between w-full max-w-sm">
+                  <p className="text-lg">Textbook </p>
+                  <div className="relative inline-flex self-center">
+                    {/* dropdown arrow */}
+                    <BsChevronDown
+                      className="absolute right-3 top-4 pointer-events-none"
+                      fontSize={18}
+                    />
 
-            <button className="text-lg font-semibold bg-blue-500 hover:bg-blue-600 text-white py-3 rounded-md px-3 w-full flex justify-center gap-4 items-center">
-              <span>Post Evaluation</span> <BsFillEnvelopePaperFill />
-            </button>
+                    {/* Professor list */}
+                    <select className="font-semibold rounded border-2 border-gray-400 h-10 w-48 pl-4 pr-10 bg-white appearance-none">
+                      <option>No</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div className="flex gap-2 items-center justify-between w-full max-w-sm">
+                  <p className="text-lg">Delivery </p>
+                  <div className="relative inline-flex self-center">
+                    {/* dropdown arrow */}
+                    <BsChevronDown
+                      className="absolute right-3 top-4 pointer-events-none"
+                      fontSize={18}
+                    />
+
+                    {/* Professor list */}
+                    <select className="font-semibold rounded border-2 border-gray-400 h-10 w-48 pl-4 pr-10 bg-white appearance-none">
+                      <option>In-Person</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div className="flex gap-2 items-center justify-between w-full max-w-sm">
+                  <p className="text-lg">Grade </p>
+                  <div className="relative inline-flex self-center">
+                    {/* dropdown arrow */}
+                    <BsChevronDown
+                      className="absolute right-3 top-4 pointer-events-none"
+                      fontSize={18}
+                    />
+
+                    {/* Professor list */}
+                    <select className="font-semibold rounded border-2 border-gray-400 h-10 w-48 pl-4 pr-10 bg-white appearance-none">
+                      <option>A</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <h4 className="font-semibold text-xl mb-4">
+                Additional Comments
+              </h4>
+              <textarea
+                placeholder="Add additional comments..."
+                className="p-2 focus:outline-1 focus:outline-blue-500 border-[0.1px] resize-none h-[120px] border-[#9EA5B1] rounded-md w-full mb-4"
+              ></textarea>
+
+              <button className="text-lg font-semibold bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-md px-3 w-full flex justify-center gap-4 items-center">
+                <span>Post Evaluation</span> <BsFillEnvelopePaperFill />
+              </button>
+            </div>
           </div>
-        </div>
+        ) : (
+          <div className="max-w-screen-xl mx-auto w-full flex flex-col gap-4 py-8 px-8 justify-center items-center border-zinc-200 border-2 rounded-lg">
+            <span>Ready to contribute to the site? Sign in below!</span>
+
+            <Link
+              to="/login"
+              className="bg-blue-600 text-white px-10 py-3 rounded-lg hover:bg-blue-700 flex mt-2 gap-2 items-center justify-center font-semibold"
+            >
+              Login <FaArrowRight className="text-xl" />
+            </Link>
+          </div>
+        )}
       </div>
     </div>
-  );
-};
-export default Review;
+  )
+}
+export default Review

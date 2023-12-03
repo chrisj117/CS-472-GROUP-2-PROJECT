@@ -1,8 +1,8 @@
-import ReturnHome from '../components/ReturnHome';
+import ReturnHome from "../components/ReturnHome"
 
 const About = () => {
   return (
-    <div className="flex flex-col items-center h-[calc(100vh-94px)] w-screen max-w-screen-xl mx-auto">
+    <div className="flex flex-col items-center min-h-[calc(100vh-98px)] w-screen max-w-screen-xl mx-auto">
       <h2 className="text-3xl font-bold mb-12 mt-8">About</h2>
       {/* Middle of page: "About" content */}
       <div className="max-w-screen-md">
@@ -35,6 +35,6 @@ const About = () => {
       {/* Bottom of page: Return home button*/}
       <ReturnHome />
     </div>
-  );
-};
-export default About;
+  )
+}
+export default About
