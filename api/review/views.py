@@ -1,4 +1,5 @@
 import uuid
+import re
 
 from rest_framework import status, views
 from rest_framework.response import Response
@@ -67,15 +68,16 @@ class ReviewAPIView(views.APIView):
         # Handle professor identifier
         professor_identifier = data.pop("professor", None)
         if professor_identifier:
+            # If it's a list, get the first element
+            if isinstance(professor_identifier, list) and professor_identifier:
+                professor_identifier = professor_identifier[0]
+
             try:
-                # Check if it's a valid UUID
-                if uuid.UUID(professor_identifier):
-                    professor = Professor.objects.get(pk=professor_identifier)
-                    data["professor"] = professor.pk
-                else:
-                    raise ValueError
+                # Attempt to process it as a UUID
+                professor = Professor.objects.get(pk=uuid.UUID(professor_identifier))
+                data["professor"] = professor.pk
             except (ValueError, Professor.DoesNotExist):
-                # If not a UUID, try parsing as "first_name last_name"
+                # If not a UUID, process as "first_name last_name"
                 try:
                     first_name, last_name = professor_identifier.split(maxsplit=1)
                     professor = Professor.objects.get(first_name=first_name, last_name=last_name)
@@ -106,88 +108,39 @@ class ReviewAPIView(views.APIView):
                 status=status.HTTP_201_CREATED,
             )
 
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST) # line not covered in test
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    def get(self, request, review_id=None, short_name=None, school_short_name=None, course_subject_catalog=None):
+    def get(self, request, review_id=None, short_name=None, course_subject_catalog=None):
+        if short_name and course_subject_catalog:
+            return self.course_review_list(request, short_name, course_subject_catalog)
         if review_id:
-            # retrieving a single review by ID
             try:
                 review = Review.objects.get(id=review_id)
                 serializer = self.serializer_class(review)
                 response_data = serializer.data
 
-                # Update school's short name and course code
                 school = School.objects.get(pk=response_data["school"])
                 course = Course.objects.get(pk=response_data["course"])
                 professor = Professor.objects.get(pk=response_data["professor"])
 
                 response_data["school"] = school.short_name
                 response_data["course"] = f'{course.subject} {course.catalog_number}'
-                response_data["professor"] = professor.first_name + " " + professor.last_name
+                response_data["professor"] = f'{professor.first_name} {professor.last_name}'
 
-                response = {
-                    "message": "Review retrieved successfully",
-                    "data": response_data,
-                }
+                response = {"message": "Review retrieved successfully", "data": response_data}
                 return Response(data=response, status=status.HTTP_200_OK)
             except Review.DoesNotExist:
-                return Response(
-                    {"message": "Review not found!", "data": []},
-                    status=status.HTTP_404_NOT_FOUND,
-                )
+                return Response({"message": "Review not found!", "data": []}, status=status.HTTP_404_NOT_FOUND)
         if short_name:
-            # retrieving reviews for school when short_name is provided.
             try:
                 school = School.objects.get(short_name=short_name)
                 reviews = Review.objects.filter(school=school)
             except School.DoesNotExist:
-                return Response(
-                    {"message": "School not found!", "data": []},
-                    status=status.HTTP_404_NOT_FOUND,
-                )
-        elif school_short_name and course_subject_catalog:
-            return self.course_review_list(request, school_short_name, course_subject_catalog)
-
+                return Response({"message": "School not found!", "data": []}, status=status.HTTP_404_NOT_FOUND)
         else:
-            # list all reviews when id or shortname is not provided.
             reviews = Review.objects.all()
 
         serializer = self.serializer_class(reviews, many=True)
-        response_data = serializer.data
-
-        if not review_id and not short_name and not school_short_name and not course_subject_catalog:
-            reviews = Review.objects.all()
-            response_data = []
-
-            for review in reviews:
-                review_data = ReviewSerializer(review).data
-                review_school = School.objects.get(pk=review_data["school"])
-                review_course = Course.objects.get(pk=review_data["course"])
-                review_professor = Professor.objects.get(pk=review_data["professor"])
-
-                review_data["school"] = review_school.short_name
-                review_data["course"] = f'{review_course.subject} {review_course.catalog_number}'
-                review_data["professor"] = f'{review_professor.first_name} {review_professor.last_name}'
-                response_data.append(review_data)
-
-            return Response(response_data, status=status.HTTP_200_OK)
-
-    def course_review_list(self, request, school_short_name, course_subject_catalog):
-        try:
-            school = School.objects.get(short_name=school_short_name)
-        except School.DoesNotExist:
-            return Response({'error': 'School not found'}, status=status.HTTP_404_NOT_FOUND)
-
-        # Splitting course_subject_catalog into subject and catalog_number
-        subject = ''.join(filter(str.isalpha, course_subject_catalog))
-        catalog_number = ''.join(filter(str.isdigit, course_subject_catalog))
-
-        try:
-            course = Course.objects.get(subject=subject, catalog_number=catalog_number, school=school)
-        except Course.DoesNotExist:
-            return Response({'error': 'Course not found'}, status=status.HTTP_404_NOT_FOUND)
-
-        reviews = Review.objects.filter(course=course)
         response_data = []
 
         for review in reviews:
@@ -199,6 +152,35 @@ class ReviewAPIView(views.APIView):
             review_data["school"] = review_school.short_name
             review_data["course"] = f'{review_course.subject} {review_course.catalog_number}'
             review_data["professor"] = f'{review_professor.first_name} {review_professor.last_name}'
+            response_data.append(review_data)
+
+        return Response(response_data, status=status.HTTP_200_OK)
+
+    def course_review_list(self, request, short_name, course_subject_catalog):
+        # Use regular expression to split the course_subject_catalog into subject and catalog_number
+        match = re.match(r"([a-zA-Z]+)([0-9]+)", course_subject_catalog)
+        if not match:
+            return Response({'error': 'Invalid course identifier format'}, status=status.HTTP_400_BAD_REQUEST)
+
+        subject, catalog_number = match.groups()
+
+        try:
+            school = School.objects.get(short_name=short_name)
+            course = Course.objects.filter(subject=subject, catalog_number=catalog_number, school=school).first()
+        except School.DoesNotExist:
+            return Response({'error': 'School not found'}, status=status.HTTP_404_NOT_FOUND)
+
+        if not course:
+            return Response({'error': 'Course not found'}, status=status.HTTP_404_NOT_FOUND)
+
+        reviews = Review.objects.filter(course=course)
+        response_data = []
+
+        for review in reviews:
+            review_data = ReviewSerializer(review).data
+            review_data["school"] = school.short_name
+            review_data["course"] = f'{course.subject} {course.catalog_number}'
+            review_data["professor"] = f'{review.professor.first_name} {review.professor.last_name}'
             response_data.append(review_data)
 
         return Response(response_data, status=status.HTTP_200_OK)
@@ -289,7 +271,7 @@ class ReviewAPIView(views.APIView):
                     status=status.HTTP_200_OK,
                 )
 
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST) #! line not covered by tests
 
         except Review.DoesNotExist:
             return Response(
