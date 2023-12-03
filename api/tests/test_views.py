@@ -536,6 +536,7 @@ class TestReviewAPIView(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
         self.assertEqual(response.data, {"message": "Review not found!", "data": []})
 
+
 # SCHOOL REQUEST TESTS
 class TestSchoolRequestAIPView(APITestCase):
     # should delete a school request
