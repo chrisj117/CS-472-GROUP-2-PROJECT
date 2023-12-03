@@ -1,6 +1,7 @@
 import { Outlet } from "react-router-dom"
 import Navbar from "../components/Navbar"
 import { useState } from "react"
+import { AuthProvider } from "../utilities/AuthProvider"
 
 const Root = () => {
   const [darkMode, setDarkMode] = useState(() => {
@@ -20,8 +21,10 @@ const Root = () => {
 
   return (
     <main className={`${darkMode == "true" ? "dark" : ""} bg-white`}>
-      <Navbar darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
-      <Outlet />
+      <AuthProvider>
+        <Navbar darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
+        <Outlet />
+      </AuthProvider>
     </main>
   )
 }

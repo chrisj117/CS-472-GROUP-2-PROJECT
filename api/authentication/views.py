@@ -51,7 +51,7 @@ class RegisterView(generics.GenericAPIView):
             style='color: #344054; font-size: 16px; font-family:inherit; font-weight: 400; line-height: 24px; word-wrap: break-word;'>
             <br>
             <br>
-            <h2 style='color: #344054;'>Welcome to MyCourseEvaluation, Daniel</h2>
+            <h2 style='color: #344054;'>Welcome to MyCourseEvaluation, {user.username}</h2>
                 <br />
                 Your account is almost ready.
                 <br /><br />
@@ -108,12 +108,15 @@ class VerifyEmail(views.APIView):
                 user.is_verified = True
                 user.save()
 
-            return Response({'email': 'Successfully activated'}, status=status.HTTP_200_OK)
+            return CustomRedirect(os.environ.get('FRONTEND_URL_LOGIN'))
+            #return Response({'email': 'Successfully activated'}, status=status.HTTP_200_OK)
 
         except jwt.ExpiredSignatureError as e:
-            return Response({'erorr': 'Activation Expired'}, status=status.HTTP_400_BAD_REQUEST)
+            return CustomRedirect(f"{os.environ.get('FRONTEND_URL_LOGIN')}/token=expired")
+            #return Response({'erorr': 'Activation Expired'}, status=status.HTTP_400_BAD_REQUEST)
         except jwt.exceptions.DecodeError as e:
-            return Response({'erorr': 'Invalid token'}, status=status.HTTP_400_BAD_REQUEST)
+            return CustomRedirect(f"{os.environ.get('FRONTEND_URL_LOGIN')}/token=invalid")
+            #return Response({'erorr': 'Invalid token'}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class LoginAPIView(generics.GenericAPIView):
@@ -201,17 +204,17 @@ class PasswordTokenCheckAPI(generics.GenericAPIView):
                 if len(redirect_url) > 3:
                     return CustomRedirect(redirect_url+'?token_valid=False')
                 else:
-                    return CustomRedirect(os.environ.get('FRONTEND_URL', '')+'?token_valid=False')
+                    return CustomRedirect(os.environ.get('FRONTEND_URL_RESET', '')+'/?token_valid=False')
 
             if redirect_url and len(redirect_url) > 3:
-                return CustomRedirect(redirect_url+'?token_valid=True&message=Credentials Valid&uidb64='+uidb64+'&token='+token)
+                return CustomRedirect(redirect_url+'/?token_valid=True&message=Credentials Valid&uidb64='+uidb64+'&token='+token)
             else:
-                return CustomRedirect(os.environ.get('FRONTEND_URL', '')+'?token_valid=True&message=Credentials Valid&uidb64='+uidb64+'&token='+token)
+                return CustomRedirect(os.environ.get('FRONTEND_URL_RESET', '')+'/?token_valid=True&message=Credentials Valid&uidb64='+uidb64+'&token='+token)
 
         except DjangoUnicodeDecodeError as identifier:
             try:
                 if not PasswordResetTokenGenerator().check_token(user):
-                    return CustomRedirect(redirect_url+'?token_valid=False')
+                    return CustomRedirect(redirect_url+'/?token_valid=False')
                     
             except UnboundLocalError as e:
                 return Response({'error': 'Token is not valid, please request a new one'}, status=status.HTTP_400_BAD_REQUEST)
