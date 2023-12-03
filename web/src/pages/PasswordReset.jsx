@@ -1,5 +1,4 @@
 import { useState } from "react"
-import { BsEnvelopeFill } from "react-icons/bs"
 import { useAuth } from "../utilities/AuthProvider"
 import { PasswordResetAuth } from "../utilities/Auth.jsx"
 import { BeatLoader } from "react-spinners"
