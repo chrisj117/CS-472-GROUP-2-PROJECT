@@ -37,12 +37,12 @@ describe('#PasswordRegexTest', () => {
 });
 
 describe('#LinkRegexTest', () => {
-  it('Returns false with too few characters', () => {
+  it('Returns false without website format', () => {
     expect(LinkRegexTest('normal text')).toBe(false);
   });
 
-  it('Returns true with normal password input', () => {
-    expect(LinkRegexTest('website.com')).toBe(true);
+  it('Returns true with normal website', () => {
+    expect(LinkRegexTest('https://website.com')).toBe(true);
   });
 });
 

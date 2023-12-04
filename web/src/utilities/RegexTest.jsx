@@ -1,5 +1,5 @@
 export function EmailRegexTest(data) {
-  return RegExp(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/).test(data);
+  return RegExp(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/).test(data)
 }
 
 export function UsernameRegexTest(data) {
@@ -7,11 +7,11 @@ export function UsernameRegexTest(data) {
 }
 
 export function PasswordRegexTest(data) {
-  return RegExp(/^.{6,68}$/).test(data);
+  return RegExp(/^.{6,68}$/).test(data)
 }
 
 export function LinkRegexTest(data) {
-  return RegExp(/^(?:(?!(?:https?|ftp):\/\/)[^\s]+)$/).test(data);
+  return RegExp(/^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/).test(data)
 }
 
 export function MaxCharacterTest(data, minLength, maxLength) {
