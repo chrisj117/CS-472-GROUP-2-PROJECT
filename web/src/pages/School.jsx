@@ -1,3 +1,5 @@
+/* eslint-disable react-refresh/only-export-components */
+
 import CourseCard from "../components/CourseCard"
 import Searchbar from "../components/Searchbar"
 import { useLoaderData } from "react-router-dom"
