@@ -42,11 +42,11 @@ const School = () => {
       </h2>
 
       <div className="mt-1 flex gap-2 items-center justify-center">
-        <FaSearch className="text-lg" />
+        <FaSearch className="text-lg text-zinc-600 dark:text-zinc-300" />
         <input
           type="text"
           placeholder="Ex: University of Nevada Las Vegas"
-          className="px-3 py-1 w-full border-2 rounded truncate dark:bg-zinc-900 dark:border-zinc-600 dark:text-white focus:outline-transparent"
+          className="px-3 py-2 w-full border-2 rounded truncate dark:bg-zinc-900 dark:border-zinc-600 dark:text-white focus:outline-transparent"
           onChange={(e) => handleCourses(e.target.value)}
         />
       </div>

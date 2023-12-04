@@ -6,6 +6,7 @@ import FormError from "../components/FormError"
 import FormSuccess from "../components/FormSuccess"
 import { BeatLoader } from "react-spinners"
 import { useLoaderData } from "react-router-dom"
+import { useDarkMode } from "./Root"
 
 const RequestSchool = () => {
   const [name, setName] = useState("")
@@ -67,7 +68,6 @@ const RequestSchool = () => {
           />
         </div>
         {/* Request a School Form */}
-        {/* <h2 className="text-xl font-semibold mb-4">Request a School Form</h2> */}
 
         <p className="text-base md:text-lg lg:text-xl xl:text-2xl mb-4 text-center">
           If you can&apos;t find your institution above, submit your
@@ -84,7 +84,7 @@ const RequestSchool = () => {
               <input
                 type="text"
                 placeholder="Ex: University of Nevada Las Vegas"
-                className="px-3 py-1 w-full border-2 rounded truncate dark:text-black"
+                className="px-3 py-1 w-full border-2 rounded truncate dark:bg-zinc-900 dark:border-zinc-600 dark:text-white focus:outline-transparent"
                 onChange={(e) => setName(e.target.value)}
               />
             </label>
@@ -96,7 +96,7 @@ const RequestSchool = () => {
               <input
                 type="text"
                 placeholder="Ex: https://www.unlv.edu/"
-                className="px-3 py-1 w-full border-2 rounded truncate dark:text-black"
+                className="px-3 py-1 w-full border-2 rounded truncate dark:bg-zinc-900 dark:border-zinc-600 dark:text-white focus:outline-transparent"
                 onChange={(e) => setWebsite(e.target.value)}
               />
             </label>
