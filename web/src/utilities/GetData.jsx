@@ -53,6 +53,7 @@ export const getCourses = async (short_name) => {
         catalog_number: curr.catalog_number,
         value: curr.subject + curr.catalog_number,
         label: curr.subject + " " + curr.catalog_number + " " + curr.title,
+        professors: curr.professors,
       }))
       return resultingArray
     }

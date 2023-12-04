@@ -60,7 +60,7 @@ const RequestSchool = () => {
           </p>
           <Searchbar
             searchingSchools={true}
-            className="w-full px-4"
+            className="w-full"
             searchPlaceholder="Ex: University of Nevada, Las Vegas / UNLV"
             change={false}
             schools={schools}
