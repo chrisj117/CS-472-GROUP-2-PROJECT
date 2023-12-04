@@ -40,6 +40,8 @@ urlpatterns = [
          school_views.SchoolAPIView.as_view(), name='schools'),
     path(f'{base_url}/school/<str:short_name>/',
          school_views.SchoolAPIView.as_view(), name='school'),
+     path(f'{base_url}/school/<str:short_name>/courses/', school_views.CourseAPIView.as_view(), name='search_courses'),
+     path(f'{base_url}/school/<str:short_name>/courses/', school_views.CourseAPIView.as_view(), name='search_courses'),
 
     # listing all reviews or creating a new review
     path(f'{base_url}/reviews/',

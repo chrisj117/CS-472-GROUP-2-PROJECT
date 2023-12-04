@@ -1,4 +1,4 @@
-from school.models import School
+from school.models import School, Course, Professor
 from rest_framework import serializers
 from rest_framework.fields import CharField
 
@@ -24,3 +24,24 @@ class SchoolSerializer(serializers.ModelSerializer):
 			'created_at',
 			'updated_at'
 		)
+
+
+class ProfessorSerializerFilter(serializers.ModelSerializer):
+
+	class Meta:
+		model = Professor
+		fields = ('id', 'first_name', 'last_name')
+
+
+class SchoolSerializerFilter(serializers.ModelSerializer):
+	class Meta:
+		model = School
+		fields = ('id', 'short_name',)
+
+
+class CourseSerializer(serializers.ModelSerializer):
+	school = SchoolSerializerFilter(many=False)
+	professors = ProfessorSerializerFilter(many=True)
+	class Meta:
+		model = Course
+		fields = '__all__'
