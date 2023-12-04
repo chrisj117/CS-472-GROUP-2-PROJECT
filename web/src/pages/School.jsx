@@ -3,16 +3,16 @@
 import CourseCard from "../components/CourseCard"
 import Searchbar from "../components/Searchbar"
 import { useLoaderData } from "react-router-dom"
-import { getSchool } from "../utilities/GetData"
+import { getCourses, getSchool } from "../utilities/GetData"
 
 export async function loader({ params }) {
   const school = await getSchool(params.schoolId)
-  // const courses = await getCourses(params.schoolId)
-  return { school }
+  const courses = await getCourses(params.schoolId)
+  return { school, courses }
 }
 
 const School = () => {
-  const { school } = useLoaderData()
+  const { school, courses } = useLoaderData()
 
   return (
     <section className="max-w-screen-xl mx-auto flex flex-col gap-4 mt-8 min-h-[calc(100vh-98px)]">
@@ -23,18 +23,19 @@ const School = () => {
         searchingCourses={true}
         searchPlaceholder="Ex: CS 472"
         className="flex-1 mb-8"
+        courses={courses}
+        change={true}
+        school={school.short_name}
       />
 
       <div className="">
         <h3 className="font-bold text-2xl mb-4 px-32">Popular Courses:</h3>
         <div className="px-32 flex flex-col gap-2">
-          <CourseCard />
-          <CourseCard />
-          <CourseCard />
-          <CourseCard />
-          <CourseCard />
-          <CourseCard />
-          <CourseCard />
+          {courses
+            .map((course) => {
+              return <CourseCard key={course.value} />
+            })
+            .slice(0, 5)}
         </div>
       </div>
     </section>

@@ -10,6 +10,7 @@ const Searchbar = ({
   change,
   schools,
   courses,
+  school,
 }) => {
   const navigate = useNavigate()
 
@@ -30,25 +31,33 @@ const Searchbar = ({
       if (searchingCourses) {
         const filteredOptions = courses.filter(
           (option) =>
-            option.short_name
+            option.subject.toLowerCase().includes(searchValue.toLowerCase()) ||
+            option.catalog_number
               .toLowerCase()
               .includes(searchValue.toLowerCase()) ||
-            option.long_name.toLowerCase().includes(searchValue.toLowerCase())
+            option.title.toLowerCase().includes(searchValue.toLowerCase()) ||
+            option.value.toLowerCase().includes(searchValue.toLowerCase()) ||
+            option.label.toLowerCase().includes(searchValue.toLowerCase())
         )
 
         callback(filteredOptions)
       }
-    }, 200)
+    }, 250)
   }
 
   const handleChange = (selectedOption) => {
-    navigate(`/schools/${selectedOption.short_name}`)
+    if (searchingSchools) {
+      navigate(`/schools/${selectedOption.short_name}`)
+    }
+
+    if (searchingCourses) {
+      navigate(`/schools/${school}/reviews/${selectedOption.value}`)
+    }
   }
 
   return (
     <div className={className}>
       <AsyncSelect
-        cacheOptions
         defaultOptions
         loadOptions={loadOptions}
         placeholder={searchPlaceholder}

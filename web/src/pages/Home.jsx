@@ -1,19 +1,15 @@
 import Searchbar from "../components/Searchbar"
 import QA from "../components/QA"
-import { useEffect, useState } from "react"
 import { getSchools } from "../utilities/GetData"
+import { useLoaderData } from "react-router-dom"
+
+export async function loader() {
+  const schools = await getSchools()
+  return { schools }
+}
 
 const Home = () => {
-  const [schools, setSchools] = useState([])
-
-  const fetchSchools = async () => {
-    const response = await getSchools()
-    setSchools(response)
-  }
-
-  useEffect(() => {
-    fetchSchools()
-  }, [])
+  const { schools } = useLoaderData()
 
   return (
     <div className="overflow-auto flex flex-col justify-evenly min-h-[calc(100vh-98px)] max-w-screen-xl mx-auto">
