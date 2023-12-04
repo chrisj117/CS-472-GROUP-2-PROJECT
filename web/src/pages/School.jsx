@@ -17,14 +17,58 @@ const School = () => {
   const [filteredCourses, setFilteredCourses] = useState([])
 
   const handleCourses = (searchValue) => {
-    const filteredOptions = courses.filter((option) =>
-      option.label
+    const filteredSubjects = courses.filter((option) =>
+      option.subject
+        .toString()
         .replace(/ /g, "")
         .toLowerCase()
         .includes(searchValue.replace(/ /g, "").toLowerCase())
     )
 
-    setFilteredCourses(filteredOptions)
+    if (filteredSubjects) {
+      setFilteredCourses(filteredSubjects)
+      return
+    }
+
+    const filteredCatalogues = courses.filter(
+      (option) =>
+        option.subject
+          .toString()
+          .replace(/ /g, "")
+          .toLowerCase()
+          .includes(searchValue.replace(/ /g, "").toLowerCase()) ||
+        option.catalog_number
+          .toString()
+          .replace(/ /g, "")
+          .toLowerCase()
+          .includes(searchValue.replace(/ /g, "").toLowerCase())
+    )
+
+    if (filteredCatalogues) {
+      setFilteredCourses(filteredCatalogues)
+      return
+    }
+
+    const filteredLabels = courses.filter(
+      (option) =>
+        option.subject
+          .toString()
+          .replace(/ /g, "")
+          .toLowerCase()
+          .includes(searchValue.replace(/ /g, "").toLowerCase()) ||
+        option.catalog_number
+          .toString()
+          .replace(/ /g, "")
+          .toLowerCase()
+          .includes(searchValue.replace(/ /g, "").toLowerCase()) ||
+        option.label
+          .toString()
+          .replace(/ /g, "")
+          .toLowerCase()
+          .includes(searchValue.replace(/ /g, "").toLowerCase())
+    )
+
+    setFilteredCourses(filteredLabels)
   }
 
   useEffect(() => {
