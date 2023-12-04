@@ -1,6 +1,6 @@
 import { useState } from "react"
 import InputField from "../components/InputField.jsx"
-import { RegisterAuth } from "../utilities/Auth.jsx"
+import { RegisterAuth } from "../utilities/API.jsx"
 import FormError from "../components/FormError.jsx"
 import FormSuccess from "../components/FormSuccess.jsx"
 import { Link } from "react-router-dom"

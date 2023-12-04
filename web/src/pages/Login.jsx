@@ -2,7 +2,7 @@ import { useState } from "react"
 import InputField from "../components/InputField.jsx"
 import FormError from "../components/FormError.jsx"
 import FormSuccess from "../components/FormSuccess.jsx"
-import { LoginAuth, PasswordResetAuth } from "../utilities/Auth.jsx"
+import { LoginAuth, PasswordResetAuth } from "../utilities/API.jsx"
 import { Link, useNavigate } from "react-router-dom"
 import { IoMdPerson } from "react-icons/io"
 import { useAuth } from "../utilities/AuthProvider.jsx"
@@ -20,7 +20,9 @@ const Login = () => {
 
   const navigate = useNavigate()
 
-  const handleForgotPassword = async () => {
+  const handleForgotPassword = async (e) => {
+    e.preventDefault()
+
     if (!loadingForgot) {
       setLoadingForgot(true)
     } else return

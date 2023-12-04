@@ -1,7 +1,20 @@
 import Searchbar from "../components/Searchbar"
 import QA from "../components/QA"
+import { useEffect, useState } from "react"
+import { getSchools } from "../utilities/GetData"
 
 const Home = () => {
+  const [schools, setSchools] = useState([])
+
+  const fetchSchools = async () => {
+    const response = await getSchools()
+    setSchools(response)
+  }
+
+  useEffect(() => {
+    fetchSchools()
+  }, [])
+
   return (
     <div className="overflow-auto flex flex-col justify-evenly min-h-[calc(100vh-98px)] max-w-screen-xl mx-auto">
       {/* Search bar */}
@@ -11,9 +24,10 @@ const Home = () => {
         </p>
         <Searchbar
           searchingSchools={true}
-          searchingCourses={false}
-          className="w-full px-4 truncate"
+          className="w-full px-4"
           searchPlaceholder="Ex: University of Nevada, Las Vegas / UNLV"
+          change={true}
+          schools={schools}
         />
       </div>
 
