@@ -15,11 +15,8 @@ export async function loader({ params }) {
 const School = () => {
   const { school, courses } = useLoaderData()
   const [filteredCourses, setFilteredCourses] = useState([])
-  const [search, setSearch] = useState("")
 
   const handleCourses = (searchValue) => {
-    setSearch(searchValue)
-
     const filteredOptions = courses.filter((option) =>
       option.label
         .replace(/ /g, "")

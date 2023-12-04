@@ -1,5 +1,3 @@
-import { useEffect, useState } from "react"
-import SquareRating from "./SquareRating"
 import { Link } from "react-router-dom"
 
 const CourseCard = ({

@@ -72,6 +72,13 @@ const Searchbar = ({
             borderColor:
               darkMode == "true" ? "rgb(82 82 91)" : "rgb(228 228 231)",
             loadingMessage: darkMode == "true" ? "white" : "black",
+            padding: "0.25rem",
+            borderWidth: "2px",
+            color: darkMode == "true" ? "white" : "black",
+          }),
+          singleValue: (baseStyles) => ({
+            ...baseStyles,
+            color: darkMode == "true" ? "white" : "black",
           }),
           input: (baseStyles) => ({
             ...baseStyles,
@@ -89,6 +96,8 @@ const Searchbar = ({
               : darkMode == "true"
               ? "white"
               : "black",
+            borderColor:
+              darkMode == "true" ? "rgb(82 82 91)" : "rgb(228 228 231)",
           }),
           placeholder: (baseStyles) => ({
             ...baseStyles,

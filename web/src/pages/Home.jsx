@@ -33,7 +33,7 @@ const Home = () => {
 
       {/* Bottom of page: FAQ section */}
       <div className="w-full justify-center mx-auto mb-12 pt-4">
-        <h1 className="sm:text-md md:text-l l:text-xl xl:text-2xl text-center no-underline text-grey-darkest hover:text-blue-dark mb-8 font-semibold text-blue-500">
+        <h1 className="sm:text-md md:text-l l:text-xl xl:text-2xl text-center no-underline text-grey-darkest hover:text-blue-dark mb-8 font-semibold text-blue-600">
           Frequently Asked Questions
         </h1>
         {/* Question/Answer Components */}
