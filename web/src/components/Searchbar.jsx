@@ -9,6 +9,7 @@ const Searchbar = ({
   className,
   change,
   schools,
+  courses,
 }) => {
   const navigate = useNavigate()
 

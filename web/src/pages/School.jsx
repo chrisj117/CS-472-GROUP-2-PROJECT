@@ -1,7 +1,7 @@
 import CourseCard from "../components/CourseCard"
 import Searchbar from "../components/Searchbar"
 import { useLoaderData } from "react-router-dom"
-import { getCourses, getSchool } from "../utilities/GetData"
+import { getSchool } from "../utilities/GetData"
 
 export async function loader({ params }) {
   const school = await getSchool(params.schoolId)
