@@ -5,7 +5,7 @@ import "./index.css"
 
 import Root from "./pages/Root.jsx"
 import NotFound from "./pages/NotFound.jsx"
-import School from "./pages/School.jsx"
+import School, { loader as schoolLoader } from "./pages/School.jsx"
 import About from "./pages/About.jsx"
 import RequestSchool from "./pages/RequestSchool"
 import Review from "./pages/Review"
@@ -81,6 +81,7 @@ const router = createBrowserRouter([
       {
         path: "schools/:schoolId",
         element: <School />,
+        loader: schoolLoader,
         children: [
           {
             path: "review",

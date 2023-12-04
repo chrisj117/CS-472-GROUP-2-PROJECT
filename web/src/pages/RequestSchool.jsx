@@ -1,10 +1,11 @@
 import Searchbar from "../components/Searchbar"
 import { BsFillEnvelopePaperFill } from "react-icons/bs"
 import { SendSchoolInfo } from "../utilities/API"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import FormError from "../components/FormError"
 import FormSuccess from "../components/FormSuccess"
 import { BeatLoader } from "react-spinners"
+import api from "../utilities/Axios"
 
 const RequestSchool = () => {
   const [name, setName] = useState("")
@@ -12,6 +13,32 @@ const RequestSchool = () => {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState("")
   const [success, setSuccess] = useState("")
+  const [schools, setSchools] = useState([])
+
+  const fetchSchools = async () => {
+    try {
+      const response = await api.get("/school/")
+      if (response && response.data) {
+        const resultingArray = response.data.data.map((curr) => ({
+          long_name: curr.long_name,
+          short_name: curr.short_name,
+          value: curr.short_name,
+          label: curr.long_name,
+        }))
+
+        setSchools(resultingArray)
+      }
+    } catch (err) {
+      if (err.response) {
+        // Not in the 200 response range
+        console.log(err.response.data)
+        console.log(err.response.status)
+        console.log(err.response.headers)
+      } else {
+        console.log(`Error: ${err.message}`)
+      }
+    }
+  }
 
   const handleRequestSchool = async (e) => {
     e.preventDefault()
@@ -43,6 +70,10 @@ const RequestSchool = () => {
     }, 1000)
   }
 
+  useEffect(() => {
+    fetchSchools()
+  }, [])
+
   return (
     <div className="overflow-auto max-w-screen-xl mx-auto flex flex-col items-center min-h-[calc(100vh-98px)]">
       <h2 className="text-lg md:text-xl lg:text-2xl xl:text-3xl font-bold mb-12 mt-8">
@@ -60,6 +91,7 @@ const RequestSchool = () => {
             searchPlaceholder="Ex: University of Nevada, Las Vegas / UNLV"
             className="w-full mb-8 text-sm md:text-base lg:text-lg"
             change={false}
+            schools={schools}
           />
         </div>
         {/* Request a School Form */}

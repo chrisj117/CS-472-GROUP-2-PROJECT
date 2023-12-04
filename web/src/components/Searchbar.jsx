@@ -1,7 +1,6 @@
 /* eslint-disable react/prop-types */
 import AsyncSelect from "react-select/async"
 import { useNavigate } from "react-router-dom"
-import { useSchool } from "../pages/Root"
 
 const Searchbar = ({
   searchingSchools,
@@ -12,8 +11,6 @@ const Searchbar = ({
   schools,
 }) => {
   const navigate = useNavigate()
-
-  const { setCurrentSchool } = useSchool()
 
   const loadOptions = (searchValue, callback) => {
     setTimeout(() => {
@@ -26,7 +23,6 @@ const Searchbar = ({
             option.long_name.toLowerCase().includes(searchValue.toLowerCase())
         )
 
-        console.log("loadOptions", searchValue, filteredOptions)
         callback(filteredOptions)
       }
 
@@ -39,14 +35,12 @@ const Searchbar = ({
             option.long_name.toLowerCase().includes(searchValue.toLowerCase())
         )
 
-        console.log("loadOptions", searchValue, filteredOptions)
         callback(filteredOptions)
       }
     }, 200)
   }
 
   const handleChange = (selectedOption) => {
-    setCurrentSchool(selectedOption)
     navigate(`/schools/${selectedOption.short_name}`)
   }
 

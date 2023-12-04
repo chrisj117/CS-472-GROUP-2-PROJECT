@@ -1,14 +1,21 @@
 import CourseCard from "../components/CourseCard"
 import Searchbar from "../components/Searchbar"
+import { useLoaderData } from "react-router-dom"
+import { getCourses, getSchool } from "../utilities/GetData"
+
+export async function loader({ params }) {
+  const school = await getSchool(params.schoolId)
+  // const courses = await getCourses(params.schoolId)
+  return { school }
+}
 
 const School = () => {
-  const schoolName = "University of Nevada, Las Vegas"
-  const schoolNameShort = "UNLV"
+  const { school } = useLoaderData()
 
   return (
     <section className="max-w-screen-xl mx-auto flex flex-col gap-4 mt-8 min-h-[calc(100vh-98px)]">
       <h2 className="font-bold text-3xl">
-        {schoolName} ({schoolNameShort})
+        {school.long_name} ({school.short_name})
       </h2>
       <Searchbar
         searchingCourses={true}
