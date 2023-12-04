@@ -1,10 +1,11 @@
 from json import JSONDecodeError
 from django.http import JsonResponse
-from .serializers import SchoolSerializer
+from .serializers import SchoolSerializer,CourseSerializer,SchoolSerializerFilter
 from rest_framework.parsers import JSONParser
-from rest_framework import views, status
+from rest_framework import filters
+from rest_framework import generics, views, status
 from rest_framework.response import Response
-from .models import School
+from .models import School,Course
 
 
 class SchoolAPIView(views.APIView):
@@ -77,5 +78,26 @@ class SchoolAPIView(views.APIView):
             return Response({"message": "school deleted successfully", "data":[]}, status=status.HTTP_204_NO_CONTENT)
         except School.DoesNotExist:
              return Response({"message": "school not found!", "data":[]}, status=status.HTTP_404_NOT_FOUND)
+        
+
+
+
+class CourseAPIView(views.APIView):
+    search_fields = ['subject', 'title', 'catalog_number']
+    filter_backends = (filters.SearchFilter,)
+    serializer_class = CourseSerializer
+    def get(self, request, short_name=None):
+        try:
+            school_object = School.objects.get(short_name=short_name)
+            course_school = Course.objects.select_related().filter(school=school_object.id)
+            serializer = self.serializer_class(course_school, many=True)
+            response={
+                            "message": f"List of courses at {short_name}",
+                            "data": serializer.data
+                        }
+            return Response(data=response, status=status.HTTP_200_OK)
+        except School.DoesNotExist:
+            return Response({"message": "school not found!", "data":[]}, status=status.HTTP_404_NOT_FOUND)
+
     
     
