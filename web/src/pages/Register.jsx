@@ -68,7 +68,7 @@ const Register = () => {
   return (
     <form
       onSubmit={handleRegister}
-      className="max-w-screen-xl mx-auto flex flex-col items-center min-h-[calc(100vh-94px)]"
+      className="flex flex-col items-center h-[calc(100vh-98px)] w-screen mx-auto px-4 md:max-w-screen-xl overflow-auto"
     >
       <Popup
         open={modalOpen}
@@ -100,7 +100,7 @@ const Register = () => {
       </Popup>
 
       {/* Account registration page banner */}
-      <h2 className="text-3xl font-bold mb-12 mt-8">Register</h2>
+      <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-6 md:mb-8 mt-4 md:mt-8">Register</h2>
 
       {/* E-mail input */}
       <InputField
