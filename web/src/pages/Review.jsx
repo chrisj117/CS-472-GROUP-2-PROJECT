@@ -1,18 +1,155 @@
-// import { useState } from 'react';
-import Searchbar from "../components/Searchbar"
-import RatingBar from "../components/RatingBar"
+import { useState, useEffect } from "react";
+import Searchbar from "../components/Searchbar";
+import RatingBar from "../components/RatingBar";
 import {
   BsChevronDown,
   BsFillEnvelopePaperFill,
   BsFillPencilFill,
-} from "react-icons/bs"
-import ReviewCard from "../components/ReviewCard"
-import { useAuth } from "../utilities/AuthProvider"
-import { Link } from "react-router-dom"
-import { FaArrowRight } from "react-icons/fa6"
+} from "react-icons/bs";
+import ReviewCard from "../components/ReviewCard";
+import { useAuth } from "../utilities/AuthProvider";
+import { Link } from "react-router-dom";
+import { FaArrowRight } from "react-icons/fa6";
+import { format } from "date-fns";
+import axios from "../utilities/Axios";
 
 const Review = () => {
-  const { user } = useAuth()
+  // const { user } = useAuth();
+  const [reviews, setReviews] = useState([]);
+  const [sortMethod, setSortMethod] = useState("mostRecent"); // Default is most recent
+
+  const handleSortChange = (event) => {
+    setSortMethod(event.target.value);
+  };
+
+  const GRADES = [
+    "A+",
+    "A",
+    "A-",
+    "B+",
+    "B",
+    "B-",
+    "C+",
+    "C",
+    "C-",
+    "D+",
+    "D",
+    "D-",
+    "F",
+    "N/A",
+  ];
+
+  const generateYears = (startYear) => {
+    const currentYear = new Date().getFullYear();
+    const years = [];
+    for (let year = currentYear; year >= startYear; year--) {
+      years.push(year);
+    }
+    return years;
+  };
+
+  const YEARS = generateYears(1990); // generating years from 1990 to current year
+
+  const handleRatingChange = (key, newRating) => {
+    setReviewData((prevState) => ({
+      ...prevState,
+      [key]: newRating,
+    }));
+  };
+
+  const [reviewData, setReviewData] = useState({
+    school: "",
+    course: "",
+    professor: "",
+    review_text: "",
+    term: "Fall", //default
+    grade_received: "N/A", // default
+    delivery_method: "N/A", // default
+    textbook_required: false,
+    helpful_count: 0,
+
+    // fields for rating questions
+    rating_course_overall: 3,
+    rating_course_content: 3,
+    rating_instructor_contribution: 3,
+    rating_course_organization: 3,
+    rating_instructor_explanation: 3,
+    rating_instructor_interest: 3,
+    rating_work_amount: 3,
+    rating_clarity_requirements: 3,
+    rating_class_time_use: 3,
+    rating_student_confidence: 3,
+    rating_question_quality: 3,
+
+    year_taken: new Date().getFullYear(), // Current year as default
+    recommended: true,
+  });
+
+  const calculateAverageRating = (ratingKey) => {
+    const total = reviews.reduce((acc, review) => acc + review[ratingKey], 0);
+    const average = total / reviews.length;
+    return Math.round(average) || 0; // Default to 0 if no reviews
+  };
+
+  useEffect(() => {
+    const fetchReviews = async () => {
+      try {
+        const schoolShortName = "UNLV";
+        const courseSubjectCatalog = "HOA730";
+        const response = await axios.get(
+          `/reviews/${schoolShortName}/${courseSubjectCatalog}/`,
+        );
+
+        let fetchedReviews = response.data;
+
+        // Sorting logic
+        if (sortMethod === "mostHelpful") {
+          fetchedReviews.sort((a, b) => b.helpful_count - a.helpful_count);
+        } else {
+          // Default to most recent
+          fetchedReviews.sort(
+            (a, b) => new Date(b.created_at) - new Date(a.created_at),
+          );
+        }
+
+        setReviews(fetchedReviews);
+      } catch (error) {
+        console.error("Error fetching reviews:", error);
+      }
+    };
+
+    fetchReviews();
+  }, [sortMethod]); // Add sortMethod as a dependency
+
+  const handleRecommendedChange = (isRecommended) => {
+    setReviewData({ ...reviewData, recommended: isRecommended });
+  };
+
+  // Function to handle form submission
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post("/api/v1/reviews/", reviewData);
+      console.log("Review submitted:", response.data);
+    } catch (error) {
+      console.error("Error submitting review:", error);
+    }
+  };
+
+  const handleSelectChange = (event) => {
+    const { name, value } = event.target;
+    setReviewData((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+
+  const handleCommentChange = (event) => {
+    setReviewData({
+      ...reviewData,
+      review_text: event.target.value,
+    });
+  };
 
   return (
     <div className="max-w-screen-xl mx-auto mt-8 flex flex-col min-h-[calc(100vh-98px)]">
@@ -65,45 +202,63 @@ const Review = () => {
         </h3>
         <div className="flex justify-between">
           <div className="flex flex-col gap-5">
-            <RatingBar question="The course as a whole was:" rating={2} />
-            <RatingBar question="The course content was:" rating={3} />
+            <RatingBar
+              question="The course as a whole was:"
+              rating={calculateAverageRating("rating_course_overall")}
+            />
+            <RatingBar
+              question="The course content was:"
+              rating={calculateAverageRating("rating_course_content")}
+            />
             <RatingBar
               question="The instructor's contribution to the course was:"
-              rating={2}
+              rating={calculateAverageRating("rating_instructor_contribution")}
             />
-            <RatingBar question="Course organization was:" rating={1} />
-            <RatingBar question="Explanations by instructor were:" rating={5} />
+            <RatingBar
+              question="Course organization was:"
+              rating={calculateAverageRating("rating_course_organization")}
+            />
+            <RatingBar
+              question="Explanations by instructor were:"
+              rating={calculateAverageRating("rating_instructor_explanation")}
+            />
             <RatingBar
               question="Instructor's interest in student's progress was:"
-              rating={4}
+              rating={calculateAverageRating("rating_instructor_interest")}
             />
           </div>
           <div className="flex flex-col gap-5">
-            <RatingBar question="Amount of assigned work was:" rating={5} />
+            <RatingBar
+              question="Amount of assigned work was:"
+              rating={calculateAverageRating("rating_work_amount")}
+            />
             <RatingBar
               question="Clarity of student requirements was:"
-              rating={4}
+              rating={calculateAverageRating("rating_clarity_requirements")}
             />
-            <RatingBar question="Use of class time was:" rating={2} />
+            <RatingBar
+              question="Use of class time was:"
+              rating={calculateAverageRating("rating_class_time_use")}
+            />
             <RatingBar
               question="Student's confidence in instructor's knowledge was:"
-              rating={3}
+              rating={calculateAverageRating("rating_student_confidence")}
             />
             <RatingBar
               question="Quality of questions or problems raised by the instructor was:"
-              rating={3}
+              rating={calculateAverageRating("rating_question_quality")}
             />
-            <RatingBar
+            {/* <RatingBar
               question="Instructor's interest in student's progress was:"
               rating={5}
-            />
+            /> */}
           </div>
         </div>
       </div>
 
       <div className="pb-12 mb-10 border-b-2 border-zinc-200 dark:border-zinc-600 max-w-screen-xl mx-auto w-full">
         <div className="flex gap-6 items-center mb-4">
-          <h3 className="font-semibold text-2xl">Written Evaluations (4)</h3>
+          <h3 className="font-semibold text-2xl">Written Evaluations (2)</h3>
           {/* Professor dropdown */}
           <div className="relative inline-flex self-center">
             {/* dropdown arrow */}
@@ -112,66 +267,34 @@ const Review = () => {
               fontSize={18}
             />
 
-            {/* Professor list */}
-            <select className="text-lg font-semibold rounded border-2 border-gray-400 h-12 w-48 pl-4 pr-10 bg-white appearance-none">
-              <option>Most Recent</option>
-              <option>Most Helpful</option>
+            {/* Filter review */}
+            <select
+              className="text-lg font-semibold rounded border-2 border-gray-400 h-12 w-48 pl-4 pr-10 bg-white appearance-none"
+              onChange={handleSortChange}
+              value={sortMethod}
+            >
+              <option value="mostRecent">Most Recent</option>
+              <option value="mostHelpful">Most Helpful</option>
             </select>
           </div>
         </div>
 
-        <div className="flex flex-col gap-4 ">
-          <ReviewCard
-            additionalComments="Lorem ipsum dolor sit amet consectetur adipisicing elit. Vero cumque quaerat consequatur cum obcaecati molestias praesentium, repellendus, consequuntur corporis dolorem aut ratione dolores ab nostrum maiores?"
-            recommended={true}
-            date="November 5th, 2023"
-            grade="B"
-            delivery="In-Person"
-            textbook="No"
-            likes={1}
-            professor="Dr. Professor"
-            term="Fall"
-            year="2023"
-          />
-
-          <ReviewCard
-            additionalComments="Lorem ipsum dolor sit amet consectetur adipisicing elit. Vero cumque quaerat consequatur cum obcaecati molestias praesentium, repellendus, consequuntur corporis delectus velit eos nulla dolorem aut ratione dolores ab nostrum maiores?"
-            recommended={true}
-            date="November 2nd, 2023"
-            grade="B"
-            delivery="In-Person"
-            textbook="No"
-            likes={5}
-            professor="Dr. Professor"
-            term="Fall"
-            year="2023"
-          />
-
-          <ReviewCard
-            additionalComments="Vero cumque quaerat consequatur cum obcaecati molestias praesentium, repellendus, consequuntur corporis delectus velit eos nulla dolorem aut ratione dolores ab nostrum maiores?"
-            recommended={true}
-            date="November 1st, 2023"
-            grade="B"
-            delivery="In-Person"
-            textbook="No"
-            likes={0}
-            professor="Dr. Professor"
-            term="Fall"
-            year="2023"
-          />
-
-          <ReviewCard
-            additionalComments="Lorem ipsum dolor sit amet consectetur adipisicing elit."
-            recommended={false}
-            date="October 30th, 2023"
-            grade="B"
-            delivery="In-Person"
-            textbook="No"
-            likes={4}
-            professor="Dr. Professor"
-            term="Fall"
-            year="2023"
-          />
+        <div className="flex flex-col gap-4">
+          {reviews.map((review) => (
+            <ReviewCard
+              key={review.id}
+              additionalComments={review.review_text}
+              recommended={review.recommended}
+              date={format(new Date(review.created_at), "MMMM do, yyyy")}
+              grade={review.grade_received}
+              delivery={review.delivery_method}
+              textbook={review.textbook_required ? "Yes" : "No"}
+              likes={review.helpful_count}
+              professor={`${review.professor}`}
+              term={review.term}
+              year={review.year_taken}
+            />
+          ))}
         </div>
       </div>
 
@@ -184,100 +307,113 @@ const Review = () => {
         >
           Leave an Evaluation
         </h3>
-        {user ? (
-          <div className="max-w-screen-xl mx-auto flex flex-col gap-16 border-2 border-gray-200 rounded-xl px-16 py-8">
-            <div>
-              <h4 className="font-semibold text-xl mb-4">
-                Teaching Approaches
-              </h4>
-              <div className="flex flex-col gap-4">
-                <RatingBar
-                  question="The course as a whole was:"
-                  rating={3}
-                  customWidth="flex-1"
-                  customHeight="h-5"
-                  className="max-w-xl"
-                />
-                <RatingBar
-                  question="The course content was:"
-                  rating={3}
-                  customWidth="flex-1"
-                  customHeight="h-5"
-                  className="max-w-xl"
-                />
-                <RatingBar
-                  question="The instructor's contribution to the course was:"
-                  rating={3}
-                  customWidth="flex-1"
-                  customHeight="h-5"
-                  className="max-w-xl"
-                />
-                <RatingBar
-                  question="Course organization was:"
-                  rating={3}
-                  customWidth="flex-1"
-                  customHeight="h-5"
-                  className="max-w-xl"
-                />
-                <RatingBar
-                  question="Explanations by instructor were:"
-                  rating={3}
-                  customWidth="flex-1"
-                  customHeight="h-5"
-                  className="max-w-xl"
-                />
-                <RatingBar
-                  question="Instructor's interest in student's progress was:"
-                  rating={3}
-                  customWidth="flex-1"
-                  customHeight="h-5"
-                  className="max-w-xl"
-                />
-                <RatingBar
-                  question="Amount of assigned work was:"
-                  rating={3}
-                  customWidth="flex-1"
-                  customHeight="h-5"
-                  className="max-w-xl"
-                />
-                <RatingBar
-                  question="Clarity of student requirements was:"
-                  rating={3}
-                  customWidth="flex-1"
-                  customHeight="h-5"
-                  className="max-w-xl"
-                />
-                <RatingBar
-                  question="Use of class time was:"
-                  rating={3}
-                  customWidth="flex-1"
-                  customHeight="h-5"
-                  className="max-w-xl"
-                />
-                <RatingBar
-                  question="Student's confidence in instructor's knowledge was:"
-                  rating={3}
-                  customWidth="flex-1"
-                  customHeight="h-5"
-                  className="max-w-xl"
-                />
-                <RatingBar
-                  question="Quality of questions or problems raised by the instructor was:"
-                  rating={3}
-                  customWidth="flex-1"
-                  customHeight="h-5"
-                  className="max-w-xl"
-                />
-                <RatingBar
-                  question="Instructor's interest in student's progress was:"
-                  rating={3}
-                  customWidth="flex-1"
-                  customHeight="h-5"
-                  className="max-w-xl"
-                />
-              </div>
+        {/* {user ? ( */}
+        <div className="max-w-screen-xl mx-auto flex flex-col gap-16 border-2 border-gray-200 rounded-xl px-16 py-8">
+          <div>
+            <h4 className="font-semibold text-xl mb-4">Teaching Approaches</h4>
+            <div className="flex flex-col gap-4">
+              <RatingBar
+                question="The course as a whole was:"
+                rating={reviewData.rating_course_overall}
+                ratingKey="rating_course_overall"
+                onChange={handleRatingChange}
+                customWidth="flex-1"
+                customHeight="h-5"
+                className="max-w-xl"
+              />
+              <RatingBar
+                question="The course content was:"
+                rating={reviewData.rating_course_content}
+                ratingKey="rating_course_content"
+                onChange={handleRatingChange}
+                customWidth="flex-1"
+                customHeight="h-5"
+                className="max-w-xl"
+              />
+              <RatingBar
+                question="The instructor's contribution to the course was:"
+                rating={reviewData.rating_instructor_contribution}
+                ratingKey="rating_instructor_contribution"
+                onChange={handleRatingChange}
+                customWidth="flex-1"
+                customHeight="h-5"
+                className="max-w-xl"
+              />
+              <RatingBar
+                question="Course organization was:"
+                rating={reviewData.rating_course_organization}
+                ratingKey="rating_course_organization"
+                onChange={handleRatingChange}
+                customWidth="flex-1"
+                customHeight="h-5"
+                className="max-w-xl"
+              />
+              <RatingBar
+                question="Explanations by instructor were:"
+                rating={reviewData.rating_instructor_explanation}
+                ratingKey="rating_instructor_explanation"
+                onChange={handleRatingChange}
+                customWidth="flex-1"
+                customHeight="h-5"
+                className="max-w-xl"
+              />
+              <RatingBar
+                question="Instructor's interest in student's progress was:"
+                rating={reviewData.rating_instructor_interest}
+                ratingKey="rating_instructor_interest"
+                onChange={handleRatingChange}
+                customWidth="flex-1"
+                customHeight="h-5"
+                className="max-w-xl"
+              />
+              <RatingBar
+                question="Amount of assigned work was:"
+                rating={reviewData.rating_work_amount}
+                ratingKey="rating_work_amount"
+                onChange={handleRatingChange}
+                customWidth="flex-1"
+                customHeight="h-5"
+                className="max-w-xl"
+              />
+              <RatingBar
+                question="Clarity of student requirements was:"
+                rating={reviewData.rating_clarity_requirements}
+                ratingKey="rating_clarity_requirements"
+                onChange={handleRatingChange}
+                customWidth="flex-1"
+                customHeight="h-5"
+                className="max-w-xl"
+              />
+              <RatingBar
+                question="Use of class time was:"
+                rating={reviewData.rating_class_time_use}
+                ratingKey="rating_class_time_use"
+                onChange={handleRatingChange}
+                customWidth="flex-1"
+                customHeight="h-5"
+                className="max-w-xl"
+              />
+              <RatingBar
+                question="Student's confidence in instructor's knowledge was:"
+                rating={reviewData.rating_student_confidence}
+                ratingKey="rating_student_confidence"
+                onChange={handleRatingChange}
+                customWidth="flex-1"
+                customHeight="h-5"
+                className="max-w-xl"
+              />
+              <RatingBar
+                question="Quality of questions or problems raised by the instructor was:"
+                rating={reviewData.rating_question_quality}
+                ratingKey="rating_question_quality"
+                onChange={handleRatingChange}
+                customWidth="flex-1"
+                customHeight="h-5"
+                className="max-w-xl"
+              />
             </div>
-
+          </div>
+          <form onSubmit={handleSubmit}>
             <div>
               <h4 className="font-semibold text-xl mb-4">
                 Required Information
@@ -293,9 +429,14 @@ const Review = () => {
                     />
 
                     {/* Professor list */}
-                    <select className="font-semibold rounded border-2 border-gray-400 h-10 w-48 pl-4 pr-10 bg-white appearance-none">
-                      <option>Dr. Professor</option>
-                    </select>
+                    <input
+                      type="text"
+                      name="professor"
+                      value={reviewData.professor}
+                      onChange={handleSelectChange}
+                      className="font-semibold rounded border-2 border-gray-400 h-10 w-48 pl-4 pr-10 bg-white"
+                      placeholder="Professor's Name"
+                    />
                   </div>
                 </div>
 
@@ -309,8 +450,15 @@ const Review = () => {
                     />
 
                     {/* Term list */}
-                    <select className="font-semibold rounded border-2 border-gray-400 h-10 w-48 pl-4 pr-10 bg-white appearance-none">
+                    <select
+                      name="term"
+                      className="font-semibold rounded border-2 border-gray-400 h-10 w-48 pl-4 pr-10 bg-white appearance-none"
+                      onChange={handleSelectChange}
+                    >
+                      {/* Populate options here */}
+                      <option>Fall</option>
                       <option>Spring</option>
+                      <option>Summer</option>
                     </select>
                   </div>
                 </div>
@@ -325,23 +473,47 @@ const Review = () => {
                     />
 
                     {/* Year list */}
-                    <select className="font-semibold rounded border-2 border-gray-400 h-10 w-48 pl-4 pr-10 bg-white appearance-none">
-                      <option>2023</option>
+                    <select
+                      name="year_taken"
+                      className="font-semibold rounded border-2 border-gray-400 h-10 w-48 pl-4 pr-10 bg-white appearance-none"
+                      onChange={handleSelectChange}
+                      value={reviewData.year_taken}
+                    >
+                      {YEARS.map((year) => (
+                        <option key={year} value={year}>
+                          {year}
+                        </option>
+                      ))}
                     </select>
                   </div>
                 </div>
 
                 <div className="flex items-center w-full max-w-sm">
-                  <button className="border-t-2 border-l-2 border-b-2 border-r border-gray-400 rounded-l-lg px-4 py-2 flex-1">
+                  <button
+                    type="button"
+                    className={`border-t-2 border-l-2 border-b-2 border-r ${
+                      reviewData.recommended
+                        ? "bg-blue-500 text-white"
+                        : "border-gray-400"
+                    } rounded-l-lg px-4 py-2 flex-1`}
+                    onClick={() => handleRecommendedChange(true)}
+                  >
                     Recommended
                   </button>
-                  <button className="border-t-2 border-r-2 border-b-2 border-l border-gray-400 rounded-r-lg px-4 py-2 flex-1">
+                  <button
+                    type="button"
+                    className={`border-t-2 border-r-2 border-b-2 border-l ${
+                      !reviewData.recommended
+                        ? "bg-blue-500 text-white"
+                        : "border-gray-400"
+                    } rounded-r-lg px-4 py-2 flex-1`}
+                    onClick={() => handleRecommendedChange(false)}
+                  >
                     Not Recommended
                   </button>
                 </div>
               </div>
             </div>
-
             <div>
               <h4 className="font-semibold text-xl mb-4">
                 Optional Information
@@ -356,9 +528,15 @@ const Review = () => {
                       fontSize={18}
                     />
 
-                    {/* Professor list */}
-                    <select className="font-semibold rounded border-2 border-gray-400 h-10 w-48 pl-4 pr-10 bg-white appearance-none">
-                      <option>No</option>
+                    {/* Textbook Required Dropdown */}
+                    <select
+                      name="textbook_required"
+                      className="font-semibold rounded border-2 border-gray-400 h-10 w-48 pl-4 pr-10 bg-white appearance-none"
+                      onChange={handleSelectChange}
+                      value={reviewData.textbook_required ? "Yes" : "No"}
+                    >
+                      <option value={true}>Yes</option>
+                      <option value={false}>No</option>
                     </select>
                   </div>
                 </div>
@@ -372,9 +550,14 @@ const Review = () => {
                       fontSize={18}
                     />
 
-                    {/* Professor list */}
-                    <select className="font-semibold rounded border-2 border-gray-400 h-10 w-48 pl-4 pr-10 bg-white appearance-none">
-                      <option>In-Person</option>
+                    <select
+                      name="delivery_method"
+                      className="font-semibold rounded border-2 border-gray-400 h-10 w-48 pl-4 pr-10 bg-white appearance-none"
+                      onChange={handleSelectChange}
+                    >
+                      <option>In Person</option>
+                      <option>Online</option>
+                      <option>Hybrid</option>
                     </select>
                   </div>
                 </div>
@@ -388,9 +571,18 @@ const Review = () => {
                       fontSize={18}
                     />
 
-                    {/* Professor list */}
-                    <select className="font-semibold rounded border-2 border-gray-400 h-10 w-48 pl-4 pr-10 bg-white appearance-none">
-                      <option>A</option>
+                    {/* Grade Dropdown */}
+                    <select
+                      name="grade_received"
+                      className="font-semibold rounded border-2 border-gray-400 h-10 w-48 pl-4 pr-10 bg-white appearance-none"
+                      onChange={handleSelectChange}
+                      value={reviewData.grade_received}
+                    >
+                      {GRADES.map((grade) => (
+                        <option key={grade} value={grade}>
+                          {grade}
+                        </option>
+                      ))}
                     </select>
                   </div>
                 </div>
@@ -404,27 +596,34 @@ const Review = () => {
               <textarea
                 placeholder="Add additional comments..."
                 className="p-2 focus:outline-1 focus:outline-blue-500 border-[0.1px] resize-none h-[120px] border-[#9EA5B1] rounded-md w-full mb-4"
+                value={reviewData.review_text}
+                onChange={handleCommentChange}
               ></textarea>
 
-              <button className="text-lg font-semibold bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-md px-3 w-full flex justify-center gap-4 items-center">
+              <button
+                type="submit"
+                className="text-lg font-semibold bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-md px-3 w-full flex justify-center gap-4 items-center"
+              >
                 <span>Post Evaluation</span> <BsFillEnvelopePaperFill />
               </button>
             </div>
-          </div>
-        ) : (
-          <div className="max-w-screen-xl mx-auto w-full flex flex-col gap-4 py-8 px-8 justify-center items-center border-zinc-200 border-2 rounded-lg">
-            <span>Ready to contribute to the site? Sign in below!</span>
+          </form>
+        </div>
 
-            <Link
-              to="/login"
-              className="bg-blue-600 text-white px-10 py-3 rounded-lg hover:bg-blue-700 flex mt-2 gap-2 items-center justify-center font-semibold"
-            >
-              Login <FaArrowRight className="text-xl" />
-            </Link>
-          </div>
-        )}
+        {/* ) : ( */}
+        <div className="max-w-screen-xl mx-auto w-full flex flex-col gap-4 py-8 px-8 justify-center items-center border-zinc-200 border-2 rounded-lg">
+          <span>Ready to contribute to the site? Sign in below!</span>
+
+          <Link
+            to="/login"
+            className="bg-blue-600 text-white px-10 py-3 rounded-lg hover:bg-blue-700 flex mt-2 gap-2 items-center justify-center font-semibold"
+          >
+            Login <FaArrowRight className="text-xl" />
+          </Link>
+        </div>
+        {/* )} */}
       </div>
     </div>
-  )
-}
-export default Review
+  );
+};
+export default Review;
