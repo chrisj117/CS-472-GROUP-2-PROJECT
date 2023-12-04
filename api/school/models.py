@@ -19,6 +19,18 @@ class School(TrackingModel):
         return f'{self.short_name}'
 
 
+class Professor(TrackingModel):
+    class Meta:
+        verbose_name_plural = "Professors"
+
+    first_name = models.CharField(max_length=30)
+    last_name = models.CharField(max_length=30)
+    schools = models.ManyToManyField('School', related_name='professors')
+
+    def __str__(self) -> str:
+        return f'{self.first_name} {self.last_name}'
+
+
 class Course(TrackingModel):
     class Meta:
         verbose_name_plural = "Courses"
@@ -35,6 +47,7 @@ class Course(TrackingModel):
 
     # TODO: Professor foreign key, a course can have multiple professors,
     # professors can have multiple courses
+    professors = models.ManyToManyField('Professor', related_name='courses')
 
     # Include school name in this string representation too?
     def __str__(self) -> str:

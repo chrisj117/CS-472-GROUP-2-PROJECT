@@ -1,8 +1,7 @@
 from rest_framework.test import APITestCase
 from django.urls import reverse
 from rest_framework import status
-from school.models import School, Course
-from review.models import Review
+from school.models import School, Course, Professor
 import uuid
 
 
@@ -122,21 +121,23 @@ class TestSchoolAIPView(APITestCase):
 # Review API TESTS
 class TestReviewAPIView(APITestCase):
     def setUp(self):
-        # Creating a school and course object for the tests
         self.school = School.objects.create(
-            long_name="Test School", short_name="TS", city="Test City",
-            state="Test State", country="Test Country")
+            long_name="Test School", short_name="TS",
+            city="Test City", state="Test State", country="Test Country")
+        self.professor = Professor.objects.create(first_name="John", last_name="Doe")
         self.course = Course.objects.create(
-            school=self.school,
-            subject="TEST",
-            catalog_number="101",
-            title="Introduction to Tests"
-        )
+            school=self.school, subject="TEST", catalog_number="101", title="Introduction to Tests")
+        self.professor.courses.add(self.course)
 
-    def test_should_create_review(self):
-        test_data = {
+    # --- TESTING POST METHOD ---
+    def create_review(self, data):
+        return self.client.post(reverse('review_list'), data, format='json')
+
+    def create_test_review_data(self, override_data=None):
+        data = {
             "school": self.school.id,
             "course": self.course.id,
+            "professor": self.professor.id,
             "review_text": "This is a sample review.",
             "term": "Spring",
             "grade_received": "A",
@@ -144,496 +145,396 @@ class TestReviewAPIView(APITestCase):
             "helpful_count": 15,
             "year_taken": 2023,
             "textbook_required": False,
-            "recommended": True
+            "recommended": True,
+            "rating_course_overall": 3,
+            "rating_course_content": 2,
+            "rating_instructor_contribution": 3,
+            "rating_course_organization": 2,
+            "rating_instructor_explanation": 3,
+            "rating_instructor_interest": 5,
+            "rating_work_amount": 3,
+            "rating_clarity_requirements": 5,
+            "rating_class_time_use": 1,
+            "rating_student_confidence": 2,
+            "rating_question_quality": 3
         }
+        if override_data:
+            data.update(override_data)
+        return data
 
-        response = self.client.post(
-            reverse('review_list'), test_data, format='json')
-        self.assertEqual(response.status_code,
-                         status.HTTP_201_CREATED, response.data)
-
-        created_review_data = response.data['data']
-        self.assertEqual(created_review_data.get('review_text'),
-                         test_data['review_text'], response.data)
-
-        # Test creating a review using school's short_name and course's subject and catalog_number
-        test_data_with_short_name = {
+    def test_should_create_review(self):
+        test_data = self.create_test_review_data({
             "school": self.school.short_name,
-            "course": [self.course.subject + " " + self.course.catalog_number],
-            "review_text": "Review with school short_name.",
-            "term": "Spring",
-            "grade_received": "A",
-            "delivery_method": "Online",
-            "helpful_count": 15,
-            "year_taken": 2023,
-            "textbook_required": False,
-            "recommended": True
-        }
-        response = self.client.post(
-            reverse('review_list'), test_data_with_short_name, format='json')
+            "course": f"{self.course.subject} {self.course.catalog_number}",
+            "professor": f"{self.professor.first_name} {self.professor.last_name}"
+        })
+        response = self.create_review(test_data)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertIn("data", response.data)
+        self.assertEqual(response.data['data']['review_text'], test_data['review_text'])
+
+    def test_create_review_with_invalid_school_uuid(self):
+        test_data = self.create_test_review_data({
+            "school": "invalid-uuid",
+            "course": f"{self.course.subject} {self.course.catalog_number}",
+            "professor": f"{self.professor.first_name} {self.professor.last_name}"
+        })
+        response = self.create_review(test_data)
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+        self.assertIn("error", response.data)
+
+    def test_create_review_with_valid_school_uuid_but_nonexistent(self):
+        # Generate a valid UUID that doesn't exist in the database
+        nonexistent_uuid = uuid.uuid4()
+        test_data = self.create_test_review_data({
+            "school": nonexistent_uuid,
+            "course": f"{self.course.subject} {self.course.catalog_number}",
+            "professor": f"{self.professor.first_name} {self.professor.last_name}"
+        })
+        response = self.create_review(test_data)
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+        self.assertIn("error", response.data)
+
+    def test_create_review_with_valid_school_uuid(self):
+        # Use an existing school's UUID
+        valid_uuid = str(self.school.id)
+        test_data = self.create_test_review_data({
+            "school": valid_uuid,
+            "course": f"{self.course.subject} {self.course.catalog_number}",
+            "professor": f"{self.professor.first_name} {self.professor.last_name}"
+        })
+        response = self.create_review(test_data)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertIn("data", response.data)
+
+    def test_create_review_with_list_course_identifier(self):
+        # Course identifier as a list
+        test_data = self.create_test_review_data({
+            "school": self.school.short_name,
+            "course": [str(self.course.id)],
+            "professor": f"{self.professor.first_name} {self.professor.last_name}"
+        })
+        response = self.create_review(test_data)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
-        # Attempt to create a review with a non-UUID string for 'school' and 'course' that should trigger the ValueError
-        response_non_uuid = self.client.post(
-            reverse('review_list'),
-            {
-                "school": "not-a-uuid",
-                "course": [self.course.subject + " " + self.course.catalog_number],
-                "review_text": "Invalid school identifier.",
-                "term": "Fall",
-                "grade_received": "B+",
-                "delivery_method": "In Person",
-                "helpful_count": 10,
-                "year_taken": 2023,
-                "textbook_required": False,
-                "recommended": True
-            },
-            format='json'
-        )
-        self.assertEqual(response_non_uuid.status_code, status.HTTP_404_NOT_FOUND)
+    def test_create_review_with_invalid_course_format(self):
+        # Invalid format for course identifier
+        test_data = self.create_test_review_data({
+            "school": self.school.short_name,
+            "course": "invalid-format",
+            "professor": f"{self.professor.first_name} {self.professor.last_name}"
+        })
+        response = self.create_review(test_data)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
-        # Attempt to create a review with a non-UUID string for 'course' that should trigger the ValueError
-        response_course_non_uuid = self.client.post(
-            reverse('review_list'),
-            {
-                "school": self.school.short_name,
-                "course": "not-a-uuid",
-                "review_text": "Invalid course identifier.",
-                "term": "Fall",
-                "grade_received": "B+",
-                "delivery_method": "In Person",
-                "helpful_count": 10,
-                "year_taken": 2023,
-                "textbook_required": False,
-                "recommended": True
-            },
-            format='json'
-        )
-        self.assertEqual(response_course_non_uuid.status_code, status.HTTP_400_BAD_REQUEST)
+    def test_create_review_without_course_identifier(self):
+        # No course identifier provided
+        test_data = self.create_test_review_data({
+            "school": self.school.short_name,
+            "professor": f"{self.professor.first_name} {self.professor.last_name}"
+        })
+        test_data.pop("course")
+        response = self.create_review(test_data)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
-        # Attempt to create a review with a UUID that does not correspond to an existing school and course
-        response_invalid_uuid = self.client.post(
-            reverse('review_list'),
-            {
-                "school": uuid.uuid4(),  # Generates a valid UUID that does not exist in the database
-                "course": uuid.uuid4(),
-                "review_text": "Non-existent school UUID.",
-                "term": "Fall",
-                "grade_received": "B+",
-                "delivery_method": "In Person",
-                "helpful_count": 10,
-                "year_taken": 2023,
-                "textbook_required": True,
-                "recommended": True
+    def test_create_review_with_invalid_professor_identifier(self):
+        test_data = self.create_test_review_data({
+            "school": self.school.short_name,
+            "course": f"{self.course.subject} {self.course.catalog_number}",
+            "professor": "invalid-professor-identifier"  # Non-UUID, non-first name last name format
+        })
+        response = self.create_review(test_data)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertIn("error", response.data)
 
-            },
-            format='json'
-        )
-        self.assertEqual(response_invalid_uuid.status_code, status.HTTP_404_NOT_FOUND)
+    def test_create_review_with_list_professor_identifier_invalid(self):
+        test_data = self.create_test_review_data({
+            "school": self.school.short_name,
+            "course": f"{self.course.subject} {self.course.catalog_number}",
+            "professor": ["invalid-list-item"]  # List with an invalid item
+        })
+        response = self.create_review(test_data)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertIn("error", response.data)
 
-        # Attempt to create a review with a school 'short_name' that does not exist
-        response_invalid_short_name = self.client.post(
-            reverse('review_list'),
-            {
-                "school": "invalid-short-name",
-                "course": "invalid course",
-                "review_text": "Non-existent school short name.",
-                "term": "Fall",
-                "grade_received": "B+",
-                "delivery_method": "In Person",
-                "helpful_count": 10,
-                "year_taken": 2023,
-                "textbook_required": False,
-                "recommended": True
-            },
-            format='json'
-        )
-        self.assertEqual(response_invalid_short_name.status_code, status.HTTP_404_NOT_FOUND)
+    def test_create_review_with_valid_course_and_professor_uuids(self):
+        test_data = self.create_test_review_data({
+            "school": self.school.short_name,
+            "course": str(self.course.id),
+            "professor": str(self.professor.id)
+        })
+        response = self.create_review(test_data)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
-        response_missing_school_data = self.client.post(
-            reverse('review_list'),
-            {
-                # missing the school field
-                "course": [self.course.subject + " " + self.course.catalog_number],
-                "review_text": "Review with incomplete data.",
-                "term": "Spring",
-                "grade_received": "A",
-                "delivery_method": "Online",
-                "helpful_count": 15,
-                "year_taken": 2023,
-                "textbook_required": False,
-                "recommended": True
-            },
-            format='json'
-        )
-        self.assertEqual(response_missing_school_data.status_code, status.HTTP_400_BAD_REQUEST)
+    def test_create_review_with_invalid_data(self):
+        test_data = self.create_test_review_data({
+            "school": self.school.short_name,
+            "course": f"{self.course.subject} {self.course.catalog_number}",
+            "professor": f"{self.professor.first_name} {self.professor.last_name}",
+            "grade_received": "Invalid Grade"  # Invalid grade
+        })
+        response = self.create_review(test_data)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertIn("grade_received", response.data)
+        self.assertEqual(response.data["grade_received"][0], '"Invalid Grade" is not a valid choice.')
 
-        response_missing_course_data = self.client.post(
-            reverse('review_list'),
-            {
-                "school": self.school.short_name,
-                # missing the course field
-                "review_text": "Review with incomplete data.",
-                "term": "Spring",
-                "grade_received": "A",
-                "delivery_method": "Online",
-                "helpful_count": 15,
-                "year_taken": 2023,
-                "textbook_required": False,
-                "recommended": True
-            },
-            format='json'
-        )
-        self.assertEqual(response_missing_course_data.status_code, status.HTTP_400_BAD_REQUEST)
+    def test_create_review_with_invalid_serializer_data(self):
+        test_data = self.create_test_review_data({
+            "school": self.school.short_name,
+            "course": f"{self.course.subject} {self.course.catalog_number}",
+            "professor": f"{self.professor.first_name} {self.professor.last_name}",
+            "grade_received": "Invalid Grade"  # Invalid grade to trigger serializer error
+        })
+        response = self.create_review(test_data)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertIn("grade_received", response.data)
 
-        print('Response Data:', response_missing_course_data.data)
-
+    # --- TESTING GET METHOD ---
     def test_should_list_all_reviews(self):
-        test_data = {
-            "school": self.school.id,
-            "course": [self.course.subject + " " + self.course.catalog_number],
-            "review_text": "This is a sample review.",
-            "term": "Fall",
-            "grade_received": "B+",
-            "delivery_method": "In Person",
-            "helpful_count": 10,
-            "year_taken": 2023,
-            "textbook_required": False,
-            "recommended": True
-        }
-        self.client.post(reverse('review_list'), test_data, format='json')
-
+        self.create_review(self.create_test_review_data({
+            "school": self.school.short_name,
+            "course": f"{self.course.subject} {self.course.catalog_number}",
+            "professor": f"{self.professor.first_name} {self.professor.last_name}"
+        }))
         response = self.client.get(reverse('review_list'))
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertGreaterEqual(len(response.data), 1)
 
     def test_get_reviews_by_school_short_name(self):
-        # Creating multiple reviews for the school
         for i in range(5):
-            Review.objects.create(
-                school=self.school,
-                course=self.course,  # Directly pass the Course instance
-                review_text=f"This is review number {i}",
-                term="Fall",
-                grade_received="A",
-                delivery_method="In Person",
-                helpful_count=i,
-                year_taken=2023,
-                textbook_required=False,
-                recommended=True
-            )
-
-        # Checking if the reviews were created successfully
-        self.assertEqual(Review.objects.filter(school=self.school).count(), 5)
-
-        # Testing the existing reviews for a school with the given short_name.
-        response = self.client.get(reverse('school_reviews', kwargs={
-                                'short_name': self.school.short_name}))
+            self.create_review(self.create_test_review_data({
+                "school": self.school.short_name,
+                "course": f"{self.course.subject} {self.course.catalog_number}",
+                "professor": f"{self.professor.first_name} {self.professor.last_name}",
+                "review_text": f"This is review number {i}"
+            }))
+        url = reverse('school_reviews', kwargs={'short_name': self.school.short_name})
+        response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertTrue(isinstance(response.data, list))
+        self.assertEqual(len(response.data), 5)
 
-        self.assertEqual(len(response.data['data']), 5)
+    def test_get_reviews_for_nonexistent_school(self):
+        response = self.client.get(reverse('school_reviews', kwargs={'short_name': 'nonexistent'}))
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+        self.assertIn("message", response.data)
+        self.assertEqual(response.data["message"], "School not found!")
 
-        for i, review_data in enumerate(response.data['data']):
-            self.assertIn(
-                f"This is review number {i}", review_data['review_text'])
+    def test_get_all_reviews(self):
+        # Make sure there's at least one review in the database
+        self.create_review(self.create_test_review_data())
+        response = self.client.get(reverse('review_list'))
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertTrue(len(response.data) >= 1)
 
-        # Checking GET request with an ID that doesn't exist to make sure it returns a 404
-        invalid_short_name = 'RS'
-        response = self.client.get(reverse('school_reviews', kwargs={
-                                'short_name': invalid_short_name}))
+    def test_retrieve_specific_review(self):
+        # Create a review and then try to retrieve it by ID
+        review_data = self.create_test_review_data()
+        created_review = self.create_review(review_data).data['data']
+        response = self.client.get(reverse('review_detail', kwargs={'review_id': created_review['id']}))
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data['data']['id'], created_review['id'])
+
+    def test_retrieve_nonexistent_review(self):
+        # Try to retrieve a review with a nonexistent ID
+        nonexistent_review_id = uuid.uuid4()
+        response = self.client.get(reverse('review_detail', kwargs={'review_id': nonexistent_review_id}))
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
-    def test_should_return_one_review(self):
-        test_data = {
-            "school": self.school.id,
-            "course": self.course.subject + " " + self.course.catalog_number,
-            "review_text": "This is a sample review.",
-            "term": "Summer",
-            "grade_received": "A-",
-            "delivery_method": "Hybrid",
-            "helpful_count": 5,
-            "year_taken": 2023,
-            "textbook_required": False,
-            "recommended": True
-        }
-
-        # POST request to create a new review
-        post_response = self.client.post(
-            reverse('review_list'), test_data, format='json')
-        self.assertEqual(post_response.status_code,
-                         status.HTTP_201_CREATED, post_response.data)
-
-        # getting the review ID from the response
-        review_id = str(post_response.data['data']['id'])
-
-        # GET request to retrieve the created review by ID
-        response = self.client.get(
-            reverse('review_detail', kwargs={'review_id': review_id}))
+    def test_retrieve_reviews_by_school_and_course(self):
+        # Create multiple reviews for the same course and then retrieve them
+        for i in range(5):
+            self.create_review(self.create_test_review_data({
+                "review_text": f"Review {i} for course"
+            }))
+        response = self.client.get(reverse('course_reviews', kwargs={'short_name': self.school.short_name, 'course_subject_catalog': f"{self.course.subject}{self.course.catalog_number}"}))
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data), 5)
+    # --- TESTING COURSE_REVIEW_LIST METHOD ---
+    def test_retrieve_reviews_with_invalid_course_format(self):
+        response = self.client.get(reverse('course_reviews', kwargs={'short_name': self.school.short_name, 'course_subject_catalog': "invalidformat"}))
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertIn('error', response.data)
+        self.assertEqual(response.data['error'], 'Invalid course identifier format')
 
-        self.assertEqual(
-            response.data.get('review_text') or response.data['data']['review_text'], test_data['review_text'])
-
-        # Checking GET request with an ID that doesn't exist to make sure it returns a 404
-        non_existent_id = '00000000-0000-0000-0000-000000000000'
-        response = self.client.get(
-            reverse('review_detail', kwargs={'review_id': non_existent_id}))
+    def test_retrieve_reviews_nonexistent_school(self):
+        response = self.client.get(reverse('course_reviews', kwargs={'short_name': 'nonexistent', 'course_subject_catalog': f"{self.course.subject}{self.course.catalog_number}"}))
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+        self.assertIn('error', response.data)
+        self.assertEqual(response.data['error'], 'School not found')
 
-    def test_should_update_review(self):
-        test_data = {
-            "school": self.school.id,
-            "course": self.course.id,
-            "review_text": "This is a sample review.",
-            "term": "Spring",
-            "grade_received": "B",
-            "delivery_method": "Online",
-            "helpful_count": 8,
-            "year_taken": 2023,
-            "textbook_required": False,
-            "recommended": True
-        }
-        post_response = self.client.post(
-            reverse('review_list'), test_data, format='json')
+    def test_retrieve_reviews_nonexistent_course(self):
+        response = self.client.get(reverse('course_reviews', kwargs={'short_name': self.school.short_name, 'course_subject_catalog': "TST209"}))
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+        self.assertIn('error', response.data)
+        self.assertEqual(response.data['error'], 'Course not found')
 
-        review_id = post_response.data['data']['id']
+    # --- TESTING PUT METHOD ---
+    def create_and_return_review(self):
+        review_data = self.create_test_review_data()
+        return self.create_review(review_data).data['data']
 
-        # testing updating the specific review
+    def test_successful_review_update(self):
+        review = self.create_and_return_review()
         update_data = {
-            "school": self.school.id,
-            "course": [self.course.subject + " " + self.course.catalog_number],
-            "review_text": "This is an updated review.",
+            "review_text": "Updated review text",
+            "school": review['school'],
+            "course": review['course'],
+            "professor": review['professor'],
             "term": "Spring",
-            "grade_received": "B",
+            "grade_received": "A",
             "delivery_method": "Online",
-            "helpful_count": 20,
+            "helpful_count": 15,
             "year_taken": 2023,
             "textbook_required": False,
-            "recommended": True
+            "recommended": True,
+            "rating_course_overall": 3,
+            "rating_course_content": 2,
+            "rating_instructor_contribution": 3,
+            "rating_course_organization": 2,
+            "rating_instructor_explanation": 3,
+            "rating_instructor_interest": 5,
+            "rating_work_amount": 3,
+            "rating_clarity_requirements": 5,
+            "rating_class_time_use": 1,
+            "rating_student_confidence": 2,
+            "rating_question_quality": 3
         }
+        response = self.client.put(reverse('review_detail', kwargs={'review_id': review['id']}), update_data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data['data']['review_text'], "Updated review text")
+
+    def test_update_review_with_valid_uuids(self):
+        review = self.create_and_return_review()
+        valid_school_uuid = str(self.school.id)
+        valid_course_uuid = str(self.course.id)
+        valid_professor_uuid = str(self.professor.id)
+
+        update_data = {
+            "school": valid_school_uuid,
+            "course": valid_course_uuid,
+            "professor": valid_professor_uuid,
+            "review_text": "Updated review text",
+            "term": "Spring",
+            "grade_received": "A",
+            "delivery_method": "Online",
+            "helpful_count": 15,
+            "year_taken": 2023,
+            "textbook_required": False,
+            "recommended": True,
+            "rating_course_overall": 3,
+            "rating_course_content": 2,
+            "rating_instructor_contribution": 3,
+            "rating_course_organization": 2,
+            "rating_instructor_explanation": 3,
+            "rating_instructor_interest": 5,
+            "rating_work_amount": 3,
+            "rating_clarity_requirements": 5,
+            "rating_class_time_use": 1,
+            "rating_student_confidence": 2,
+            "rating_question_quality": 3
+        }
+
         response = self.client.put(
-            reverse('review_detail', kwargs={'review_id': review_id}), update_data, format='json')
+            reverse('review_detail', kwargs={'review_id': review['id']}),
+            update_data,
+            format='json'
+        )
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(
-            response.data['data']['review_text'], update_data['review_text'])
+        self.assertEqual(response.data['data']['school'], self.school.short_name)
+        self.assertEqual(response.data['data']['course'], f"{self.course.subject} {self.course.catalog_number}")
+        self.assertEqual(response.data['data']['professor'], f"{self.professor.first_name} {self.professor.last_name}")
+        self.assertEqual(response.data['data']['review_text'], "Updated review text")
 
-        # Checking PUT request with an ID that doesn't exist to make sure it returns a 404
-        non_existent_id = '00000000-0000-0000-0000-000000000000'
-        response = self.client.put(
-            reverse('review_detail', kwargs={'review_id': non_existent_id}), update_data, format='json')
-        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
-
-        # testing invalid data
-        invalid_update_data = {
-            "school": self.school.id,
-            "course": self.course.subject + " " + self.course.catalog_number,
-            "review_text": "This is a sample update review",
-            "term": "Invalid Term",
-            "grade_received": "B",
+    def test_update_review_with_course_identifier_as_list(self):
+        review = self.create_and_return_review()
+        update_data = {
+            "course": [str(self.course.id)],
+            "professor": [str(self.professor.id)],
+            "school": review['school'],
+            "review_text": "Review text",
+            "term": "Spring",
+            "grade_received": "A",
             "delivery_method": "Online",
-            "helpful_count": 20,
+            "helpful_count": 15,
             "year_taken": 2023,
             "textbook_required": False,
-            "recommended": True
+            "recommended": True,
+            "rating_course_overall": 3,
+            "rating_course_content": 2,
+            "rating_instructor_contribution": 3,
+            "rating_course_organization": 2,
+            "rating_instructor_explanation": 3,
+            "rating_instructor_interest": 5,
+            "rating_work_amount": 3,
+            "rating_clarity_requirements": 5,
+            "rating_class_time_use": 1,
+            "rating_student_confidence": 2,
+            "rating_question_quality": 3
         }
         response = self.client.put(
-            reverse('review_detail', kwargs={'review_id': review_id}), invalid_update_data, format='json')
+            reverse('review_detail', kwargs={'review_id': review['id']}),
+            update_data,
+            format='json'
+        )
+        print(response.data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-        # 400 BAD REQUEST for invalid data
+    def test_update_nonexistent_review(self):
+        nonexistent_review_id = uuid.uuid4()
+        response = self.client.put(reverse('review_detail', kwargs={'review_id': nonexistent_review_id}), {}, format='json')
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+    def test_invalid_school_identifier_in_update(self):
+        review = self.create_and_return_review()
+        update_data = {"school": "invalid-uuid"}
+        response = self.client.put(reverse('review_detail', kwargs={'review_id': review['id']}), update_data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+    def test_invalid_course_identifier_in_update(self):
+        review = self.create_and_return_review()
+        update_data = {"course": "invalid-format"}
+        response = self.client.put(reverse('review_detail', kwargs={'review_id': review['id']}), update_data, format='json')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
-        # Update review using school's short_name
-        update_data_short_name = {
-            "school": self.school.short_name,  # Use short_name instead of UUID
-            "course": [self.course.subject + " " + self.course.catalog_number],
-            "review_text": "Updated review with school's short_name",
-            "term": "Fall",
-            "grade_received": "A+",
-            "delivery_method": "Online",
-            "helpful_count": 89,
-            "year_taken": 2023,
-            "textbook_required": False,
-            "recommended": True
-        }
-        response_short_name = self.client.put(
-            reverse('review_detail', kwargs={'review_id': review_id}), update_data_short_name, format='json'
-        )
-        self.assertEqual(response_short_name.status_code, status.HTTP_200_OK)
-
-        # Update review using invalid school identifier
-        update_data_invalid_school = {
-            "school": "invalid-school-id",
-            "course": [self.course.subject + " " + self.course.catalog_number],
-            "review_text": "Update attempt with invalid school identifier",
-            "term": "Spring",
-            "grade_received": "C-",
-            "delivery_method": "Online",
-            "helpful_count": 32,
-            "year_taken": 2023,
-            "textbook_required": False,
-            "recommended": True
-        }
-        response_invalid_school = self.client.put(
-            reverse('review_detail', kwargs={'review_id': review_id}), update_data_invalid_school, format='json'
-        )
-        self.assertEqual(response_invalid_school.status_code, status.HTTP_404_NOT_FOUND)
-
-        # Create a course with this UUID to ensure it exists in the database
-        course_uuid = uuid.uuid4()
-        Course.objects.create(
-                id=course_uuid,
-                school=self.school,
-                subject="TS",
-                catalog_number="102",
-                title="Test Course"
-        )
-
-        # Update review using valid UUID for course
-        update_data_valid_uuid_course = {
-            "school": self.school.id,
-            "course": course_uuid,
-            "review_text": "Update attempt with valid course UUID",
-            "term": "Summer",
-            "grade_received": "A",
-            "delivery_method": "Hybrid",
-            "helpful_count": 25,
-            "year_taken": 2023,
-            "textbook_required": True,
-            "recommended": False
-        }
-
-        response_valid_uuid_course = self.client.put(
-            reverse('review_detail', kwargs={'review_id': review_id}), update_data_valid_uuid_course, format='json'
-        )
-
-        self.assertEqual(response_valid_uuid_course.status_code, status.HTTP_200_OK)
-        self.assertIn("Update attempt with valid course UUID", response_valid_uuid_course.data['data']['review_text'])
-
-        # Update review using invalid course identifier
-        update_data_invalid_course = {
-            "school": self.school.short_name,
-            "course": "invalid-course-id",
-            "review_text": "Update attempt with invalid course identifier",
-            "term": "Fall",
-            "grade_received": "B-",
-            "delivery_method": "Online",
-            "helpful_count": 21,
-            "year_taken": 2023,
-            "textbook_required": True,
-            "recommended": False
-        }
-        response_invalid_course = self.client.put(
-            reverse('review_detail', kwargs={'review_id': review_id}), update_data_invalid_course, format='json'
-        )
-        self.assertEqual(response_invalid_course.status_code, status.HTTP_400_BAD_REQUEST)
-
-    def test_should_not_update_review_with_invalid_school_id(self):
-        test_data = {
-            "school": self.school.id,
-            "course": self.course.subject + " " + self.course.catalog_number,
-            "review_text": "This is a review for an update test.",
-            "term": "Spring",
-            "grade_received": "B",
-            "delivery_method": "Online",
-            "helpful_count": 8,
-            "year_taken": 2023,
-            "textbook_required": True,
-            "recommended": False
-        }
-        post_response = self.client.post(reverse('review_list'), test_data, format='json')
-        review_id = post_response.data['data']['id']
-
-        # update data with an invalid school identifier
-        invalid_school_identifier = "not-valid-uuid-or-shortname"
-        update_data = {
-            "school": invalid_school_identifier,
-            "course": self.course.subject + " " + self.course.catalog_number,
-            "review_text": "Attempt to update with invalid school identifier.",
-            "term": "Spring",
-            "grade_received": "B+",
-            "delivery_method": "Online",
-            "helpful_count": 10,
-            "year_taken": 2023,
-            "textbook_required": True,
-            "recommended": False
-        }
-
-        # Send PUT request to update the review
-        response = self.client.put(
-            reverse('review_detail', kwargs={'review_id': review_id}), update_data, format='json')
-
-        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
-        self.assertIn("School not found with the provided identifier.", response.data['error'])
-
-    def test_review_validation_for_course_school_mismatch(self):
-        # Creating another school
-        new_school = School.objects.create(
-            long_name="New Test School", short_name="NTS", city="New City",
-            state="New State", country="New Country"
-        )
-
-        # Creating a course for the new school
-        new_school_course = Course.objects.create(
-            school=new_school,
-            subject="TSC",
-            catalog_number="102",
-            title="Test Course 2"
-        )
-
-        # Attempting to create a review with a mismatch between school and course
-        test_data = {
-            "school": self.school.id,
-            "course": new_school_course.id,
-            "review_text": "Wrong School and Course mapping",
-            "term": "Spring",
-            "grade_received": "A",
-            "delivery_method": "Online",
-            "helpful_count": 135,
-            "year_taken": 2023,
-            "textbook_required": False,
-            "recommended": True
-        }
-
-        response = self.client.post(reverse('review_list'), test_data, format='json')
-
+    def test_invalid_professor_identifier_in_update(self):
+        review = self.create_and_return_review()
+        update_data = {"professor": "invalid-identifier"}
+        response = self.client.put(reverse('review_detail', kwargs={'review_id': review['id']}), update_data, format='json')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        self.assertIn("The course must be from the selected school.", str(response.data))
 
-    def test_should_delete_review(self):
-        test_data = {
-            "school": self.school.id,
-            "course": self.course.subject + " " + self.course.catalog_number,
-            "review_text": "This is another sample review",
-            "term": "Spring",
-            "grade_received": "A",
-            "delivery_method": "In Person",
-            "helpful_count": 12
+    def test_update_review_with_invalid_serializer_data(self):
+        review = self.create_and_return_review()
+        update_data = {
+            "professor": review['professor'],
+            "review_text": "",
         }
-        post_response = self.client.post(
-            reverse('review_list'), test_data, format='json')
+        response = self.client.put(
+            reverse('review_detail', kwargs={'review_id': review['id']}),
+            update_data,
+            format='json'
+        )
+        print(response.data)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertIn("review_text", response.data)
 
-        review_id = post_response.data['data']['id']
+    # --- TESTING DELETE METHOD ---
+    def test_successful_review_deletion(self):
+        review = self.create_and_return_review()
+        response = self.client.delete(
+            reverse('review_detail', kwargs={'review_id': review['id']})
+        )
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        self.assertEqual(response.data, {"message": "Review deleted successfully", "data": []})
 
-        self.assertEqual(post_response.status_code, status.HTTP_201_CREATED)
-
-        # Deleting the review
-        delete_response = self.client.delete(
-            reverse('review_detail', kwargs={'review_id': review_id}))
-        self.assertEqual(delete_response.status_code,
-                         status.HTTP_204_NO_CONTENT)
-
-        # GET the same review and expect a 404 NOT FOUND
-        get_response = self.client.get(
-            reverse('review_detail', kwargs={'review_id': review_id}))
-        self.assertEqual(get_response.status_code, status.HTTP_404_NOT_FOUND)
-
-        # Delete with a non-existent review UUID
-        non_existent_id = '00000000-0000-0000-0000-000000000000'
-        response_non_existent = self.client.delete(
-            reverse('review_detail', kwargs={'review_id': non_existent_id}))
-        self.assertEqual(response_non_existent.status_code,
-                         status.HTTP_404_NOT_FOUND)
+    def test_delete_nonexistent_review(self):
+        nonexistent_review_id = uuid.uuid4()
+        response = self.client.delete(
+            reverse('review_detail', kwargs={'review_id': nonexistent_review_id})
+        )
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+        self.assertEqual(response.data, {"message": "Review not found!", "data": []})
 
 
 # SCHOOL REQUEST TESTS
