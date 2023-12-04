@@ -80,7 +80,7 @@ const Login = () => {
   return (
     <form
       onSubmit={handleLogin}
-      className="max-w-screen-xl mx-auto flex flex-col items-center h-[calc(100vh-98px)]"
+      className="overflow-auto max-w-screen-xl mx-auto flex flex-col items-center h-[calc(100vh-98px)]"
     >
       {/* Login Page Heading */}
       <h2 className="text-3xl font-bold mb-12 mt-8">Login</h2>
