@@ -2,6 +2,7 @@ import Searchbar from "../components/Searchbar"
 import QA from "../components/QA"
 import { getSchools } from "../utilities/GetData"
 import { useLoaderData } from "react-router-dom"
+import { FaSearch } from "react-icons/fa"
 
 export async function loader() {
   const schools = await getSchools()
@@ -12,24 +13,27 @@ const Home = () => {
   const { schools } = useLoaderData()
 
   return (
-    <div className="overflow-auto flex flex-col justify-evenly min-h-[calc(100vh-98px)] max-w-screen-xl mx-auto">
+    <div className="overflow-auto flex flex-col justify-evenly min-h-[calc(100vh-98px)] max-w-screen-xl mx-auto px-4">
       {/* Search bar */}
       <div className="flex-1 flex flex-col w-full justify-center items-center gap-4">
         <p className="sm:text-lg md:text-xl l:text-2xl xl:text-3xl font-bold text-center mx-14">
           Find your school below to leave an evaluation!
         </p>
-        <Searchbar
-          searchingSchools={true}
-          className="w-full px-4"
-          searchPlaceholder="Ex: University of Nevada, Las Vegas / UNLV"
-          change={true}
-          schools={schools}
-        />
+        <div className="flex gap-2 items-center justify-center max-w-screen-xl w-full">
+          <FaSearch className="text-lg text-zinc-600 dark:text-zinc-300" />
+          <Searchbar
+            searchingSchools={true}
+            className="w-full"
+            searchPlaceholder="Ex: University of Nevada, Las Vegas / UNLV"
+            change={true}
+            schools={schools}
+          />
+        </div>
       </div>
 
       {/* Bottom of page: FAQ section */}
       <div className="w-full justify-center mx-auto mb-12 pt-4">
-        <h1 className="sm:text-md md:text-l l:text-xl xl:text-2xl text-center no-underline text-grey-darkest hover:text-blue-dark mb-8 font-semibold">
+        <h1 className="sm:text-md md:text-l l:text-xl xl:text-2xl text-center no-underline text-grey-darkest hover:text-blue-dark mb-8 font-semibold text-blue-500">
           Frequently Asked Questions
         </h1>
         {/* Question/Answer Components */}

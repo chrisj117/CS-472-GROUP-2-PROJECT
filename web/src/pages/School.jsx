@@ -1,7 +1,6 @@
 /* eslint-disable react-refresh/only-export-components */
 
 import CourseCard from "../components/CourseCard"
-import Searchbar from "../components/Searchbar"
 import { useLoaderData } from "react-router-dom"
 import { getCourses, getSchool } from "../utilities/GetData"
 import { useEffect, useState } from "react"
@@ -36,12 +35,12 @@ const School = () => {
   }, [])
 
   return (
-    <section className="max-w-screen-xl mx-auto flex flex-col gap-4 mt-8 min-h-[calc(100vh-98px)]">
+    <section className="max-w-screen-xl mx-auto flex flex-col gap-4 mt-8 min-h-[calc(100vh-98px)] px-4">
       <h2 className="font-bold text-3xl">
         {school.long_name} ({school.short_name})
       </h2>
 
-      <div className="mt-1 flex gap-2 items-center justify-center">
+      <div className="mt-1 flex gap-3 items-center justify-center">
         <FaSearch className="text-lg text-zinc-600 dark:text-zinc-300" />
         <input
           type="text"
@@ -52,7 +51,7 @@ const School = () => {
       </div>
 
       <div className="py-4">
-        <div className="px-32 flex flex-col gap-2">
+        <div className="flex flex-col gap-2">
           {filteredCourses.length > 0 ? (
             filteredCourses
               .map((course) => {

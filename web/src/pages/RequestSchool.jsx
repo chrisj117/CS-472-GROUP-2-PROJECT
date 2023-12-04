@@ -6,7 +6,7 @@ import FormError from "../components/FormError"
 import FormSuccess from "../components/FormSuccess"
 import { BeatLoader } from "react-spinners"
 import { useLoaderData } from "react-router-dom"
-import { useDarkMode } from "./Root"
+import { FaSearch } from "react-icons/fa"
 
 const RequestSchool = () => {
   const [name, setName] = useState("")
@@ -48,7 +48,7 @@ const RequestSchool = () => {
   }
 
   return (
-    <div className="overflow-auto max-w-screen-xl mx-auto flex flex-col items-center min-h-[calc(100vh-98px)]">
+    <div className="overflow-auto max-w-screen-xl mx-auto flex flex-col items-center min-h-[calc(100vh-98px)] px-4">
       <h2 className="text-lg md:text-xl lg:text-2xl xl:text-3xl font-bold mb-12 mt-8">
         Request School
       </h2>
@@ -59,13 +59,16 @@ const RequestSchool = () => {
             <span className="font-bold text-blue-600">Wait!</span> Check if your
             school is already here:
           </p>
-          <Searchbar
-            searchingSchools={true}
-            className="w-full"
-            searchPlaceholder="Ex: University of Nevada, Las Vegas / UNLV"
-            change={false}
-            schools={schools}
-          />
+          <div className="flex gap-2 items-center justify-center max-w-screen-xl w-full">
+            <FaSearch className="text-lg text-zinc-600 dark:text-zinc-300" />
+            <Searchbar
+              searchingSchools={true}
+              className="w-full"
+              searchPlaceholder="Ex: University of Nevada, Las Vegas / UNLV"
+              change={false}
+              schools={schools}
+            />
+          </div>
         </div>
         {/* Request a School Form */}
 

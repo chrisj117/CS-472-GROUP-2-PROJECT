@@ -1,6 +1,6 @@
 import { Outlet } from "react-router-dom"
 import Navbar from "../components/Navbar"
-import { useState } from "react"
+import { createContext, useContext, useMemo, useState } from "react"
 
 const DarkContext = createContext()
 
@@ -20,9 +20,12 @@ const Root = () => {
     }
   }
 
-  const value = useMemo(() => ({
-    darkMode,
-  }))
+  const value = useMemo(
+    () => ({
+      darkMode,
+    }),
+    [darkMode]
+  )
 
   return (
     <main className={`${darkMode == "true" ? "dark" : ""} bg-white`}>
