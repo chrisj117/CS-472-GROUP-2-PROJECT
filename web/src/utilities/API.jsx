@@ -3,6 +3,8 @@ import {
   EmailRegexTest,
   PasswordRegexTest,
   UsernameRegexTest,
+  LinkRegexTest,
+  MaxCharacterTest,
 } from "./RegexTest"
 
 export async function LoginAuth(data) {
@@ -12,10 +14,6 @@ export async function LoginAuth(data) {
   } catch (err) {
     if (err.response) {
       // Not in the 200 response range
-
-      // console.log(err.response.data)
-      // console.log(err.response.status)
-      // console.log(err.response.headers)
       if (
         err.response.data.detail &&
         err.response.data.detail.includes("Email is not verified")
@@ -78,9 +76,32 @@ export async function PasswordResetAuth(data) {
   } catch (err) {
     if (err.response) {
       // Not in the 200 response range
-      console.log(`Error: ${err.response}`)
+      console.log(`Error: ${err.response.data}`)
     } else {
       console.log(`Error: ${err.message}`)
+    }
+  }
+}
+
+export async function SendSchoolInfo(data) {
+  if (!MaxCharacterTest(data.name, 3, 80)) {
+    return "ERROR: Keep name between 3-80 characters."
+  }
+
+  if (!LinkRegexTest(data.website)) {
+    return "ERROR: Invalid website format."
+  }
+
+  try {
+    const response = await api.post("/request-school/", data)
+    if (response) return response.data
+  } catch (err) {
+    if (err.response) {
+      // Not in the 200 response range
+      return "ERROR: School already requested!"
+    } else {
+      return "ERROR: School already requested!"
+      // console.log(`Error: ${err.message}`)
     }
   }
 }

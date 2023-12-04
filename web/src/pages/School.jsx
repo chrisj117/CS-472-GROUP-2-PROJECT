@@ -11,9 +11,8 @@ const School = () => {
         {schoolName} ({schoolNameShort})
       </h2>
       <Searchbar
-        searchingSchools={false}
         searchingCourses={true}
-        searchPlaceholder="Search for a course"
+        searchPlaceholder="Ex: CS 472"
         className="flex-1 mb-8"
       />
 

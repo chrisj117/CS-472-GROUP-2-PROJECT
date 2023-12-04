@@ -8,7 +8,6 @@ import NotFound from "./pages/NotFound.jsx"
 import School from "./pages/School.jsx"
 import About from "./pages/About.jsx"
 import RequestSchool from "./pages/RequestSchool"
-import Course from "./pages/Course"
 import Review from "./pages/Review"
 import Home from "./pages/Home"
 import Login from "./pages/Login"
@@ -84,14 +83,8 @@ const router = createBrowserRouter([
         element: <School />,
         children: [
           {
-            path: "courses/:courseId",
-            element: <Course />,
-            children: [
-              {
-                path: "review",
-                element: <Review />,
-              },
-            ],
+            path: "review",
+            element: <Review />,
           },
         ],
       },

@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { BsEnvelopeFill } from "react-icons/bs"
 import { useAuth } from "../utilities/AuthProvider"
-import { PasswordResetAuth } from "../utilities/Auth.jsx"
+import { PasswordResetAuth } from "../utilities/API.jsx"
 import { BeatLoader } from "react-spinners"
 import FormError from "../components/FormError"
 import FormSuccess from "../components/FormSuccess.jsx"
