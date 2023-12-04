@@ -1,4 +1,5 @@
 /* eslint-disable react-refresh/only-export-components */
+/* eslint-disable react-hooks/exhaustive-deps */
 
 import CourseCard from "../components/CourseCard"
 import { useLoaderData } from "react-router-dom"

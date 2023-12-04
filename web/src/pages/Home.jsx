@@ -1,3 +1,5 @@
+/* eslint-disable react-refresh/only-export-components */
+
 import Searchbar from "../components/Searchbar"
 import QA from "../components/QA"
 import { getSchools } from "../utilities/GetData"
