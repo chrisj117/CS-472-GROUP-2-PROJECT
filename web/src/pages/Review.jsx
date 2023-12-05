@@ -439,7 +439,7 @@ const Review = () => {
               Leave an Evaluation
             </h3>
             {user ? (
-              <div className="max-w-screen-xl mx-auto flex flex-col gap-16 border-2 border-gray-200 rounded-xl px-8 py-8">
+              <div className="max-w-screen-xl mx-auto flex flex-col gap-16 border-2 border-zinc-200 dark:border-zinc-600 rounded-xl px-8 py-8">
                 <div>
                   <h4 className="font-semibold text-xl mb-4">
                     Teaching Approaches
