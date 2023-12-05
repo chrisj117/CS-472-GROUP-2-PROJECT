@@ -16,7 +16,7 @@ const InputField = ({
             type={inputType}
             id={inputID}
             placeholder={inputPlaceholder}
-            className="px-4 py-2 w-full border-2 rounded dark:text-black"
+            className="px-3 py-2 w-full border-2 rounded truncate dark:bg-zinc-900 dark:border-zinc-600 dark:text-white focus:outline-transparent"
             onChange={onChange}
           />
         </label>

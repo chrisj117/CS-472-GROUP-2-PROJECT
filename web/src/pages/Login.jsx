@@ -82,10 +82,10 @@ const Login = () => {
   return (
     <form
       onSubmit={handleLogin}
-      className="overflow-auto max-w-screen-xl mx-auto flex flex-col items-center h-[calc(100vh-98px)]"
+      className="flex flex-col items-center h-[calc(100vh-98px)] w-screen mx-auto px-4 md:max-w-screen-xl overflow-auto"
     >
       {/* Login Page Heading */}
-      <h2 className="text-3xl font-bold mb-12 mt-8">Login</h2>
+      <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-6 md:mb-8 mt-4 md:mt-8">Login</h2>
       {/* Email Input */}
       <InputField
         labelName="E-mail"
@@ -122,7 +122,7 @@ const Login = () => {
               )}
             </button>
           </div>
-          <span>{resetMessage}</span>
+          <span className="md:ml-4">{resetMessage}</span>
         </span>
       </div>
 
@@ -142,7 +142,7 @@ const Login = () => {
           </>
         )}
       </button>
-      <p className="mt-6 text-lg">
+      <p className="mt-4 md:mt-6 text-md lg:text-lg">
         Don&apos;t have an account yet?{" "}
         <Link to="/register" replace={true} className="text-blue-500 underline">
           Register here

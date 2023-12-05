@@ -1,36 +1,29 @@
-import { useEffect, useState } from 'react';
-import SquareRating from './SquareRating';
-import { Link } from 'react-router-dom';
+/* eslint-disable react/prop-types */
 
-const CourseCard = () => {
-  const [courseCode, setCourseCode] = useState('');
-  const [courseName, setCourseName] = useState('');
-  const [professorCount, setProfessorCount] = useState(0);
-  const [reviewCount, setReviewCount] = useState(0);
-  const [overallRating, setOverallRating] = useState(3);
+import { Link } from "react-router-dom"
 
-  useEffect(() => {
-    // Temporary Mock Data until we can pull from API
-    setCourseCode('CS 302');
-    setCourseName('Data Structures and Algorithms');
-    setProfessorCount(Math.ceil(Math.random() * 10));
-    setReviewCount(Math.ceil(Math.random() * 100));
-    setOverallRating(Math.ceil(Math.random() * 5));
-  }, []);
-
+const CourseCard = ({
+  schoolId,
+  courseSubject,
+  courseTitle,
+  catalogNumber,
+  professorCount,
+  courseId
+}) => {
   return (
-    <Link to={`courses/courseID`}>
-      <div className="border-2 p-4 rounded-md flex justify-between items-center text-lg">
-        <h4 className="font-bold text-lg">{courseCode}</h4>
-        <div>{courseName}</div>
-        <div className="flex gap-2 items-center">
-          Overall Rating:
-          <SquareRating rating={overallRating} />
+    <Link to={`/schools/${schoolId}/reviews/${courseId}`}>
+      <div className="border-2 px-6 py-2 rounded-md justify-between items-center text-lg dark:border-zinc-700 flex flex-col lg:flex-row">
+        <h4 className="font-semibold text-lg text-blue-600 dark:text-blue-400 basis-1/4 hover:underline">
+          {courseSubject} {catalogNumber}
+        </h4>
+        <div className="overflow-ellipsis overflow-hidden text-left basis-1/2">
+          {courseTitle}
         </div>
-        <div>Professors: {professorCount}</div>
-        <div>Reviews: {reviewCount}</div>
+        <div className="overflow-ellipsis overflow-hidden basis-1/4 text-left lg:text-center">
+          Professors: {professorCount}
+        </div>
       </div>
     </Link>
-  );
-};
-export default CourseCard;
+  )
+}
+export default CourseCard

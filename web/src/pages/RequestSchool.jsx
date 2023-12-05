@@ -1,11 +1,12 @@
 import Searchbar from "../components/Searchbar"
 import { BsFillEnvelopePaperFill } from "react-icons/bs"
 import { SendSchoolInfo } from "../utilities/API"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import FormError from "../components/FormError"
 import FormSuccess from "../components/FormSuccess"
 import { BeatLoader } from "react-spinners"
-import api from "../utilities/Axios"
+import { useLoaderData } from "react-router-dom"
+import { FaSearch } from "react-icons/fa"
 
 const RequestSchool = () => {
   const [name, setName] = useState("")
@@ -13,32 +14,8 @@ const RequestSchool = () => {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState("")
   const [success, setSuccess] = useState("")
-  const [schools, setSchools] = useState([])
 
-  const fetchSchools = async () => {
-    try {
-      const response = await api.get("/school/")
-      if (response && response.data) {
-        const resultingArray = response.data.data.map((curr) => ({
-          long_name: curr.long_name,
-          short_name: curr.short_name,
-          value: curr.short_name,
-          label: curr.long_name,
-        }))
-
-        setSchools(resultingArray)
-      }
-    } catch (err) {
-      if (err.response) {
-        // Not in the 200 response range
-        console.log(err.response.data)
-        console.log(err.response.status)
-        console.log(err.response.headers)
-      } else {
-        console.log(`Error: ${err.message}`)
-      }
-    }
-  }
+  const { schools } = useLoaderData()
 
   const handleRequestSchool = async (e) => {
     e.preventDefault()
@@ -70,12 +47,8 @@ const RequestSchool = () => {
     }, 1000)
   }
 
-  useEffect(() => {
-    fetchSchools()
-  }, [])
-
   return (
-    <div className="overflow-auto max-w-screen-xl mx-auto flex flex-col items-center min-h-[calc(100vh-98px)]">
+    <div className="overflow-auto max-w-screen-xl mx-auto flex flex-col items-center min-h-[calc(100vh-98px)] px-4">
       <h2 className="text-lg md:text-xl lg:text-2xl xl:text-3xl font-bold mb-12 mt-8">
         Request School
       </h2>
@@ -86,16 +59,18 @@ const RequestSchool = () => {
             <span className="font-bold text-blue-600">Wait!</span> Check if your
             school is already here:
           </p>
-          <Searchbar
-            searchingSchools={true}
-            searchPlaceholder="Ex: University of Nevada, Las Vegas / UNLV"
-            className="w-full mb-8 text-sm md:text-base lg:text-lg"
-            change={false}
-            schools={schools}
-          />
+          <div className="flex gap-2 items-center justify-center max-w-screen-xl w-full">
+            <FaSearch className="text-lg text-zinc-600 dark:text-zinc-300" />
+            <Searchbar
+              searchingSchools={true}
+              className="w-full"
+              searchPlaceholder="Ex: University of Nevada, Las Vegas / UNLV"
+              change={false}
+              schools={schools}
+            />
+          </div>
         </div>
         {/* Request a School Form */}
-        {/* <h2 className="text-xl font-semibold mb-4">Request a School Form</h2> */}
 
         <p className="text-base md:text-lg lg:text-xl xl:text-2xl mb-4 text-center">
           If you can&apos;t find your institution above, submit your
@@ -112,7 +87,7 @@ const RequestSchool = () => {
               <input
                 type="text"
                 placeholder="Ex: University of Nevada Las Vegas"
-                className="px-3 py-1 w-full border-2 rounded truncate dark:text-black"
+                className="px-3 py-1 w-full border-2 rounded truncate dark:bg-zinc-900 dark:border-zinc-600 dark:text-white focus:outline-transparent"
                 onChange={(e) => setName(e.target.value)}
               />
             </label>
@@ -124,7 +99,7 @@ const RequestSchool = () => {
               <input
                 type="text"
                 placeholder="Ex: https://www.unlv.edu/"
-                className="px-3 py-1 w-full border-2 rounded truncate dark:text-black"
+                className="px-3 py-1 w-full border-2 rounded truncate dark:bg-zinc-900 dark:border-zinc-600 dark:text-white focus:outline-transparent"
                 onChange={(e) => setWebsite(e.target.value)}
               />
             </label>
