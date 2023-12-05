@@ -184,7 +184,7 @@ const Review = () => {
   };
 
   return (
-    <div className="max-w-screen-xl mx-auto mt-8 flex flex-col min-h-[calc(100vh-98px)]">
+    <div className="overflow-auto max-w-screen-xl mx-auto mt-8 flex flex-col min-h-[calc(100vh-98px)]">
       {/* Top of screen (below nav bar) */}
       <div className="flex flex-col gap-4 mb-8 border-b-2 border-zinc-200 dark:border-zinc-600 pb-10">
         <h2 className="font-bold text-3xl">
@@ -214,7 +214,7 @@ const Review = () => {
             {/* Professor list */}
             <select
               name="professor"
-              className="font-semibold rounded border-2 border-gray-400 h-10 w-48 pl-4 pr-10 bg-white appearance-none"
+              className="text-lg font-semibold rounded border-2 border-gray-400 h-12 w-60 pl-4 pr-10 bg-white dark:text-black appearance-none"
               value={reviewData.professor}
               onChange={handleSelectChange}
             >
@@ -224,6 +224,7 @@ const Review = () => {
                     {professor.first_name} {professor.last_name}
                   </option>
                 ))}
+
             </select>
           </div>
         </div>
@@ -307,14 +308,16 @@ const Review = () => {
               fontSize={18}
             />
 
+
             {/* Filter review */}
             <select
-              className="text-lg font-semibold rounded border-2 border-gray-400 h-12 w-48 pl-4 pr-10 bg-white appearance-none"
+              className="text-lg font-semibold rounded border-2 border-gray-400 h-12 w-48 pl-4 pr-10 bg-white dark:text-black appearance-none"
               onChange={handleSortChange}
               value={sortMethod}
             >
               <option value="mostRecent">Most Recent</option>
               <option value="mostHelpful">Most Helpful</option>
+
             </select>
           </div>
         </div>
