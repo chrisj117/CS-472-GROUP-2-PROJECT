@@ -15,7 +15,7 @@ const Review = () => {
   const { user } = useAuth()
 
   return (
-    <div className="max-w-screen-xl mx-auto mt-8 flex flex-col min-h-[calc(100vh-98px)]">
+    <div className="overflow-auto max-w-screen-xl mx-auto mt-8 flex flex-col min-h-[calc(100vh-98px)]">
       {/* Top of screen (below nav bar) */}
       <div className="flex flex-col gap-4 mb-8 border-b-2 border-zinc-200 dark:border-zinc-600 pb-10">
         <h2 className="font-bold text-3xl">
