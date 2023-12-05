@@ -43,7 +43,7 @@ const Review = () => {
             />
 
             {/* Professor list */}
-            <select className="text-lg font-semibold rounded border-2 border-gray-400 h-12 w-60 pl-4 pr-10 bg-white appearance-none">
+            <select className="text-lg font-semibold rounded border-2 border-gray-400 h-12 w-60 pl-4 pr-10 bg-white dark:text-black appearance-none">
               <option>Dr. Professor</option>
               <option>Dr. Example</option>
               <option>Dr. LoremIpsum</option>
@@ -113,7 +113,7 @@ const Review = () => {
             />
 
             {/* Professor list */}
-            <select className="text-lg font-semibold rounded border-2 border-gray-400 h-12 w-48 pl-4 pr-10 bg-white appearance-none">
+            <select className="text-lg font-semibold rounded border-2 border-gray-400 h-12 w-48 pl-4 pr-10 bg-white dark:text-black appearance-none">
               <option>Most Recent</option>
               <option>Most Helpful</option>
             </select>
