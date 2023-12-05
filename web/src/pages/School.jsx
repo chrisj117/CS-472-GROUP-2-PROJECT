@@ -1,86 +1,63 @@
 /* eslint-disable react-refresh/only-export-components */
 /* eslint-disable react-hooks/exhaustive-deps */
 
-import CourseCard from "../components/CourseCard";
-import { useLoaderData } from "react-router-dom";
-import { getCourses, getSchool } from "../utilities/GetData";
-import { useEffect, useState } from "react";
-import { FaSearch } from "react-icons/fa";
-// import { useNavigate } from "react-router-dom";
+import CourseCard from "../components/CourseCard"
+import { useLoaderData } from "react-router-dom"
+import { getCourses, getSchool } from "../utilities/GetData"
+import { useEffect, useState } from "react"
+import { FaSearch } from "react-icons/fa"
 
 export async function loader({ params }) {
-  const school = await getSchool(params.schoolId);
-  const courses = await getCourses(params.schoolId);
-  return { school, courses };
+  const school = await getSchool(params.schoolId)
+  const courses = await getCourses(params.schoolId)
+  return { school, courses }
 }
 
 const School = () => {
-  const { school, courses } = useLoaderData();
-  const [filteredCourses, setFilteredCourses] = useState([]);
-  // const navigate = useNavigate();
+  const { school, courses } = useLoaderData()
+  const [search, setSearch] = useState("")
+  const [filteredCourses, setFilteredCourses] = useState([])
 
-  // const handleCourseSelect = (courseId) => {
-  //   navigate(`/schools/${school.short_name}/reviews/${courseId}`);
-  // };
-
-  const handleCourses = (searchValue) => {
+  const handleCourses = () => {
     const filteredSubjects = courses.filter((option) =>
       option.subject
         .toString()
         .replace(/ /g, "")
         .toLowerCase()
-        .includes(searchValue.replace(/ /g, "").toLowerCase()),
-    );
+        .includes(search.replace(/ /g, "").toLowerCase())
+    )
 
-    if (filteredSubjects) {
-      setFilteredCourses(filteredSubjects);
-      return;
+    if (filteredSubjects.length > 0) {
+      setFilteredCourses(filteredSubjects)
+      return
     }
 
-    const filteredCatalogues = courses.filter(
-      (option) =>
-        option.subject
-          .toString()
-          .replace(/ /g, "")
-          .toLowerCase()
-          .includes(searchValue.replace(/ /g, "").toLowerCase()) ||
-        option.catalog_number
-          .toString()
-          .replace(/ /g, "")
-          .toLowerCase()
-          .includes(searchValue.replace(/ /g, "").toLowerCase()),
-    );
+    const filteredCatalogues = courses.filter((option) =>
+      option.value
+        .toString()
+        .replace(/ /g, "")
+        .toLowerCase()
+        .includes(search.replace(/ /g, "").toLowerCase())
+    )
 
-    if (filteredCatalogues) {
-      setFilteredCourses(filteredCatalogues);
-      return;
+    if (filteredCatalogues.length > 0) {
+      setFilteredCourses(filteredCatalogues)
+      return
     }
 
-    const filteredLabels = courses.filter(
-      (option) =>
-        option.subject
-          .toString()
-          .replace(/ /g, "")
-          .toLowerCase()
-          .includes(searchValue.replace(/ /g, "").toLowerCase()) ||
-        option.catalog_number
-          .toString()
-          .replace(/ /g, "")
-          .toLowerCase()
-          .includes(searchValue.replace(/ /g, "").toLowerCase()) ||
-        option.label
-          .toString()
-          .replace(/ /g, "")
-          .toLowerCase()
-          .includes(searchValue.replace(/ /g, "").toLowerCase()),
-    );
+    const filteredLabels = courses.filter((option) =>
+      option.label
+        .replace(/ /g, "")
+        .toLowerCase()
+        .includes(search.replace(/ /g, "").toLowerCase())
+    )
 
-    setFilteredCourses(filteredLabels);
-  };
+    setFilteredCourses(filteredLabels.length > 0)
+  }
 
   useEffect(() => {
-    handleCourses("");
-  }, []);
+    handleCourses(search)
+  }, [search])
 
   return (
     <section className="max-w-screen-xl mx-auto flex flex-col gap-4 mt-8 min-h-[calc(100vh-98px)] px-4">
@@ -94,11 +71,11 @@ const School = () => {
           type="text"
           placeholder="Ex: University of Nevada Las Vegas"
           className="px-3 py-2 w-full border-2 rounded truncate dark:bg-zinc-900 dark:border-zinc-600 dark:text-white focus:outline-transparent"
-          onChange={(e) => handleCourses(e.target.value)}
+          onChange={(e) => setSearch(e.target.value)}
         />
       </div>
 
-      <div className="py-4">
+      <div className="py-4 mb-12">
         <div className="flex flex-col gap-2">
           {filteredCourses.length > 0 ? (
             filteredCourses
@@ -113,7 +90,7 @@ const School = () => {
                     catalogNumber={course.catalog_number}
                     courseId={course.value}
                   />
-                );
+                )
               })
               .slice(0, 10)
           ) : (
@@ -124,6 +101,6 @@ const School = () => {
         </div>
       </div>
     </section>
-  );
-};
-export default School;
+  )
+}
+export default School

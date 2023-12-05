@@ -50,8 +50,7 @@ const Home = () => {
             question="How can I contribute?"
             answer="You can leave your own course evaluations on a course page when
         pressing the Review button, and it will take you to a page where
-        you can fill out a simple questionnaire. Sign ups are not
-        required!"
+        you can fill out a simple questionnaire."
           />
           <QA
             question="Why don't I see my school?"
