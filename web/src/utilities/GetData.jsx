@@ -47,7 +47,15 @@ export const getCourses = async (short_name) => {
   try {
     const response = await api.get(`/school/${short_name}/courses`)
     if (response && response.data) {
-      return response.data.data
+      const resultingArray = response.data.data.map((curr) => ({
+        subject: curr.subject,
+        title: curr.title,
+        catalog_number: curr.catalog_number,
+        value: curr.subject + curr.catalog_number,
+        label: curr.subject + " " + curr.catalog_number + " " + curr.title,
+        professors: curr.professors,
+      }))
+      return resultingArray
     }
   } catch (err) {
     if (err.response) {
