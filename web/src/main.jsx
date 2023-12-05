@@ -9,7 +9,7 @@ import School, { loader as schoolLoader } from "./pages/School.jsx"
 import About from "./pages/About.jsx"
 import RequestSchool from "./pages/RequestSchool"
 import Review from "./pages/Review"
-// import { loader as reviewLoader } from "./pages/Review"
+import { loader as reviewLoader } from "./pages/Review"
 import Home, { loader as schoolsLoader } from "./pages/Home"
 import Login from "./pages/Login"
 import Register from "./pages/Register"
@@ -72,12 +72,6 @@ const router = createBrowserRouter([
           </ProtectedRoute>
         ),
       },
-      // TEMPORARY: Review page quick access
-      {
-        path: "schools/:schoolId/reviews/:courseId",
-        element: <Review />,
-      },
-      // TEMPORARY: Review page quick access
       {
         path: "schools/:schoolId",
         element: <School />,
@@ -86,7 +80,7 @@ const router = createBrowserRouter([
           {
             path: "reviews/:courseId",
             element: <Review />,
-            // loader: reviewLoader,
+            loader: reviewLoader,
           },
         ],
       },
