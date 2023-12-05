@@ -1,21 +1,27 @@
 /* eslint-disable react-refresh/only-export-components */
 /* eslint-disable react-hooks/exhaustive-deps */
 
-import CourseCard from "../components/CourseCard"
-import { useLoaderData } from "react-router-dom"
-import { getCourses, getSchool } from "../utilities/GetData"
-import { useEffect, useState } from "react"
-import { FaSearch } from "react-icons/fa"
+import CourseCard from "../components/CourseCard";
+import { useLoaderData } from "react-router-dom";
+import { getCourses, getSchool } from "../utilities/GetData";
+import { useEffect, useState } from "react";
+import { FaSearch } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 export async function loader({ params }) {
-  const school = await getSchool(params.schoolId)
-  const courses = await getCourses(params.schoolId)
-  return { school, courses }
+  const school = await getSchool(params.schoolId);
+  const courses = await getCourses(params.schoolId);
+  return { school, courses };
 }
 
 const School = () => {
-  const { school, courses } = useLoaderData()
-  const [filteredCourses, setFilteredCourses] = useState([])
+  const { school, courses } = useLoaderData();
+  const [filteredCourses, setFilteredCourses] = useState([]);
+  const navigate = useNavigate();
+
+  const handleCourseSelect = (courseId) => {
+    navigate(`/schools/${school.short_name}/reviews/${courseId}`);
+  };
 
   const handleCourses = (searchValue) => {
     const filteredSubjects = courses.filter((option) =>
@@ -23,12 +29,12 @@ const School = () => {
         .toString()
         .replace(/ /g, "")
         .toLowerCase()
-        .includes(searchValue.replace(/ /g, "").toLowerCase())
-    )
+        .includes(searchValue.replace(/ /g, "").toLowerCase()),
+    );
 
     if (filteredSubjects) {
-      setFilteredCourses(filteredSubjects)
-      return
+      setFilteredCourses(filteredSubjects);
+      return;
     }
 
     const filteredCatalogues = courses.filter(
@@ -42,12 +48,12 @@ const School = () => {
           .toString()
           .replace(/ /g, "")
           .toLowerCase()
-          .includes(searchValue.replace(/ /g, "").toLowerCase())
-    )
+          .includes(searchValue.replace(/ /g, "").toLowerCase()),
+    );
 
     if (filteredCatalogues) {
-      setFilteredCourses(filteredCatalogues)
-      return
+      setFilteredCourses(filteredCatalogues);
+      return;
     }
 
     const filteredLabels = courses.filter(
@@ -66,15 +72,15 @@ const School = () => {
           .toString()
           .replace(/ /g, "")
           .toLowerCase()
-          .includes(searchValue.replace(/ /g, "").toLowerCase())
-    )
+          .includes(searchValue.replace(/ /g, "").toLowerCase()),
+    );
 
-    setFilteredCourses(filteredLabels)
-  }
+    setFilteredCourses(filteredLabels);
+  };
 
   useEffect(() => {
-    handleCourses("")
-  }, [])
+    handleCourses("");
+  }, []);
 
   return (
     <section className="max-w-screen-xl mx-auto flex flex-col gap-4 mt-8 min-h-[calc(100vh-98px)] px-4">
@@ -100,12 +106,14 @@ const School = () => {
                 return (
                   <CourseCard
                     key={course.value}
+                    schoolId={school.short_name}
                     professorCount={course.professors.length}
                     courseSubject={course.subject}
                     courseTitle={course.title}
                     catalogNumber={course.catalog_number}
+                    courseId={course.value}
                   />
-                )
+                );
               })
               .slice(0, 10)
           ) : (
@@ -116,6 +124,6 @@ const School = () => {
         </div>
       </div>
     </section>
-  )
-}
-export default School
+  );
+};
+export default School;

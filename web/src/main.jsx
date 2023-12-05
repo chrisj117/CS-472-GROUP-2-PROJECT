@@ -74,7 +74,7 @@ const router = createBrowserRouter([
       },
       // TEMPORARY: Review page quick access
       {
-        path: "review",
+        path: "schools/:schoolId/reviews/:courseId",
         element: <Review />,
       },
       // TEMPORARY: Review page quick access

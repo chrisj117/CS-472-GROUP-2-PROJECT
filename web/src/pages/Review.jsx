@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import Searchbar from "../components/Searchbar";
 import RatingBar from "../components/RatingBar";
 import {
@@ -12,15 +13,31 @@ import { Link } from "react-router-dom";
 import { FaArrowRight } from "react-icons/fa6";
 import { format } from "date-fns";
 import axios from "../utilities/Axios";
+import { getSchool, getCourses } from "../utilities/GetData";
 
 const Review = () => {
   // const { user } = useAuth();
+  const { schoolId, courseId } = useParams();
   const [reviews, setReviews] = useState([]);
+  const [school, setSchool] = useState({});
+  const [course, setCourse] = useState({});
   const [sortMethod, setSortMethod] = useState("mostRecent"); // Default is most recent
 
   const handleSortChange = (event) => {
     setSortMethod(event.target.value);
   };
+
+  const sortReviews = (reviews, sortMethod) => {
+    if (sortMethod === "mostRecent") {
+      // Sort reviews by date in descending order (most recent first)
+      return reviews.slice().sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+    } else if (sortMethod === "mostHelpful") {
+      // Sort reviews by helpful_count in descending order (most helpful first)
+      return reviews.slice().sort((a, b) => b.helpful_count - a.helpful_count);
+    }
+    return reviews;
+  };
+
 
   const GRADES = [
     "A+",
@@ -92,34 +109,39 @@ const Review = () => {
   };
 
   useEffect(() => {
-    const fetchReviews = async () => {
+    const fetchData = async () => {
       try {
-        const schoolShortName = "UNLV";
-        const courseSubjectCatalog = "HOA730";
-        const response = await axios.get(
-          `/reviews/${schoolShortName}/${courseSubjectCatalog}/`,
-        );
+        const schoolData = await getSchool(schoolId);
+        setSchool(schoolData);
 
-        let fetchedReviews = response.data;
-
-        // Sorting logic
-        if (sortMethod === "mostHelpful") {
-          fetchedReviews.sort((a, b) => b.helpful_count - a.helpful_count);
-        } else {
-          // Default to most recent
-          fetchedReviews.sort(
-            (a, b) => new Date(b.created_at) - new Date(a.created_at),
-          );
+        const courseData = await getCourses(schoolId);
+        const foundCourse = courseData.find((c) => c.value === courseId);
+        if (foundCourse) {
+          setCourse(foundCourse);
+          // first professor as default if professors list is not empty
+          if (foundCourse.professors && foundCourse.professors.length > 0) {
+            setReviewData((prevState) => ({
+              ...prevState,
+              professor: foundCourse.professors[0],
+            }));
+          }
         }
 
-        setReviews(fetchedReviews);
+        const reviewsResponse = await axios.get(
+          `/reviews/${schoolId}/${courseId}/`,
+        );
+
+        if (reviewsResponse.data) {
+          const sortedReviews = sortReviews(reviewsResponse.data, sortMethod);
+          setReviews(sortedReviews);
+        }
       } catch (error) {
-        console.error("Error fetching reviews:", error);
+        console.error("Error fetching data:", error);
       }
     };
 
-    fetchReviews();
-  }, [sortMethod]); // Add sortMethod as a dependency
+    fetchData();
+  }, [schoolId, courseId, sortMethod]);
 
   const handleRecommendedChange = (isRecommended) => {
     setReviewData({ ...reviewData, recommended: isRecommended });
@@ -128,8 +150,18 @@ const Review = () => {
   // Function to handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const postData = {
+      ...reviewData,
+      school: school.short_name, // Add school's short name
+      course: course.subject + " " + course.catalog_number, // Add course subject and catalog number
+      professor: reviewData.professor
+        ? `${reviewData.professor.first_name} ${reviewData.professor.last_name}`
+        : "", // Concatenate professor's first and last name
+    };
+
     try {
-      const response = await axios.post("/api/v1/reviews/", reviewData);
+      const response = await axios.post("/reviews/", postData);
       console.log("Review submitted:", response.data);
     } catch (error) {
       console.error("Error submitting review:", error);
@@ -156,8 +188,8 @@ const Review = () => {
       {/* Top of screen (below nav bar) */}
       <div className="flex flex-col gap-4 mb-8 border-b-2 border-zinc-200 dark:border-zinc-600 pb-10">
         <h2 className="font-bold text-3xl">
-          {/* {schoolName} ({schoolNameShort}) */}
-          University of Nevada, Las Vegas (UNLV)
+          {school.long_name} ({school.short_name})
+          {/* University of Nevada, Las Vegas (UNLV) */}
         </h2>
         <Searchbar
           searchingCourses={true}
@@ -169,7 +201,7 @@ const Review = () => {
         {/* NOTE: for now, this link is appearance only and will likely be refactored */}
         <div className="flex gap-6 items-center">
           <h2 className="font-bold text-2xl">
-            CS 302 | Data Structures and Algorithms
+            {course.subject} {course.catalog_number} | {course.title}
           </h2>
           {/* Professor dropdown */}
           <div className="relative inline-flex self-center">
@@ -180,10 +212,18 @@ const Review = () => {
             />
 
             {/* Professor list */}
-            <select className="text-lg font-semibold rounded border-2 border-gray-400 h-12 w-60 pl-4 pr-10 bg-white appearance-none">
-              <option>Dr. Professor</option>
-              <option>Dr. Example</option>
-              <option>Dr. LoremIpsum</option>
+            <select
+              name="professor"
+              className="font-semibold rounded border-2 border-gray-400 h-10 w-48 pl-4 pr-10 bg-white appearance-none"
+              value={reviewData.professor}
+              onChange={handleSelectChange}
+            >
+              {course.professors &&
+                course.professors.map((professor, index) => (
+                  <option key={index} value={professor}>
+                    {professor.first_name} {professor.last_name}
+                  </option>
+                ))}
             </select>
           </div>
         </div>
@@ -429,14 +469,19 @@ const Review = () => {
                     />
 
                     {/* Professor list */}
-                    <input
-                      type="text"
+                    <select
                       name="professor"
+                      className="font-semibold rounded border-2 border-gray-400 h-10 w-48 pl-4 pr-10 bg-white appearance-none"
                       value={reviewData.professor}
                       onChange={handleSelectChange}
-                      className="font-semibold rounded border-2 border-gray-400 h-10 w-48 pl-4 pr-10 bg-white"
-                      placeholder="Professor's Name"
-                    />
+                    >
+                      {course.professors &&
+                        course.professors.map((professor, index) => (
+                          <option key={index} value={professor}>
+                            {professor.first_name} {professor.last_name}
+                          </option>
+                        ))}
+                    </select>
                   </div>
                 </div>
 

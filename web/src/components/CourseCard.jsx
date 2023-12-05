@@ -3,13 +3,15 @@
 import { Link } from "react-router-dom"
 
 const CourseCard = ({
+  schoolId,
   courseSubject,
   courseTitle,
   catalogNumber,
   professorCount,
+  courseId
 }) => {
   return (
-    <Link to={`reviews/${courseSubject + catalogNumber}`}>
+    <Link to={`/schools/${schoolId}/reviews/${courseId}`}>
       <div className="border-2 px-6 py-2 rounded-md justify-between items-center text-lg dark:border-zinc-700 flex flex-col lg:flex-row">
         <h4 className="font-semibold text-lg text-blue-600 dark:text-blue-400 basis-1/4 hover:underline">
           {courseSubject} {catalogNumber}
