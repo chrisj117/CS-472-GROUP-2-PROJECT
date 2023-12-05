@@ -75,7 +75,7 @@ const School = () => {
         />
       </div>
 
-      <div className="py-4">
+      <div className="py-4 mb-12">
         <div className="flex flex-col gap-2">
           {filteredCourses.length > 0 ? (
             filteredCourses

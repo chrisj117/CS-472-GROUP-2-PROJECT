@@ -101,8 +101,7 @@ export const getReviews = async (short_name, courseSubjectCatalog) => {
       `/reviews/${short_name}/${courseSubjectCatalog}`
     )
     if (response && response.data) {
-      console.log(response.data)
-      // return response.dat
+      return response.data
     }
   } catch (err) {
     if (err.response) {

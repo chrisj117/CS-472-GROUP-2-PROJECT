@@ -55,7 +55,7 @@ const RatingBar = ({
   }, [rating])
 
   return (
-    <div className={className}>
+    <div className={className ? className : "flex flex-col gap-1"}>
       <p className="mb-[2px]">{question}</p>
       <div className="flex gap-1">
         {segmentColors.map((color, index) => (
