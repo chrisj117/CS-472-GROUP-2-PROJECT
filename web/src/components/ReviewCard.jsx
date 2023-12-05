@@ -22,13 +22,13 @@ const ReviewCard = ({
         } rounded-l-lg`}
       ></div>
       <div className="border-t-2 border-b-2 border-r-2 rounded-r-lg border-gray-200 px-4 py-4 flex flex-col gap-6 w-full">
-        <div className="flex items-center gap-1 font-semibold">
-          <span className="text-lg">
+        <div className="lg:items-center gap-1 font-semibold flex flex-col lg:flex-row ">
+          <span className="lg:text-lg">
             {recommended != null
               ? `${recommended ? "Recommended" : "Not Recommended"}`
               : "N/A"}
           </span>
-          <span>
+          <span className="text-xs lg:text-base">
             — {professor ? professor : "N/A"} / {term ? term : "N/A"}{" "}
             {year ? year : "N/A"} / Grade: {grade ? grade : "N/A"} / Delivery:{" "}
             {delivery ? delivery : "N/A"} / Textbook:{" "}
@@ -36,13 +36,13 @@ const ReviewCard = ({
           </span>
         </div>
 
-        <div className="px-2">
+        <div className="lg:px-2">
           {additionalComments ? additionalComments : "N/A"}
         </div>
 
-        <div className="flex justify-between items-center font-semibold">
+        <div className="flex flex-col lg:flex-row gap-2 lg:justify-between lg:items-center font-semibold">
           <div className="flex gap-4 items-center">
-            <span className="text-sm">
+            <span className="text-xs lg:text-sm">
               {likes > 0
                 ? `${likes} people found this evaluation helpful`
                 : "Be the first to rate this evaluation"}
@@ -57,7 +57,9 @@ const ReviewCard = ({
             </div>
           </div>
 
-          <span className="italic">{date ? date : "N/A"}</span>
+          <span className="italic text-sm lg:text-base">
+            {date ? date : "N/A"}
+          </span>
         </div>
       </div>
     </div>

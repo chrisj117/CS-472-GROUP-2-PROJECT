@@ -384,8 +384,8 @@ const Review = () => {
           <div className="pb-12 mb-10 border-b-2 border-zinc-200 dark:border-zinc-600 max-w-screen-xl mx-auto w-full">
             {reviews.length > 0 ? (
               <div className="flex gap-6 items-center mb-4">
-                <h3 className="font-semibold text-2xl">
-                  Written Evaluations ({reviews.length})
+                <h3 className="font-semibold lg:text-2xl">
+                  Evaluations ({reviews.length})
                 </h3>
                 {/* Professor dropdown */}
                 <div className="relative inline-flex self-center">
@@ -675,18 +675,18 @@ const Review = () => {
                     <div className="flex items-center w-full max-w-sm">
                       <button
                         type="button"
-                        className={`border-t-2 border-l-2 border-b-2 border-r border-zinc-300 dark:border-zinc-600 text-sm lg:text-inherit ${
+                        className={`border-t-2 border-l-2 border-b-2 border-r border-zinc-300 dark:border-zinc-600 text-sm lg:text-base ${
                           reviewData.recommended ? "bg-blue-500 text-white" : ""
-                        } rounded-l-lg px-4 py-2 flex-1`}
+                        } rounded-l-md px-0.5 py-2 lg:px-4 lg:py-2 flex-1`}
                         onClick={() => handleRecommendedChange(true)}
                       >
                         Recommended
                       </button>
                       <button
                         type="button"
-                        className={`border-t-2 border-r-2 border-b-2 border-l border-zinc-300 dark:border-zinc-600 text-sm lg:text-inherit ${
+                        className={`border-t-2 border-r-2 border-b-2 border-l border-zinc-300 dark:border-zinc-600 text-sm lg:text-base ${
                           !reviewData.recommended ? "bg-red-500 text-white" : ""
-                        } rounded-r-lg px-4 py-2 flex-1`}
+                        } rounded-r-md px-0.5 py-2 lg:px-4 lg:py-2 flex-1`}
                         onClick={() => handleRecommendedChange(false)}
                       >
                         Not Recommended
