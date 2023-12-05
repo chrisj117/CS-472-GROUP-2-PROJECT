@@ -1,5 +1,8 @@
+/* eslint-disable react-refresh/only-export-components */
+/* eslint-disable react-hooks/exhaustive-deps */
+
 import { useState, useEffect } from "react"
-import { useLoaderData, useNavigate, useParams } from "react-router-dom"
+import { useLoaderData, useParams } from "react-router-dom"
 import Searchbar from "../components/Searchbar"
 import RatingBar from "../components/RatingBar"
 import {
@@ -45,8 +48,6 @@ const Review = () => {
   const [loading, setLoading] = useState(false)
   const [messageResponse, setMessageResponse] = useState("")
   const [error, setError] = useState("")
-
-  const navigate = useNavigate()
 
   const handleSortChange = (event) => {
     setSortMethod(event.target.value)
@@ -211,6 +212,7 @@ const Review = () => {
         `/reviews/`,
         postData
       )
+      if (response && response.data) console.log(response)
     } catch (error) {
       console.error("Error submitting review:", error)
       setError(`You must enter additional comments.`)
@@ -265,7 +267,9 @@ const Review = () => {
         </div>
       </div>
       {!(school && course && courses) ? (
-        <BeatLoader />
+        <div className="flex w-full items-center justify-center dark:text-white text-black">
+          <BeatLoader />
+        </div>
       ) : (
         <>
           <div className="flex justify-between items-center mb-10 border-b-2 border-zinc-200 dark:border-zinc-600 pb-8">
@@ -317,7 +321,7 @@ const Review = () => {
             <h3 className="font-semibold text-2xl max-w-screen-xl w-full mx-auto mb-4">
               Evaluation Summary
             </h3>
-            <div className="flex justify-between">
+            <div className="flex flex-col lg:flex-row justify-between">
               <div className="flex flex-col gap-5">
                 <RatingBar
                   question="The course as a whole was:"
@@ -671,7 +675,7 @@ const Review = () => {
                     <div className="flex items-center w-full max-w-sm">
                       <button
                         type="button"
-                        className={`border-t-2 border-l-2 border-b-2 border-r border-zinc-300 dark:border-zinc-600 ${
+                        className={`border-t-2 border-l-2 border-b-2 border-r border-zinc-300 dark:border-zinc-600 text-sm lg:text-inherit ${
                           reviewData.recommended ? "bg-blue-500 text-white" : ""
                         } rounded-l-lg px-4 py-2 flex-1`}
                         onClick={() => handleRecommendedChange(true)}
@@ -680,7 +684,7 @@ const Review = () => {
                       </button>
                       <button
                         type="button"
-                        className={`border-t-2 border-r-2 border-b-2 border-l border-zinc-300 dark:border-zinc-600 ${
+                        className={`border-t-2 border-r-2 border-b-2 border-l border-zinc-300 dark:border-zinc-600 text-sm lg:text-inherit ${
                           !reviewData.recommended ? "bg-red-500 text-white" : ""
                         } rounded-r-lg px-4 py-2 flex-1`}
                         onClick={() => handleRecommendedChange(false)}
