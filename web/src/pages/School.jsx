@@ -6,7 +6,7 @@ import { useLoaderData } from "react-router-dom";
 import { getCourses, getSchool } from "../utilities/GetData";
 import { useEffect, useState } from "react";
 import { FaSearch } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 
 export async function loader({ params }) {
   const school = await getSchool(params.schoolId);
@@ -17,11 +17,11 @@ export async function loader({ params }) {
 const School = () => {
   const { school, courses } = useLoaderData();
   const [filteredCourses, setFilteredCourses] = useState([]);
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
-  const handleCourseSelect = (courseId) => {
-    navigate(`/schools/${school.short_name}/reviews/${courseId}`);
-  };
+  // const handleCourseSelect = (courseId) => {
+  //   navigate(`/schools/${school.short_name}/reviews/${courseId}`);
+  // };
 
   const handleCourses = (searchValue) => {
     const filteredSubjects = courses.filter((option) =>
