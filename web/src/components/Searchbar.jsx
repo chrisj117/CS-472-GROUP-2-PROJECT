@@ -32,16 +32,20 @@ const Searchbar = ({
       }
 
       if (searchingCourses) {
-        const filteredOptions = courses.filter(
-          (option) =>
-            option.subject.toLowerCase().includes(searchValue.toLowerCase()) ||
-            option.catalog_number
-              .toLowerCase()
-              .includes(searchValue.toLowerCase()) ||
-            option.title.toLowerCase().includes(searchValue.toLowerCase()) ||
-            option.value.toLowerCase().includes(searchValue.toLowerCase()) ||
-            option.label.toLowerCase().includes(searchValue.toLowerCase())
-        )
+        const filteredOptions = courses
+          .filter(
+            (option) =>
+              option.subject
+                .toLowerCase()
+                .includes(searchValue.toLowerCase()) ||
+              option.catalog_number
+                .toLowerCase()
+                .includes(searchValue.toLowerCase()) ||
+              option.title.toLowerCase().includes(searchValue.toLowerCase()) ||
+              option.value.toLowerCase().includes(searchValue.toLowerCase()) ||
+              option.label.toLowerCase().includes(searchValue.toLowerCase())
+          )
+          .slice(0, 10)
 
         callback(filteredOptions)
       }
@@ -54,7 +58,7 @@ const Searchbar = ({
     }
 
     if (searchingCourses) {
-      navigate(`/schools/${school}/reviews/${selectedOption.value}`)
+      navigate(`/schools/${school.short_name}/reviews/${selectedOption.value}`)
     }
   }
 
