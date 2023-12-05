@@ -722,7 +722,7 @@ const Review = () => {
                 </form>
               </div>
             ) : (
-              <div className="max-w-screen-xl mx-auto w-full flex flex-col gap-4 py-8 px-8 justify-center items-center border-zinc-200 border-2 rounded-lg">
+              <div className="max-w-screen-xl mx-auto w-full flex flex-col gap-4 py-8 px-8 justify-center items-center border-zinc-200 border-2 rounded-lg dark:border-zinc-600">
                 <span>Ready to contribute to the site? Sign in below!</span>
 
                 <Link

@@ -21,7 +21,7 @@ const ReviewCard = ({
           recommended ? "bg-blue-500" : "bg-red-500"
         } rounded-l-lg`}
       ></div>
-      <div className="border-t-2 border-b-2 border-r-2 rounded-r-lg border-gray-200 px-4 py-4 flex flex-col gap-6 w-full">
+      <div className="border-t-2 border-b-2 border-r-2 rounded-r-lg border-gray-200 dark:border-zinc-600 px-4 py-4 flex flex-col gap-6 w-full">
         <div className="lg:items-center gap-1 font-semibold flex flex-col lg:flex-row ">
           <span className="lg:text-lg">
             {recommended != null
