@@ -146,7 +146,6 @@ const Review = () => {
           )
           const sortedReviews = sortReviews(professorReviews, sortMethod)
           setReviews(sortedReviews)
-          console.log(reviews)
         }
       }
     } catch (error) {
@@ -207,12 +206,11 @@ const Review = () => {
     }
 
     try {
-      const response = await axios.post(
+      await axios.post(
         // `/reviews/${schoolId}/${courseId}`,
         `/reviews/`,
         postData
       )
-      if (response && response.data) console.log(response)
     } catch (error) {
       console.error("Error submitting review:", error)
       setError(`You must enter additional comments.`)
@@ -272,7 +270,7 @@ const Review = () => {
         </div>
       ) : (
         <>
-          <div className="flex justify-between items-center mb-10 border-b-2 border-zinc-200 dark:border-zinc-600 pb-8">
+          <div className="flex justify-between items-center mb-10 border-b-2 border-zinc-200 dark:border-zinc-600 pb-8 lg:flex-row flex-col">
             {/* Review button */}
             {/* NOTE: for now, this link is appearance only and will likely be refactored */}
             <div className="flex gap-6 items-center">
@@ -290,7 +288,7 @@ const Review = () => {
                 {/* Professor list */}
                 <select
                   name="professor"
-                  className="text-lg font-semibold rounded border-2 border-gray-400 h-12 w-60 pl-4 pr-10 bg-white appearance-none dark:text-white dark:bg-zinc-900 dark:border-zinc-600"
+                  className="text-lg font-semibold rounded border-2 border-gray-400 h-12 w-45 pl-4 pr-10 bg-white appearance-none dark:text-white dark:bg-zinc-900 dark:border-zinc-600"
                   value={professor}
                   onChange={(e) => setProfessor(e.target.value)}
                 >
