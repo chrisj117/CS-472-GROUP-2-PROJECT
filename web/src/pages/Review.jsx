@@ -16,7 +16,7 @@ import axios from "../utilities/Axios";
 import { getSchool, getCourses } from "../utilities/GetData";
 
 const Review = () => {
-  // const { user } = useAuth();
+  const { user } = useAuth();
   const { schoolId, courseId } = useParams();
   const [reviews, setReviews] = useState([]);
   const [school, setSchool] = useState({});
@@ -30,14 +30,15 @@ const Review = () => {
   const sortReviews = (reviews, sortMethod) => {
     if (sortMethod === "mostRecent") {
       // Sort reviews by date in descending order (most recent first)
-      return reviews.slice().sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+      return reviews
+        .slice()
+        .sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
     } else if (sortMethod === "mostHelpful") {
       // Sort reviews by helpful_count in descending order (most helpful first)
       return reviews.slice().sort((a, b) => b.helpful_count - a.helpful_count);
     }
     return reviews;
   };
-
 
   const GRADES = [
     "A+",
@@ -224,7 +225,6 @@ const Review = () => {
                     {professor.first_name} {professor.last_name}
                   </option>
                 ))}
-
             </select>
           </div>
         </div>
@@ -308,7 +308,6 @@ const Review = () => {
               fontSize={18}
             />
 
-
             {/* Filter review */}
             <select
               className="text-lg font-semibold rounded border-2 border-gray-400 h-12 w-48 pl-4 pr-10 bg-white dark:text-black appearance-none"
@@ -317,7 +316,6 @@ const Review = () => {
             >
               <option value="mostRecent">Most Recent</option>
               <option value="mostHelpful">Most Helpful</option>
-
             </select>
           </div>
         </div>
@@ -350,326 +348,327 @@ const Review = () => {
         >
           Leave an Evaluation
         </h3>
-        {/* {user ? ( */}
-        <div className="max-w-screen-xl mx-auto flex flex-col gap-16 border-2 border-gray-200 rounded-xl px-16 py-8">
-          <div>
-            <h4 className="font-semibold text-xl mb-4">Teaching Approaches</h4>
-            <div className="flex flex-col gap-4">
-              <RatingBar
-                question="The course as a whole was:"
-                rating={reviewData.rating_course_overall}
-                ratingKey="rating_course_overall"
-                onChange={handleRatingChange}
-                customWidth="flex-1"
-                customHeight="h-5"
-                className="max-w-xl"
-              />
-              <RatingBar
-                question="The course content was:"
-                rating={reviewData.rating_course_content}
-                ratingKey="rating_course_content"
-                onChange={handleRatingChange}
-                customWidth="flex-1"
-                customHeight="h-5"
-                className="max-w-xl"
-              />
-              <RatingBar
-                question="The instructor's contribution to the course was:"
-                rating={reviewData.rating_instructor_contribution}
-                ratingKey="rating_instructor_contribution"
-                onChange={handleRatingChange}
-                customWidth="flex-1"
-                customHeight="h-5"
-                className="max-w-xl"
-              />
-              <RatingBar
-                question="Course organization was:"
-                rating={reviewData.rating_course_organization}
-                ratingKey="rating_course_organization"
-                onChange={handleRatingChange}
-                customWidth="flex-1"
-                customHeight="h-5"
-                className="max-w-xl"
-              />
-              <RatingBar
-                question="Explanations by instructor were:"
-                rating={reviewData.rating_instructor_explanation}
-                ratingKey="rating_instructor_explanation"
-                onChange={handleRatingChange}
-                customWidth="flex-1"
-                customHeight="h-5"
-                className="max-w-xl"
-              />
-              <RatingBar
-                question="Instructor's interest in student's progress was:"
-                rating={reviewData.rating_instructor_interest}
-                ratingKey="rating_instructor_interest"
-                onChange={handleRatingChange}
-                customWidth="flex-1"
-                customHeight="h-5"
-                className="max-w-xl"
-              />
-              <RatingBar
-                question="Amount of assigned work was:"
-                rating={reviewData.rating_work_amount}
-                ratingKey="rating_work_amount"
-                onChange={handleRatingChange}
-                customWidth="flex-1"
-                customHeight="h-5"
-                className="max-w-xl"
-              />
-              <RatingBar
-                question="Clarity of student requirements was:"
-                rating={reviewData.rating_clarity_requirements}
-                ratingKey="rating_clarity_requirements"
-                onChange={handleRatingChange}
-                customWidth="flex-1"
-                customHeight="h-5"
-                className="max-w-xl"
-              />
-              <RatingBar
-                question="Use of class time was:"
-                rating={reviewData.rating_class_time_use}
-                ratingKey="rating_class_time_use"
-                onChange={handleRatingChange}
-                customWidth="flex-1"
-                customHeight="h-5"
-                className="max-w-xl"
-              />
-              <RatingBar
-                question="Student's confidence in instructor's knowledge was:"
-                rating={reviewData.rating_student_confidence}
-                ratingKey="rating_student_confidence"
-                onChange={handleRatingChange}
-                customWidth="flex-1"
-                customHeight="h-5"
-                className="max-w-xl"
-              />
-              <RatingBar
-                question="Quality of questions or problems raised by the instructor was:"
-                rating={reviewData.rating_question_quality}
-                ratingKey="rating_question_quality"
-                onChange={handleRatingChange}
-                customWidth="flex-1"
-                customHeight="h-5"
-                className="max-w-xl"
-              />
-            </div>
-          </div>
-          <form onSubmit={handleSubmit}>
+        {user ? (
+          <div className="max-w-screen-xl mx-auto flex flex-col gap-16 border-2 border-gray-200 rounded-xl px-16 py-8">
             <div>
               <h4 className="font-semibold text-xl mb-4">
-                Required Information
+                Teaching Approaches
               </h4>
               <div className="flex flex-col gap-4">
-                <div className="flex gap-2 items-center justify-between w-full max-w-sm">
-                  <p className="text-lg">Professor </p>
-                  <div className="relative inline-flex self-center">
-                    {/* dropdown arrow */}
-                    <BsChevronDown
-                      className="absolute right-3 top-4 pointer-events-none"
-                      fontSize={18}
-                    />
+                <RatingBar
+                  question="The course as a whole was:"
+                  rating={reviewData.rating_course_overall}
+                  ratingKey="rating_course_overall"
+                  onChange={handleRatingChange}
+                  customWidth="flex-1"
+                  customHeight="h-5"
+                  className="max-w-xl"
+                />
+                <RatingBar
+                  question="The course content was:"
+                  rating={reviewData.rating_course_content}
+                  ratingKey="rating_course_content"
+                  onChange={handleRatingChange}
+                  customWidth="flex-1"
+                  customHeight="h-5"
+                  className="max-w-xl"
+                />
+                <RatingBar
+                  question="The instructor's contribution to the course was:"
+                  rating={reviewData.rating_instructor_contribution}
+                  ratingKey="rating_instructor_contribution"
+                  onChange={handleRatingChange}
+                  customWidth="flex-1"
+                  customHeight="h-5"
+                  className="max-w-xl"
+                />
+                <RatingBar
+                  question="Course organization was:"
+                  rating={reviewData.rating_course_organization}
+                  ratingKey="rating_course_organization"
+                  onChange={handleRatingChange}
+                  customWidth="flex-1"
+                  customHeight="h-5"
+                  className="max-w-xl"
+                />
+                <RatingBar
+                  question="Explanations by instructor were:"
+                  rating={reviewData.rating_instructor_explanation}
+                  ratingKey="rating_instructor_explanation"
+                  onChange={handleRatingChange}
+                  customWidth="flex-1"
+                  customHeight="h-5"
+                  className="max-w-xl"
+                />
+                <RatingBar
+                  question="Instructor's interest in student's progress was:"
+                  rating={reviewData.rating_instructor_interest}
+                  ratingKey="rating_instructor_interest"
+                  onChange={handleRatingChange}
+                  customWidth="flex-1"
+                  customHeight="h-5"
+                  className="max-w-xl"
+                />
+                <RatingBar
+                  question="Amount of assigned work was:"
+                  rating={reviewData.rating_work_amount}
+                  ratingKey="rating_work_amount"
+                  onChange={handleRatingChange}
+                  customWidth="flex-1"
+                  customHeight="h-5"
+                  className="max-w-xl"
+                />
+                <RatingBar
+                  question="Clarity of student requirements was:"
+                  rating={reviewData.rating_clarity_requirements}
+                  ratingKey="rating_clarity_requirements"
+                  onChange={handleRatingChange}
+                  customWidth="flex-1"
+                  customHeight="h-5"
+                  className="max-w-xl"
+                />
+                <RatingBar
+                  question="Use of class time was:"
+                  rating={reviewData.rating_class_time_use}
+                  ratingKey="rating_class_time_use"
+                  onChange={handleRatingChange}
+                  customWidth="flex-1"
+                  customHeight="h-5"
+                  className="max-w-xl"
+                />
+                <RatingBar
+                  question="Student's confidence in instructor's knowledge was:"
+                  rating={reviewData.rating_student_confidence}
+                  ratingKey="rating_student_confidence"
+                  onChange={handleRatingChange}
+                  customWidth="flex-1"
+                  customHeight="h-5"
+                  className="max-w-xl"
+                />
+                <RatingBar
+                  question="Quality of questions or problems raised by the instructor was:"
+                  rating={reviewData.rating_question_quality}
+                  ratingKey="rating_question_quality"
+                  onChange={handleRatingChange}
+                  customWidth="flex-1"
+                  customHeight="h-5"
+                  className="max-w-xl"
+                />
+              </div>
+            </div>
+            <form onSubmit={handleSubmit}>
+              <div>
+                <h4 className="font-semibold text-xl mb-4">
+                  Required Information
+                </h4>
+                <div className="flex flex-col gap-4">
+                  <div className="flex gap-2 items-center justify-between w-full max-w-sm">
+                    <p className="text-lg">Professor </p>
+                    <div className="relative inline-flex self-center">
+                      {/* dropdown arrow */}
+                      <BsChevronDown
+                        className="absolute right-3 top-4 pointer-events-none"
+                        fontSize={18}
+                      />
 
-                    {/* Professor list */}
-                    <select
-                      name="professor"
-                      className="font-semibold rounded border-2 border-gray-400 h-10 w-48 pl-4 pr-10 bg-white appearance-none"
-                      value={reviewData.professor}
-                      onChange={handleSelectChange}
-                    >
-                      {course.professors &&
-                        course.professors.map((professor, index) => (
-                          <option key={index} value={professor}>
-                            {professor.first_name} {professor.last_name}
+                      {/* Professor list */}
+                      <select
+                        name="professor"
+                        className="font-semibold rounded border-2 border-gray-400 h-10 w-48 pl-4 pr-10 bg-white appearance-none"
+                        value={reviewData.professor}
+                        onChange={handleSelectChange}
+                      >
+                        {course.professors &&
+                          course.professors.map((professor, index) => (
+                            <option key={index} value={professor}>
+                              {professor.first_name} {professor.last_name}
+                            </option>
+                          ))}
+                      </select>
+                    </div>
+                  </div>
+
+                  <div className="flex gap-2 items-center justify-between w-full max-w-sm">
+                    <p className="text-lg">Term </p>
+                    <div className="relative inline-flex self-center">
+                      {/* dropdown arrow */}
+                      <BsChevronDown
+                        className="absolute right-3 top-4 pointer-events-none"
+                        fontSize={18}
+                      />
+
+                      {/* Term list */}
+                      <select
+                        name="term"
+                        className="font-semibold rounded border-2 border-gray-400 h-10 w-48 pl-4 pr-10 bg-white appearance-none"
+                        onChange={handleSelectChange}
+                      >
+                        {/* Populate options here */}
+                        <option>Fall</option>
+                        <option>Spring</option>
+                        <option>Summer</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div className="flex gap-2 items-center justify-between w-full max-w-sm">
+                    <p className="text-lg">Year </p>
+                    <div className="relative inline-flex self-center">
+                      {/* dropdown arrow */}
+                      <BsChevronDown
+                        className="absolute right-3 top-4 pointer-events-none"
+                        fontSize={18}
+                      />
+
+                      {/* Year list */}
+                      <select
+                        name="year_taken"
+                        className="font-semibold rounded border-2 border-gray-400 h-10 w-48 pl-4 pr-10 bg-white appearance-none"
+                        onChange={handleSelectChange}
+                        value={reviewData.year_taken}
+                      >
+                        {YEARS.map((year) => (
+                          <option key={year} value={year}>
+                            {year}
                           </option>
                         ))}
-                    </select>
+                      </select>
+                    </div>
                   </div>
-                </div>
 
-                <div className="flex gap-2 items-center justify-between w-full max-w-sm">
-                  <p className="text-lg">Term </p>
-                  <div className="relative inline-flex self-center">
-                    {/* dropdown arrow */}
-                    <BsChevronDown
-                      className="absolute right-3 top-4 pointer-events-none"
-                      fontSize={18}
-                    />
-
-                    {/* Term list */}
-                    <select
-                      name="term"
-                      className="font-semibold rounded border-2 border-gray-400 h-10 w-48 pl-4 pr-10 bg-white appearance-none"
-                      onChange={handleSelectChange}
+                  <div className="flex items-center w-full max-w-sm">
+                    <button
+                      type="button"
+                      className={`border-t-2 border-l-2 border-b-2 border-r ${
+                        reviewData.recommended
+                          ? "bg-blue-500 text-white"
+                          : "border-gray-400"
+                      } rounded-l-lg px-4 py-2 flex-1`}
+                      onClick={() => handleRecommendedChange(true)}
                     >
-                      {/* Populate options here */}
-                      <option>Fall</option>
-                      <option>Spring</option>
-                      <option>Summer</option>
-                    </select>
-                  </div>
-                </div>
-
-                <div className="flex gap-2 items-center justify-between w-full max-w-sm">
-                  <p className="text-lg">Year </p>
-                  <div className="relative inline-flex self-center">
-                    {/* dropdown arrow */}
-                    <BsChevronDown
-                      className="absolute right-3 top-4 pointer-events-none"
-                      fontSize={18}
-                    />
-
-                    {/* Year list */}
-                    <select
-                      name="year_taken"
-                      className="font-semibold rounded border-2 border-gray-400 h-10 w-48 pl-4 pr-10 bg-white appearance-none"
-                      onChange={handleSelectChange}
-                      value={reviewData.year_taken}
+                      Recommended
+                    </button>
+                    <button
+                      type="button"
+                      className={`border-t-2 border-r-2 border-b-2 border-l ${
+                        !reviewData.recommended
+                          ? "bg-blue-500 text-white"
+                          : "border-gray-400"
+                      } rounded-r-lg px-4 py-2 flex-1`}
+                      onClick={() => handleRecommendedChange(false)}
                     >
-                      {YEARS.map((year) => (
-                        <option key={year} value={year}>
-                          {year}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                </div>
-
-                <div className="flex items-center w-full max-w-sm">
-                  <button
-                    type="button"
-                    className={`border-t-2 border-l-2 border-b-2 border-r ${
-                      reviewData.recommended
-                        ? "bg-blue-500 text-white"
-                        : "border-gray-400"
-                    } rounded-l-lg px-4 py-2 flex-1`}
-                    onClick={() => handleRecommendedChange(true)}
-                  >
-                    Recommended
-                  </button>
-                  <button
-                    type="button"
-                    className={`border-t-2 border-r-2 border-b-2 border-l ${
-                      !reviewData.recommended
-                        ? "bg-blue-500 text-white"
-                        : "border-gray-400"
-                    } rounded-r-lg px-4 py-2 flex-1`}
-                    onClick={() => handleRecommendedChange(false)}
-                  >
-                    Not Recommended
-                  </button>
-                </div>
-              </div>
-            </div>
-            <div>
-              <h4 className="font-semibold text-xl mb-4">
-                Optional Information
-              </h4>
-              <div className="flex flex-col gap-4">
-                <div className="flex gap-2 items-center justify-between w-full max-w-sm">
-                  <p className="text-lg">Textbook </p>
-                  <div className="relative inline-flex self-center">
-                    {/* dropdown arrow */}
-                    <BsChevronDown
-                      className="absolute right-3 top-4 pointer-events-none"
-                      fontSize={18}
-                    />
-
-                    {/* Textbook Required Dropdown */}
-                    <select
-                      name="textbook_required"
-                      className="font-semibold rounded border-2 border-gray-400 h-10 w-48 pl-4 pr-10 bg-white appearance-none"
-                      onChange={handleSelectChange}
-                      value={reviewData.textbook_required ? "Yes" : "No"}
-                    >
-                      <option value={true}>Yes</option>
-                      <option value={false}>No</option>
-                    </select>
-                  </div>
-                </div>
-
-                <div className="flex gap-2 items-center justify-between w-full max-w-sm">
-                  <p className="text-lg">Delivery </p>
-                  <div className="relative inline-flex self-center">
-                    {/* dropdown arrow */}
-                    <BsChevronDown
-                      className="absolute right-3 top-4 pointer-events-none"
-                      fontSize={18}
-                    />
-
-                    <select
-                      name="delivery_method"
-                      className="font-semibold rounded border-2 border-gray-400 h-10 w-48 pl-4 pr-10 bg-white appearance-none"
-                      onChange={handleSelectChange}
-                    >
-                      <option>In Person</option>
-                      <option>Online</option>
-                      <option>Hybrid</option>
-                    </select>
-                  </div>
-                </div>
-
-                <div className="flex gap-2 items-center justify-between w-full max-w-sm">
-                  <p className="text-lg">Grade </p>
-                  <div className="relative inline-flex self-center">
-                    {/* dropdown arrow */}
-                    <BsChevronDown
-                      className="absolute right-3 top-4 pointer-events-none"
-                      fontSize={18}
-                    />
-
-                    {/* Grade Dropdown */}
-                    <select
-                      name="grade_received"
-                      className="font-semibold rounded border-2 border-gray-400 h-10 w-48 pl-4 pr-10 bg-white appearance-none"
-                      onChange={handleSelectChange}
-                      value={reviewData.grade_received}
-                    >
-                      {GRADES.map((grade) => (
-                        <option key={grade} value={grade}>
-                          {grade}
-                        </option>
-                      ))}
-                    </select>
+                      Not Recommended
+                    </button>
                   </div>
                 </div>
               </div>
-            </div>
+              <div>
+                <h4 className="font-semibold text-xl mb-4">
+                  Optional Information
+                </h4>
+                <div className="flex flex-col gap-4">
+                  <div className="flex gap-2 items-center justify-between w-full max-w-sm">
+                    <p className="text-lg">Textbook </p>
+                    <div className="relative inline-flex self-center">
+                      {/* dropdown arrow */}
+                      <BsChevronDown
+                        className="absolute right-3 top-4 pointer-events-none"
+                        fontSize={18}
+                      />
 
-            <div>
-              <h4 className="font-semibold text-xl mb-4">
-                Additional Comments
-              </h4>
-              <textarea
-                placeholder="Add additional comments..."
-                className="p-2 focus:outline-1 focus:outline-blue-500 border-[0.1px] resize-none h-[120px] border-[#9EA5B1] rounded-md w-full mb-4"
-                value={reviewData.review_text}
-                onChange={handleCommentChange}
-              ></textarea>
+                      {/* Textbook Required Dropdown */}
+                      <select
+                        name="textbook_required"
+                        className="font-semibold rounded border-2 border-gray-400 h-10 w-48 pl-4 pr-10 bg-white appearance-none"
+                        onChange={handleSelectChange}
+                        value={reviewData.textbook_required ? "Yes" : "No"}
+                      >
+                        <option value={true}>Yes</option>
+                        <option value={false}>No</option>
+                      </select>
+                    </div>
+                  </div>
 
-              <button
-                type="submit"
-                className="text-lg font-semibold bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-md px-3 w-full flex justify-center gap-4 items-center"
-              >
-                <span>Post Evaluation</span> <BsFillEnvelopePaperFill />
-              </button>
-            </div>
-          </form>
-        </div>
+                  <div className="flex gap-2 items-center justify-between w-full max-w-sm">
+                    <p className="text-lg">Delivery </p>
+                    <div className="relative inline-flex self-center">
+                      {/* dropdown arrow */}
+                      <BsChevronDown
+                        className="absolute right-3 top-4 pointer-events-none"
+                        fontSize={18}
+                      />
 
-        {/* ) : ( */}
-        <div className="max-w-screen-xl mx-auto w-full flex flex-col gap-4 py-8 px-8 justify-center items-center border-zinc-200 border-2 rounded-lg">
-          <span>Ready to contribute to the site? Sign in below!</span>
+                      <select
+                        name="delivery_method"
+                        className="font-semibold rounded border-2 border-gray-400 h-10 w-48 pl-4 pr-10 bg-white appearance-none"
+                        onChange={handleSelectChange}
+                      >
+                        <option>In Person</option>
+                        <option>Online</option>
+                        <option>Hybrid</option>
+                      </select>
+                    </div>
+                  </div>
 
-          <Link
-            to="/login"
-            className="bg-blue-600 text-white px-10 py-3 rounded-lg hover:bg-blue-700 flex mt-2 gap-2 items-center justify-center font-semibold"
-          >
-            Login <FaArrowRight className="text-xl" />
-          </Link>
-        </div>
-        {/* )} */}
+                  <div className="flex gap-2 items-center justify-between w-full max-w-sm">
+                    <p className="text-lg">Grade </p>
+                    <div className="relative inline-flex self-center">
+                      {/* dropdown arrow */}
+                      <BsChevronDown
+                        className="absolute right-3 top-4 pointer-events-none"
+                        fontSize={18}
+                      />
+
+                      {/* Grade Dropdown */}
+                      <select
+                        name="grade_received"
+                        className="font-semibold rounded border-2 border-gray-400 h-10 w-48 pl-4 pr-10 bg-white appearance-none"
+                        onChange={handleSelectChange}
+                        value={reviewData.grade_received}
+                      >
+                        {GRADES.map((grade) => (
+                          <option key={grade} value={grade}>
+                            {grade}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <h4 className="font-semibold text-xl mb-4">
+                  Additional Comments
+                </h4>
+                <textarea
+                  placeholder="Add additional comments..."
+                  className="p-2 focus:outline-1 focus:outline-blue-500 border-[0.1px] resize-none h-[120px] border-[#9EA5B1] rounded-md w-full mb-4"
+                  value={reviewData.review_text}
+                  onChange={handleCommentChange}
+                ></textarea>
+
+                <button
+                  type="submit"
+                  className="text-lg font-semibold bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-md px-3 w-full flex justify-center gap-4 items-center"
+                >
+                  <span>Post Evaluation</span> <BsFillEnvelopePaperFill />
+                </button>
+              </div>
+            </form>
+          </div>
+        ) : (
+          <div className="max-w-screen-xl mx-auto w-full flex flex-col gap-4 py-8 px-8 justify-center items-center border-zinc-200 border-2 rounded-lg">
+            <span>Ready to contribute to the site? Sign in below!</span>
+
+            <Link
+              to="/login"
+              className="bg-blue-600 text-white px-10 py-3 rounded-lg hover:bg-blue-700 flex mt-2 gap-2 items-center justify-center font-semibold"
+            >
+              Login <FaArrowRight className="text-xl" />
+            </Link>
+          </div>
+        )}
       </div>
     </div>
   );
