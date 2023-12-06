@@ -6,9 +6,9 @@ class School(TrackingModel):
     class Meta:
         verbose_name_plural = "Schools"
 
-    long_name = models.CharField(max_length=25, 
+    long_name = models.CharField(max_length=255, 
                                  verbose_name="LongName",
-                                 unique=True, default="UNLV")
+                                 unique=True, default="University of Nevada, Las Vegas")
     short_name = models.CharField(max_length=5, verbose_name="ShortName", unique=True, default="UNLV")
     website = models.URLField(null=True)
     state = models.CharField(max_length=25, verbose_name="State")
