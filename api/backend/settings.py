@@ -57,7 +57,7 @@ INSTALLED_APPS = [
     'authentication',
 ]
 
-CORS_ALLOWED_ORIGINS = ['http://localhost:8000','http://127.0.0.1:8000','http://localhost:5173']
+CORS_ALLOWED_ORIGINS = True
 
 CORS_ORIGIN_REGEX_WHITELIST = [
     r"^https://\w+\.vercel\.app$",
