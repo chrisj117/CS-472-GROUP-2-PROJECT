@@ -1,70 +1,124 @@
 /* eslint-disable react-refresh/only-export-components */
 /* eslint-disable react-hooks/exhaustive-deps */
 
-import { useState, useEffect } from "react"
-import { useLoaderData, useParams } from "react-router-dom"
-import Searchbar from "../components/Searchbar"
-import RatingBar from "../components/RatingBar"
+import { useState, useEffect } from "react";
+import { useLoaderData, useParams } from "react-router-dom";
+import Searchbar from "../components/Searchbar";
+import RatingBar from "../components/RatingBar";
 import {
   BsChevronDown,
   BsFillEnvelopePaperFill,
   BsFillPencilFill,
-} from "react-icons/bs"
-import ReviewCard from "../components/ReviewCard"
-import { useAuth } from "../utilities/AuthProvider"
-import { Link } from "react-router-dom"
-import { FaArrowRight } from "react-icons/fa6"
-import { format } from "date-fns"
-import axios from "../utilities/Axios"
+} from "react-icons/bs";
+import ReviewCard from "../components/ReviewCard";
+import { useAuth } from "../utilities/AuthProvider";
+import { Link } from "react-router-dom";
+import { FaArrowRight } from "react-icons/fa6";
+import { format } from "date-fns";
+import axios from "../utilities/Axios";
 import {
   getSchool,
   getCourse,
   getCourses,
   getReviews,
-} from "../utilities/GetData"
-import { FaSearch } from "react-icons/fa"
-import { BeatLoader } from "react-spinners"
-import FormSuccess from "../components/FormSuccess"
-import FormError from "../components/FormError"
+} from "../utilities/GetData";
+
+import { FaSearch } from "react-icons/fa";
+import { BeatLoader } from "react-spinners";
+import FormSuccess from "../components/FormSuccess";
+import FormError from "../components/FormError";
+import { updateReview } from "../utilities/PostData";
 
 export async function loader({ params }) {
-  const school = await getSchool(params.schoolId)
-  const courses = await getCourses(params.schoolId)
-  const course = await getCourse(params.schoolId, params.courseId)
-  return { school, courses, course }
+  const school = await getSchool(params.schoolId);
+  const courses = await getCourses(params.schoolId);
+  const course = await getCourse(params.schoolId, params.courseId);
+  return { school, courses, course };
 }
 
 const Review = () => {
-  const { school, courses, course } = useLoaderData()
-  const { user } = useAuth()
-  const { schoolId, courseId } = useParams()
-  const [reviews, setReviews] = useState([])
-  const [sortMethod, setSortMethod] = useState("mostRecent") // Default is most recent
+  const { school, courses, course } = useLoaderData();
+  const { user } = useAuth();
+  const { schoolId, courseId } = useParams();
+  const [reviews, setReviews] = useState([]);
+  const [sortMethod, setSortMethod] = useState("mostRecent"); // Default is most recent
   const [professor, setProfessor] = useState(
     course.professors[0]
       ? course.professors[0].first_name + " " + course.professors[0].last_name
-      : ""
-  )
-  const [loading, setLoading] = useState(false)
-  const [messageResponse, setMessageResponse] = useState("")
-  const [error, setError] = useState("")
+      : "",
+  );
+  const [loading, setLoading] = useState(false);
+  const [messageResponse, setMessageResponse] = useState("");
+  const [error, setError] = useState("");
 
   const handleSortChange = (event) => {
-    setSortMethod(event.target.value)
-  }
+    setSortMethod(event.target.value);
+  };
+
+  const [userInteractions, setUserInteractions] = useState({});
+
+  const onHelpfulClick = async (reviewId, interactionType) => {
+    // Find the review to update
+    const reviewToUpdate = reviews.find((review) => review.id === reviewId);
+    if (!reviewToUpdate) return;
+
+    let newHelpfulCount = reviewToUpdate.helpful_count || 0;
+
+    if (interactionType === "liked") {
+        // Only increment if the review was not previously liked
+        if (userInteractions[reviewId] !== "liked") {
+            newHelpfulCount += 1;
+        }
+    } else if (interactionType === "disliked") {
+        // Decrement if the review was previously liked
+        if (userInteractions[reviewId] === "liked") {
+            newHelpfulCount -= 1;
+        }
+    }
+
+    // Prepare the data for the PUT request
+    const updateData = {
+        ...reviewToUpdate, // spread operator to copy all existing review data
+        helpful_count: newHelpfulCount // updating only the helpful_count
+    };
+
+    try {
+        await updateReview(reviewId, updateData);
+        setMessageResponse('Review updated successfully!');
+
+        // Update local state to reflect changes
+        const updatedReviews = reviews.map((review) =>
+            review.id === reviewId
+                ? { ...review, helpful_count: newHelpfulCount }
+                : review
+        );
+        setReviews(updatedReviews);
+
+    } catch (error) {
+        console.error("Error updating review:", error);
+        setError('Failed to update review. Please try again.');
+    }
+
+    // Update user interactions
+    setUserInteractions((prevInteractions) => ({
+        ...prevInteractions,
+        [reviewId]: interactionType,
+    }));
+};
+
 
   const sortReviews = (reviews, sortMethod) => {
     if (sortMethod === "mostRecent") {
       // Sort reviews by date in descending order (most recent first)
       return reviews
         .slice()
-        .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+        .sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
     } else if (sortMethod === "mostHelpful") {
       // Sort reviews by helpful_count in descending order (most helpful first)
-      return reviews.slice().sort((a, b) => b.helpful_count - a.helpful_count)
+      return reviews.slice().sort((a, b) => b.helpful_count - a.helpful_count);
     }
-    return reviews
-  }
+    return reviews;
+  };
 
   const GRADES = [
     "A+",
@@ -81,25 +135,25 @@ const Review = () => {
     "D-",
     "F",
     "N/A",
-  ]
+  ];
 
   const generateYears = (startYear) => {
-    const currentYear = new Date().getFullYear()
-    const years = []
+    const currentYear = new Date().getFullYear();
+    const years = [];
     for (let year = currentYear; year >= startYear; year--) {
-      years.push(year)
+      years.push(year);
     }
-    return years
-  }
+    return years;
+  };
 
-  const YEARS = generateYears(1990) // generating years from 1990 to current year
+  const YEARS = generateYears(1990); // generating years from 1990 to current year
 
   const handleRatingChange = (key, newRating) => {
     setReviewData((prevState) => ({
       ...prevState,
       [key]: newRating,
-    }))
-  }
+    }));
+  };
 
   const [reviewData, setReviewData] = useState({
     school: "",
@@ -109,7 +163,7 @@ const Review = () => {
     term: "Fall", //default
     grade_received: "N/A", // default
     delivery_method: "In Person", // default
-    textbook_required: false,
+    textbook_required: false, // default
     helpful_count: 0,
 
     // fields for rating questions
@@ -127,31 +181,31 @@ const Review = () => {
 
     year_taken: new Date().getFullYear(), // Current year as default
     recommended: true,
-  })
+  });
 
   const calculateAverageRating = (ratingKey) => {
-    const total = reviews.reduce((acc, review) => acc + review[ratingKey], 0)
-    const average = total / reviews.length
-    return Math.round(average) || 0 // Default to 0 if no reviews
-  }
+    const total = reviews.reduce((acc, review) => acc + review[ratingKey], 0);
+    const average = total / reviews.length;
+    return Math.round(average) || 0; // Default to 0 if no reviews
+  };
 
   const fetchReviews = async () => {
     try {
-      const reviewsResponse = await getReviews(schoolId, courseId)
+      const reviewsResponse = await getReviews(schoolId, courseId);
 
       if (reviewsResponse) {
         if (professor != "" && professor != null) {
           const professorReviews = reviewsResponse.filter(
-            (review) => review.professor == professor
-          )
-          const sortedReviews = sortReviews(professorReviews, sortMethod)
-          setReviews(sortedReviews)
+            (review) => review.professor == professor,
+          );
+          const sortedReviews = sortReviews(professorReviews, sortMethod);
+          setReviews(sortedReviews);
         }
       }
     } catch (error) {
-      console.error("Error fetching data:", error)
+      console.error("Error fetching data:", error);
     }
-  }
+  };
 
   useEffect(() => {
     setReviewData({
@@ -180,69 +234,69 @@ const Review = () => {
 
       year_taken: new Date().getFullYear(), // Current year as default
       recommended: true,
-    })
-  }, [course])
+    });
+  }, [course]);
 
   useEffect(() => {
-    fetchReviews()
-  }, [sortMethod, professor, course])
+    fetchReviews();
+  }, [sortMethod, professor, course]);
 
   const handleRecommendedChange = (isRecommended) => {
-    setReviewData({ ...reviewData, recommended: isRecommended })
-  }
+    setReviewData({ ...reviewData, recommended: isRecommended });
+  };
 
   // Function to handle form submission
   const handleSubmit = async (e) => {
-    e.preventDefault()
+    e.preventDefault();
     if (!loading) {
-      setLoading(true)
-    } else return
+      setLoading(true);
+    } else return;
 
     const postData = {
       ...reviewData,
       school: school.short_name, // Add school's short name
       course: course.subject + " " + course.catalog_number, // Add course subject and catalog number
       professor: professor,
-    }
+    };
 
     try {
       await axios.post(
         // `/reviews/${schoolId}/${courseId}`,
         `/reviews/`,
-        postData
-      )
+        postData,
+      );
     } catch (error) {
-      console.error("Error submitting review:", error)
-      setError(`You must enter additional comments.`)
-      setMessageResponse("")
-      setLoading(false)
-      return
+      console.error("Error submitting review:", error);
+      setError(`You must enter additional comments.`);
+      setMessageResponse("");
+      setLoading(false);
+      return;
     }
 
-    setError("")
+    setError("");
 
     setTimeout(() => {
-      setLoading(false)
-      setMessageResponse(`Evaluation submitted!`)
-      fetchReviews()
-    }, 1000)
-  }
+      setLoading(false);
+      setMessageResponse(`Evaluation submitted!`);
+      fetchReviews();
+    }, 1000);
+  };
 
   const handleSelectChange = (event) => {
-    const { name, value } = event.target
+    const { name, value } = event.target;
 
     setReviewData((prevState) => ({
       ...prevState,
       [name]: value,
-    }))
-  }
+    }));
+  };
 
   const handleCommentChange = (event) => {
     setReviewData({
       ...reviewData,
       review_text: event.target.value,
-    })
-  }
+    });
+  };
 
   return (
     <div className="overflow-auto max-w-screen-xl mx-auto mt-8 flex flex-col min-h-[calc(100vh-98px)] px-4">
@@ -301,7 +355,7 @@ const Review = () => {
                         >
                           {professor.first_name} {professor.last_name}
                         </option>
-                      ) : null
+                      ) : null,
                     )}
                 </select>
               </div>
@@ -332,7 +386,7 @@ const Review = () => {
                 <RatingBar
                   question="The instructor's contribution to the course was:"
                   rating={calculateAverageRating(
-                    "rating_instructor_contribution"
+                    "rating_instructor_contribution",
                   )}
                 />
                 <RatingBar
@@ -342,7 +396,7 @@ const Review = () => {
                 <RatingBar
                   question="Explanations by instructor were:"
                   rating={calculateAverageRating(
-                    "rating_instructor_explanation"
+                    "rating_instructor_explanation",
                   )}
                 />
                 <RatingBar
@@ -414,6 +468,9 @@ const Review = () => {
               {reviews.map((review) => (
                 <ReviewCard
                   key={review.id}
+                  reviewId={review.id}
+                  user={user}
+                  userInteraction={userInteractions[review.id]}
                   additionalComments={review.review_text}
                   recommended={review.recommended}
                   date={format(new Date(review.created_at), "MMMM do, yyyy")}
@@ -424,6 +481,7 @@ const Review = () => {
                   professor={`${review.professor}`}
                   term={review.term}
                   year={review.year_taken}
+                  onHelpfulClick={onHelpfulClick}
                 />
               ))}
             </div>
@@ -735,6 +793,6 @@ const Review = () => {
         </>
       )}
     </div>
-  )
-}
-export default Review
+  );
+};
+export default Review;

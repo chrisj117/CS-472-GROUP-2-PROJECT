@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
 
-import { FaThumbsUp, FaThumbsDown } from "react-icons/fa"
+import { FaThumbsUp, FaThumbsDown } from "react-icons/fa";
+import { useAuth } from "../utilities/AuthProvider";
 
 const ReviewCard = ({
   additionalComments,
@@ -13,7 +14,32 @@ const ReviewCard = ({
   professor,
   term,
   year,
+  onHelpfulClick,
+  reviewId,
+  userInteraction,
 }) => {
+  const { user } = useAuth();
+
+  const handleThumbsUp = () => {
+    if (!user) {
+      alert("Please sign in to rate the review.");
+      return;
+    }
+    if (userInteraction !== "liked") {
+      onHelpfulClick(reviewId, "liked");
+    }
+  };
+
+  const handleThumbsDown = () => {
+    if (!user) {
+      alert("Please sign in to rate the review.");
+      return;
+    }
+    if (userInteraction === "liked") {
+      onHelpfulClick(reviewId, "disliked");
+    }
+  };
+
   return (
     <div className="flex">
       <div
@@ -48,10 +74,21 @@ const ReviewCard = ({
                 : "Be the first to rate this evaluation"}
             </span>
             <div className="flex gap-0.5">
-              <button className="bg-gray-400 hover:bg-blue-500 px-4 py-1 rounded-l-md text-white">
+              <button
+                onClick={handleThumbsUp}
+                className={`bg-gray-400 hover:bg-blue-500 px-4 py-1 rounded-l-md text-white ${
+                  userInteraction === "liked" ? "bg-blue-500" : ""
+                }`}
+              >
                 <FaThumbsUp />
               </button>
-              <button className="bg-gray-400 hover:bg-red-500 px-4 py-1 rounded-r-md text-white">
+
+              <button
+                onClick={handleThumbsDown}
+                className={`bg-gray-400 hover:bg-red-500 px-4 py-1 rounded-r-md text-white ${
+                  userInteraction === "disliked" ? "bg-red-500" : ""
+                }`}
+              >
                 <FaThumbsDown />
               </button>
             </div>
@@ -63,6 +100,6 @@ const ReviewCard = ({
         </div>
       </div>
     </div>
-  )
-}
-export default ReviewCard
+  );
+};
+export default ReviewCard;
